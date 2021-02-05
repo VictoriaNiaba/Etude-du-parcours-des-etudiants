@@ -20,6 +20,7 @@ J'ai implémenté par défaut :
 	* Font awesome (free)
 	* Bootstrap avec le thème [cerulean](https://bootswatch.com/cerulean/)
 * Une librairie d’affinage de node [ngx-echarts](https://xieziyu.github.io/ngx-echarts/#/welcome)
+* Un système d'authentification
 ## 4) Notes
 Si votre projet est en version 10 et que vous souhaitez passer en 11 voici les lignes que j'ai entées après la partie 1) :
 
