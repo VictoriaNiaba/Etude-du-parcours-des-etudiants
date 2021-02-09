@@ -1,0 +1,27 @@
+.tg {
+  width: 80%;
+  text-align: center;
+}
+.tg .btn {
+  width: 100%;
+}
+.card-header h2 {
+  font-size: 20px;
+}
+.card-body {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+.btn-upload {
+  max-width: 200px;
+  height: fit-content;
+}
+.text-muted {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}

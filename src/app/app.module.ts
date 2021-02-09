@@ -11,6 +11,7 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { FooterComponent } from './components/footer/footer.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdministrationComponent } from './components/administration/administration.component';
+import { FormationsComponent } from './components/formations/formations.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { AdministrationComponent } from './components/administration/administrat
     EpuComponent,
     NavigationComponent,
     FooterComponent,
-    AdministrationComponent
+    AdministrationComponent,
+    FormationsComponent
   ],
   imports: [
     BrowserModule,
