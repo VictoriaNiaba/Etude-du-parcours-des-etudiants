@@ -12,6 +12,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdministrationComponent } from './components/administration/administration.component';
 import { FormationsComponent } from './components/formations/formations.component';
+import { RegistrationsComponent } from './components/registrations/registrations.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { FormationsComponent } from './components/formations/formations.componen
     NavigationComponent,
     FooterComponent,
     AdministrationComponent,
-    FormationsComponent
+    FormationsComponent,
+    RegistrationsComponent
   ],
   imports: [
     BrowserModule,
