@@ -16,6 +16,7 @@
 	<description>Back-end du projet EPU.</description>
 	<properties>
 		<java.version>11</java.version>
+		<springdoc.version>1.4.8</springdoc.version>
 	</properties>
 	<dependencies>
 		<!-- BEGIN web dependencies -->
@@ -60,6 +61,19 @@
 			<optional>true</optional>
 		</dependency>
 		<!-- END developper tools dependencies -->
+
+		<!-- BEGIN Open Api dependencies -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>${springdoc.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-data-rest</artifactId>
+			<version>${springdoc.version}</version>
+		</dependency>
+		<!-- END Open Api dependencies -->
 
 		<!-- BEGIN test dependencies -->
 		<dependency>
