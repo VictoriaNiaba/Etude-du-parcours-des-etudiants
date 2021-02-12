@@ -15,7 +15,7 @@
 	<name>Etude du parcours des etudiants</name>
 	<description>Back-end du projet EPU.</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>15</java.version>
 		<springdoc.version>1.4.8</springdoc.version>
 	</properties>
 	<dependencies>

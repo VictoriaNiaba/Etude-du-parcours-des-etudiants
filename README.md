@@ -6,7 +6,7 @@ Back-end implémenté à l'aide de [Spring Boot](http://projects.spring.io/sprin
 
 Pour développer sur ce projet, vous aurez besoin de :
 
-- [JDK 11](https://www.oracle.com/fr/java/technologies/javase-jdk11-downloads.html)
+- [JDK 15](https://www.oracle.com/fr/java/technologies/javase-jdk15-downloads.html)
 - [Configurer votre IDE](https://projectlombok.org/setup/eclipse) pour qu'il soit compatible avec la librairie [Lombok](https://projectlombok.org/)
 
 ## Lancer l'application
