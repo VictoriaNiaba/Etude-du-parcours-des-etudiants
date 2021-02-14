@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdministrationComponent } from './components/administration/administration.component';
 import { FormationsComponent } from './components/formations/formations.component';
 import { RegistrationsComponent } from './components/registrations/registrations.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { RegistrationsComponent } from './components/registrations/registrations
     AppRoutingModule,
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts')
-    })
+    }),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

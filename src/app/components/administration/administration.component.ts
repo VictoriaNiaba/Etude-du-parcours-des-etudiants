@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClientService } from '../../services/http-client.service';
 
 @Component({
   selector: 'app-administration',
@@ -7,9 +8,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdministrationComponent implements OnInit {
 
-  constructor() { }
+  constructor(private httpClientService:HttpClientService) { }
 
   ngOnInit(): void {
+  }
+
+  responseTemp = "";
+
+  getCoucou() {
+    
+    /*this.httpClientService.getCoucou().subscribe(
+      response =>this.handleSuccessfulResponse(response),
+     );*/
+     this.handleSuccessfulResponse("Coucou works (mock)");
+  }
+  handleSuccessfulResponse(response)
+  {
+      this.responseTemp=response;
   }
 
 }
