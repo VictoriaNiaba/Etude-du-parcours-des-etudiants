@@ -8,14 +8,14 @@ import { Observable } from 'rxjs';
 })
 export class HttpClientService {
 
-  private baseUrl = 'http://localhost:8000/xxx';
+  private baseUrl = "http://localhost:8000/xxx/";
 
   constructor(private httpClient:HttpClient) { }
   
   getCoucou()
   {
     console.log("test get coucou");
-    return this.httpClient.get<String>('http://localhost:8080/xxxx');
+    return this.httpClient.get<String>(this.baseUrl+"salutations");
     /*
       sources :
         https://medium.com/@rameez.s.shaikh/angular-7-spring-boot-application-hello-world-example-43588fbcd039
