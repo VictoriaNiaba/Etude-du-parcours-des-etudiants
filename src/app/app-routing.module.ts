@@ -6,6 +6,8 @@ import { AuthGuardService as AuthGuard } from './services/auth-guard.service';
 import { Role } from './utils/Role';
 import { EpuComponent } from './components/epu/epu.component';
 import { LoginComponent } from './components/login/login.component';
+import { FormationDetailsComponent } from './components/formations/formation-details/formation-details.component';
+import { FormationEditComponent } from './components/formations/formation-edit/formation-edit.component';
 
 const routes: Routes = [
   {
@@ -13,6 +15,19 @@ const routes: Routes = [
   },
   {
     path: 'admin', component: AdministrationComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Admin]}
+  },
+  {
+    path: 'formation/:id', component: FormationDetailsComponent,
+  },
+  {
+    path: 'formation/:id/edit', component: FormationEditComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Admin]}
+  },
+  {
+    path: 'formation/new',component: FormationEditComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Admin]}
   },

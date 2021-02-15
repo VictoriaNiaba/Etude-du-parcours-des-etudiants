@@ -11,9 +11,11 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { FooterComponent } from './components/footer/footer.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdministrationComponent } from './components/administration/administration.component';
-import { FormationsComponent } from './components/formations/formations.component';
+import { FormationsComponent } from './components/formations/formations-list/formations.component';
 import { RegistrationsComponent } from './components/registrations/registrations.component';
 import { HttpClientModule } from '@angular/common/http';
+import { FormationDetailsComponent } from './components/formations/formation-details/formation-details.component';
+import { FormationEditComponent } from './components/formations/formation-edit/formation-edit.component';
 
 
 @NgModule({
@@ -25,7 +27,9 @@ import { HttpClientModule } from '@angular/common/http';
     FooterComponent,
     AdministrationComponent,
     FormationsComponent,
-    RegistrationsComponent
+    RegistrationsComponent,
+    FormationDetailsComponent,
+    FormationEditComponent
   ],
   imports: [
     BrowserModule,
