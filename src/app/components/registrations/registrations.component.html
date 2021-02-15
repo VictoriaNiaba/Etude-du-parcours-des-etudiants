@@ -8,7 +8,7 @@
       </li>
       <li class="nav-item ml-auto px-4">
         <div class="nav-link active" href="#">
-          <p>Total : ####</p>
+          <p>Total : {{totalRegistration}}</p>
         </div>
       </li>
     </ul>
@@ -25,11 +25,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let year of [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021]">
-            <td>{{ year }}</td>
-            <td>01/01/{{ year }}</td>
-            <td>15.000</td>
-          </tr>
+            <tr *ngFor="let year of getYears()">
+              <td>{{ year }}</td>
+              <td>{{ getYearTimeStamp(year) | date:'dd/MM/yyyy'  }}</td>
+              <td>{{ getNumberByYear(year) }}</td>
+            </tr>
         </tbody>
       </table>
     </div>
