@@ -16,12 +16,12 @@ export class AdministrationComponent implements OnInit {
   responseTemp = "";
 
   getCoucou() {
-    
-    /*this.httpClientService.getCoucou().subscribe(
+    this.httpClientService.getCoucou().subscribe(
       response =>this.handleSuccessfulResponse(response),
-     );*/
+     );
      this.handleSuccessfulResponse("Coucou works (mock)");
   }
+
   handleSuccessfulResponse(response)
   {
       this.responseTemp=response;
