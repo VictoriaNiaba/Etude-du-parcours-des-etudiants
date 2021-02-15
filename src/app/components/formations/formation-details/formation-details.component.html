@@ -1,1 +1,23 @@
-<p>formation-details works!</p>
+<div class="card mb-3">
+    <h3 class="card-header">{{ formation.formation_code }}</h3>
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+        <li class="list-group-item">Code : {{ formation.formation_code }}</li>
+        <li class="list-group-item">Intitulé : {{ formation.formation_name }}</li>
+        <li class="list-group-item">Type : {{ formation.type }}</li>
+        <li class="list-group-item">Description : {{ formation.description }}</li>
+        <li class="list-group-item">URL : <a href="{{ formation.url }}">{{ formation.url }}</a></li>
+        <li class="list-group-item">Date d'Ajout : </li>
+        <li class="list-group-item">Date de dernière Modification : </li>
+        </ul>
+        <br>
+        <h5>Liste des Etapes</h5>
+        <ul class="list-group list-group-flush">  
+        </ul>
+    </div>
+    <div class="card-footer text-muted">
+        <div class="d-flex justify-content-between">
+        <a *ngIf="(currentUser.role === 'ADMIN') && canEdit === true" routerLink="/formation/{{formation.formation_code}}/edit" class="btn btn-info" role="button">Modifier</a>
+        </div>
+    </div>
+</div>
