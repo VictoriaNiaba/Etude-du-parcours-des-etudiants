@@ -17,8 +17,6 @@
     .card-body {
         flex-direction: column;
     }
-}
-@media (max-width: 769px) {
     .card-header .nav-item > .active,
     .card-header .nav-item {
         background: none;
@@ -26,6 +24,8 @@
         align-self: baseline;
         font-size: small;
     }
+}
+@media (max-width: 769px) {
     .searchInput {
         width: 100%;
     }

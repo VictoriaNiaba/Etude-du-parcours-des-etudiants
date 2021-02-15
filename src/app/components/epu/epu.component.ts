@@ -12,13 +12,20 @@ export class EpuComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /* https://echarts.apache.org/en/api.html#echartsInstance.on 
+  >>>  If Object, one or more properties below can be included, and any of them is optional.
+  */
+  chartClicked(e: any) {
+    if(e.dataType === 'node')
+        alert(e.name)
+  }
+
   
   title = 'pfe-frontend';
   options = {
     title: {
       text: 'Test'
     },
-    tooltip: {},
     animationDurationUpdate: 1500,
     animationEasingUpdate: 'quinticInOut',
     series: [
@@ -27,12 +34,6 @@ export class EpuComponent implements OnInit {
         layout: 'none',
         symbolSize: 60,
         roam: true,
-        itemStyle: {
-          borderColor: '#fff',
-          borderWidth: 1,
-          shadowBlur: 10,
-          shadowColor: 'rgba(0, 0, 0, 0.3)'
-        },
         label: {
           normal: {
             show: true,
@@ -54,21 +55,25 @@ export class EpuComponent implements OnInit {
         data: [{
           name: 'Node 1',
           value: 'BAC S',
+          type: 'node',
           x: 300,
           y: 300
         }, {
           name: 'Node 2',
           value: 'Licence informatique',
+          type: 'node',
           x: 500,
           y: 200
         }, {
           name: 'Node 3',
           value: 'Master informatique',
+          type: 'node',
           x: 700,
           y: 300
         }, {
           name: 'Node 4',
           value: 'BTS SNIR',
+          type: 'node',
           x: 500,
           y: 400
         }],
@@ -77,20 +82,17 @@ export class EpuComponent implements OnInit {
           showDelay: 0,
           transitionDuration: 0.2,
           formatter: function (params) {
-            return `<b>${params['name']}</b> Formation : ${params['value']}`;
+            if(params.dataType === 'node') return `Clique sur une formation<br/>pour avoir ses détails`;
+            else return "";
           }
         },
-        force: {
-          repulsion: 2000,
-        },
-        // links: [],
         links: [{
           source: 0,
           target: 1,
           symbolSize: [5, 20],
           label: {
             normal: {
-              //show: true
+              show: true
             }
           },
           lineStyle: {
@@ -118,9 +120,67 @@ export class EpuComponent implements OnInit {
             width: 2,
             curveness: 0.2
           }
+        },
+        zoom: 0.8
         }
-      }
     ]
   };
 
+  
+
+
+
+
+
+
+
+  /*stats*/
+  options_stats_2 = {
+    legend: {
+      orient: "horizontal",
+      left: "center",
+      data: ["M1 informatique", "L3 informatique", "Autre"]
+    },
+    tooltip: {
+      trigger: 'item'
+  },
+    series: [{
+      type: "pie",
+      data: [{
+        value: 335,
+        name: "M1 informatique"
+      }, {
+        value: 310,
+        name: "Autre"
+      }, {
+        value: 1548,
+        name: "L3 informatique"
+      }],
+      labeLine: {
+        show: true
+      },
+      emphasis: {
+        scale: true
+      },
+      label: {
+        alignTo: "labelLine",
+        show: true,
+        position: "outside"
+      },
+      radius: ["25%", "50%"],
+      animation: true,
+      animationType: "scale",
+      animationEasing: "bounceOut",
+      selectedMode: "single"
+    }]
+  }
+  
+  chartInstance: any;
+  onChartInit(e: any) {
+    this.chartInstance = e;
+    console.log('on chart init:', e);
+  }
+
 }
+
+/* https://echarts.apache.org/en/option.html#title */
