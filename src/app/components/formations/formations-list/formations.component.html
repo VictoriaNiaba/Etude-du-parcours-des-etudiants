@@ -24,33 +24,27 @@
   <div class="card-body d-flex justify-content-between">
 	  <!-- ---------------------------------- -->
     <div class="left col col-lg-9">
-    <table style="width: 100%;">
-      <tbody>
-        <tr>
-          <th *ngFor="let formation of formations" class="tg-baqh">
-            <a class="btn btn-primary" routerLink="/formation/{{formation.formation_code}}">
-              {{formation.formation_code}}
-              <br />
-              {{formation.formation_name}}
-              <br />
-            </a>
-          </th>
-        </tr>
-        <tr>
-          	<td colspan="2">
-				  <div style="display: flex; justify-content: center">
-				<div class="btn btn-secondary" style="margin: 5px; width: 30px;">&lt;</div>
-				<div class="btn btn-secondary" style="margin: 5px; width: 30px;">1</div>
-				<div class="btn btn-secondary" style="margin: 5px; width: 30px;">2</div>
-				<div class="btn btn-secondary" style="margin: 5px; width: 30px;">3</div>
-				<div class="btn btn-secondary" style="margin: 5px; width: 30px;">4</div>
-				<div class="btn btn-secondary" style="margin: 5px; width: 30px;">5</div>
-				<div class="btn btn-secondary" style="margin: 5px; width: 30px;">&gt;</div>
-			</div>
-			</td>
-        </tr>
-      </tbody>
-    </table>
+    <div style="width: 100%;">
+      <div class="box">
+      <div *ngFor="let formation of formations" class="box-item">
+        <a class="btn btn-primary" routerLink="/formation/{{formation.formation_code}}">
+          <div class="formation-code">
+            {{formation.formation_code}}
+          </div>
+          <div class="formation-name">
+            {{formation.formation_name}}
+          </div>
+        </a>
+      </div>
+    </div>
+      <div class="pagination-numbers">
+        <div>PAGINATION</div>
+        <div>&nbsp;</div>
+        <div>HERE</div>
+        <div>&nbsp;</div>
+        <div>WORKS ?</div>
+      </div>
+    </div>
   </div>
 	<!-- ---------------------------------- -->
   <div class="col col-lg-3">
