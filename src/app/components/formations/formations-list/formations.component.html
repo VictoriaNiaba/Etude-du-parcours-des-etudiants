@@ -26,7 +26,7 @@
     <div class="left col col-lg-9">
     <div style="width: 100%;">
       <div class="box">
-      <div *ngFor="let formation of formations" class="box-item">
+      <div *ngFor="let formation of formations | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize" class="box-item">
         <a class="btn btn-primary" routerLink="/formation/{{formation.formation_code}}">
           <div class="formation-code">
             {{formation.formation_code}}
@@ -38,11 +38,7 @@
       </div>
     </div>
       <div class="pagination-numbers">
-        <div>PAGINATION</div>
-        <div>&nbsp;</div>
-        <div>HERE</div>
-        <div>&nbsp;</div>
-        <div>WORKS ?</div>
+        <ngb-pagination [pageSize] = "pageSize" [collectionSize]="collectionSize" [(page)]="page"></ngb-pagination>
       </div>
     </div>
   </div>

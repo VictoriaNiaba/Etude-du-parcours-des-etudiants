@@ -16,6 +16,7 @@ import { RegistrationsComponent } from './components/registrations/registrations
 import { HttpClientModule } from '@angular/common/http';
 import { FormationDetailsComponent } from './components/formations/formation-details/formation-details.component';
 import { FormationEditComponent } from './components/formations/formation-edit/formation-edit.component';
+import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -39,7 +40,9 @@ import { FormationEditComponent } from './components/formations/formation-edit/f
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts')
     }),
-    HttpClientModule
+    HttpClientModule,
+    NgbModule,
+    NgbPaginationModule
   ],
   providers: [],
   bootstrap: [AppComponent]
