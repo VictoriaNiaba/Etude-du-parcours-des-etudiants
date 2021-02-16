@@ -9,12 +9,12 @@ import { HttpClientService } from '../../services/http-client.service';
 export class AdministrationComponent implements OnInit {
   constructor(private httpClientService:HttpClientService) { }
 
-  lockCoucou = '';
   ngOnInit(): void {
   }
 
+  coucou:string;
   getCoucou() {
-    this.lockCoucou = this.httpClientService.getCoucou();
+    this.httpClientService.getCoucou().subscribe(res => {this.coucou = res.message});
   }
 
 }

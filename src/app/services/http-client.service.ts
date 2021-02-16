@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Output, SystemJsNgModuleLoader } from '@angular/core';
 import { catchError, retry } from 'rxjs/operators';
 import { User } from '../models/User';
 
@@ -15,8 +15,7 @@ import { User } from '../models/User';
 })
 export class HttpClientService {
 
-  baseUrl = "http://localhost:3000";
-  private resultTemp: any={};
+  baseUrl = "http://localhost:8080";
 
   constructor(private httpClient:HttpClient) { }
 
@@ -26,25 +25,10 @@ export class HttpClientService {
     })
   }
   
-  getCoucou():string{
-    this.httpClient.get(`${this.baseUrl}/salutations`).subscribe(res => {
-      //this.blablabla(res);
-      this.resultTemp=res
-      console.warn("RT : " + this.resultTemp.message);
-    });
-    //var tmp: string = this.resultTemp.message;
-    //console.warn("RT tmp : " + tmp);
-    //this.zzzz()
-    return this.resultTemp.message;
-  }/*
-  blablabla(blabla){
-    this.resultTemp = blabla;
-    console.warn("RT blabla : " + this.resultTemp.message);
+  getCoucou(){
+    return this.httpClient.get<any>(`${this.baseUrl}/salutations`);
   }
-  zzzz(){
-    console.warn("RT zzzzzz : " + this.resultTemp.message);
-    return this.resultTemp.message
-  }*/
+  
 
 
   login(email: string, password: string): User {
