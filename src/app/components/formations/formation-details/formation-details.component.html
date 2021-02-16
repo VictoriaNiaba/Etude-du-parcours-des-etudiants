@@ -19,7 +19,7 @@
     <div class="card-footer text-muted">
         <div class="d-flex justify-content-between">
             <a routerLink="/admin" class="btn btn-secondary">Retour</a>
-            <a *ngIf="(currentUser.role === 'ADMIN') && canEdit === true" routerLink="/formation/{{formation.formation_code}}/edit" class="btn btn-info" role="button">Modifier</a>
+            <a *ngIf="canEdit === true" routerLink="/formation/{{formation.formation_code}}/edit" class="btn btn-info" role="button">Modifier</a>
         </div>
     </div>
 </div>

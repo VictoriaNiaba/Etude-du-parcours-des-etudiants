@@ -39,7 +39,12 @@ export class EpuComponent implements OnInit {
             show: true,
             position: 'top',
             formatter: function (params) {
-              return `${params['value']}`;
+              let labelText:string = params['value'];
+              let nb2show = 15;
+              if(labelText.length < nb2show)
+                return labelText;
+              else
+                return labelText.slice(0,nb2show)+"...";
             }
           }
         },
@@ -79,11 +84,14 @@ export class EpuComponent implements OnInit {
         }],
         tooltip: {
           trigger: 'item',
-          showDelay: 0,
+          showDelay: 0.1,
           transitionDuration: 0.2,
+          show: true,
           formatter: function (params) {
-            if(params.dataType === 'node') return `Clique sur une formation<br/>pour avoir ses détails`;
-            else return "";
+            if(params.type === 'node')
+              return `${params.name}`;
+            else
+              return "";
           }
         },
         links: [{

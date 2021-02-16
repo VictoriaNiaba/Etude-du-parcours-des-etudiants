@@ -35,8 +35,7 @@
     "users": [
         {
             "email": "admin.email@email.email",
-            "password": "psw",
-            "role": "ADMIN"
+            "password": "psw"
         }
     ],
     "POST-CSV": {}

@@ -30,7 +30,7 @@
               ></ng-autocomplete>
 
               <ng-template #itemTemplate let-item>
-                <div class="d-flex flex-sm-wrap">
+                <div class="d-flex flex-sm-nowrap">
                   <!--<a [innerHTML]="item.id"></a>-->
                   <a [innerHTML]="item.name"></a>
                 </div>
@@ -60,25 +60,25 @@
               <ng-autocomplete
                 [data]="getFormation()"
                 [searchKeyword]="keyword"
-                placeholder="Je suis en ..."
+                placeholder="Je vais en ..."
                 (selected)="selectEvent($event)"
                 (inputChanged)="onChangeSearch($event)"
                 (inputFocused)="onFocused($event)"
-                [itemTemplate]="itemTemplate"
-                [notFoundTemplate]="notFoundTemplate"
+                [itemTemplate]="itemTemplate2"
+                [notFoundTemplate]="notFoundTemplate2"
               ></ng-autocomplete>
               <!--
                 historyIdentifier="getFormation()"
               -->
 
-              <ng-template #itemTemplate let-item>
-                <div class="d-flex flex-sm-wrap">
+              <ng-template #itemTemplate2 let-item>
+                <div class="d-flex flex-sm-nowrap">
                   <!--<a [innerHTML]="item.id"></a>-->
                   <a [innerHTML]="item.name"></a>
                 </div>
               </ng-template>
 
-              <ng-template #notFoundTemplate let-notFound>
+              <ng-template #notFoundTemplate2 let-notFound>
                 <div [innerHTML]="notFound"></div>
               </ng-template>
             </div>
@@ -111,7 +111,8 @@
     </div>
   </div>
   <br />
-  <div class="card text-center">
+  <!-- stats -->
+  <div class="card text-center h">
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs">
         <li class="nav-item">
