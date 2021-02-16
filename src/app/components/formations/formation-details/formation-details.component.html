@@ -1,3 +1,4 @@
+<div class="container">
 <div class="card mb-3">
     <h3 class="card-header">{{ formation.formation_code }}</h3>
     <div class="card-body">
@@ -17,7 +18,9 @@
     </div>
     <div class="card-footer text-muted">
         <div class="d-flex justify-content-between">
-        <a *ngIf="(currentUser.role === 'ADMIN') && canEdit === true" routerLink="/formation/{{formation.formation_code}}/edit" class="btn btn-info" role="button">Modifier</a>
+            <a routerLink="/admin" class="btn btn-secondary">Retour</a>
+            <a *ngIf="(currentUser.role === 'ADMIN') && canEdit === true" routerLink="/formation/{{formation.formation_code}}/edit" class="btn btn-info" role="button">Modifier</a>
         </div>
     </div>
+</div>
 </div>
