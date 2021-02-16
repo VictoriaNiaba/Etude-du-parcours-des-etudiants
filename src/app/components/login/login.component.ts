@@ -51,4 +51,11 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  autoLogin() {
+    this.signInForm = this.formBuilder.group({
+      email: ['admin.email@email.email',[Validators.email,Validators.required]],
+      password: ['pwd',Validators.required]
+    });
+  }
+
 }
