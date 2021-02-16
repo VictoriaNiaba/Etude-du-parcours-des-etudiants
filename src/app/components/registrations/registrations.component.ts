@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RegistrationService } from 'src/app/services/registration.service';
+import { UploadService } from 'src/app/services/upload.service';
 
 @Component({
   selector: 'app-registrations',
@@ -8,9 +9,10 @@ import { RegistrationService } from 'src/app/services/registration.service';
 })
 export class RegistrationsComponent implements OnInit {
 
-  constructor(private registrationService: RegistrationService) { }
+  constructor(private registrationService: RegistrationService, private uploadService: UploadService) { }
 
   totalRegistration = 0;
+  fileToUpload: File = null;
 
   ngOnInit(): void {
     this.totalRegistration = this.registrationService.getAllRegistrations();
@@ -26,6 +28,18 @@ export class RegistrationsComponent implements OnInit {
 
   getYearTimeStamp(year:number) {
     return this.registrationService.getTimestampOfRegistrationByYear(year);
+  }
+
+  handleFileInput(files: FileList) {
+    this.fileToUpload = files.item(0);
+  }
+
+  uploadFileToService() {
+    this.uploadService.postFile(this.fileToUpload).subscribe(data => {
+      // do something, if upload success
+      }, error => {
+        console.log(error);
+      });
   }
 
 }

@@ -3,7 +3,7 @@
 
     
     <a class="btn btn-success" (click)="getCoucou()">Click me</a>
-    <p *ngIf="responseTemp != ''" class="bg-success" style="text-align: center; font-size: 50px; padding: 20px;">{{responseTemp}}</p>
+    <p *ngIf="responseTemp != ''" class="bg-success" style="text-align: center; font-size: 50px; padding: 20px;">{{responseTemp.message}}</p>
 
 
     <app-registrations></app-registrations>
