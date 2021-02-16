@@ -49,14 +49,13 @@
         Importer une année de formations
       </div>
       <div class="card-body" style="display: flex; flex-direction: column;">
-        <a class="btn btn-info" href="#">
+        <label class="btn btn-info">
           Charger un CSV de formation.<br/>
+          <input type="file" id="file" (change)="handleFileInput($event.target.files)" style="display:none" onchange="$('#upload-file-infoF').text(this.files[0].name)">
           <i class="fas fa-upload"></i>
-        </a>
-        <div class="text-muted text-medium">
-          ---
-        </div>
-        <a class="btn btn-success">
+        </label>
+        <span class="label label-info text-muted text-medium" id="upload-file-infoF"> --- </span>
+        <a class="btn btn-success" (click)="uploadFileToService()">
           Valider
         </a>
       </div>

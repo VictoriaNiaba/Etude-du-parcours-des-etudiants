@@ -19,15 +19,15 @@ const routes: Routes = [
     data: { roles: [Role.Admin]}
   },
   {
-    path: 'formation/:id', component: FormationDetailsComponent,
-  },
-  {
-    path: 'formation/:id/edit', component: FormationEditComponent,
+    path: 'formation/new',component: FormationEditComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Admin]}
   },
   {
-    path: 'formation/new',component: FormationEditComponent,
+    path: 'formation/:id', component: FormationDetailsComponent,
+  },
+  {
+    path: 'formation/:id/edit', component: FormationEditComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Admin]}
   },

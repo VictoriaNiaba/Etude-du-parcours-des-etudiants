@@ -26,21 +26,19 @@ export class FormationService {
     }
   }
 
-  add(formation: Formation) {
-    if(this.getByCode(formation.formation_code) == null) {
-      this.formations.push(formation);
-      return true;
-    }
-    return false;
+  create(params): string {
+    //FORMATIONS.push(new Formation(params.formation_code, params.formation_name, params.description, params.type, params.url, []));
+    //return params.code_formation;
+    return "";
   }
 
-  update(formation: Formation) {
-    let formation_tmp = this.getByCode(formation.formation_code);
-    if(formation_tmp != null) {
-        this.formations[this.formations.indexOf(formation_tmp)] = formation;
-      return [true, `Formation updated`];
-    }
-    return [false, "This formation doesn't exist, update failed"];
+  update(code: string, params) {
+    let index = FORMATIONS.findIndex((f => f.formation_code === code));
+    FORMATIONS[index].formation_code = params.formation_code;
+    FORMATIONS[index].formation_name = params.formation_name;
+    FORMATIONS[index].description = params.description;
+    FORMATIONS[index].type = params.type;
+    FORMATIONS[index].url = params.url;
   }
 
   delete(formation: Formation) {

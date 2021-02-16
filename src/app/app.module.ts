@@ -18,7 +18,7 @@ import { FormationDetailsComponent } from './components/formations/formation-det
 import { FormationEditComponent } from './components/formations/formation-edit/formation-edit.component';
 import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
-
+import { StepsComponent } from './components/steps/steps.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +31,8 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
     FormationsComponent,
     RegistrationsComponent,
     FormationDetailsComponent,
-    FormationEditComponent
+    FormationEditComponent,
+    StepsComponent
   ],
   imports: [
     BrowserModule,
