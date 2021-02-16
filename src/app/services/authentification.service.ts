@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../models/User';
-import { UserService } from './user.service';
+import { HttpClientService } from './http-client.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,19 +9,25 @@ import { UserService } from './user.service';
 export class AuthentificationService {
   public currentUser: User;
 
-  constructor(private user: UserService, private router: Router) {
+  constructor(private httpClientService: HttpClientService, private router: Router) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if(this.currentUser) console.log(this.currentUser.lastName);
+    if(this.currentUser) console.log(this.currentUser.email);
   }
 
   login(email: string, password: string) {
-    let tmp: User = this.user.getByEmail(email);
-    if(tmp == null || tmp.password != password) return null;
+    
+    let user:User = null;
+    this.httpClientService.login(email, password)
+      .subscribe( data => {
+        user = data.result;
+      });
+      alert(user.email);
+    if(user === null) return null;
     console.log("Auth");
-    localStorage.setItem('currentUser', JSON.stringify(tmp));
+    localStorage.setItem('currentUser', JSON.stringify(user));
     //todo: remove ??
     window.location.reload();
-    return tmp;
+    return user.email;
   }
 
   logout() {
