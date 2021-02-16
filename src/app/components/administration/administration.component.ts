@@ -7,24 +7,14 @@ import { HttpClientService } from '../../services/http-client.service';
   styleUrls: ['./administration.component.scss']
 })
 export class AdministrationComponent implements OnInit {
-
   constructor(private httpClientService:HttpClientService) { }
 
+  lockCoucou = '';
   ngOnInit(): void {
   }
 
-  responseTemp = "";
-
   getCoucou() {
-    this.httpClientService.getCoucou().subscribe(
-      response =>this.handleSuccessfulResponse(response),
-     );
-     this.handleSuccessfulResponse("Coucou works (mock)");
-  }
-
-  handleSuccessfulResponse(response)
-  {
-      this.responseTemp=response;
+    this.lockCoucou = this.httpClientService.getCoucou();
   }
 
 }

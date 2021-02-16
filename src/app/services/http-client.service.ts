@@ -15,7 +15,8 @@ import { User } from '../models/User';
 })
 export class HttpClientService {
 
-  private baseUrl = "http://localhost:8080";
+  baseUrl = "http://localhost:3000";
+  private resultTemp: any={};
 
   constructor(private httpClient:HttpClient) { }
 
@@ -23,13 +24,28 @@ export class HttpClientService {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
     })
-  }  
-  
-  getCoucou()
-  {
-    console.log("test get coucou");
-    return this.httpClient.get<string>(this.baseUrl+"/salutations");
   }
+  
+  getCoucou():string{
+    this.httpClient.get(`${this.baseUrl}/salutations`).subscribe(res => {
+      //this.blablabla(res);
+      this.resultTemp=res
+      console.warn("RT : " + this.resultTemp.message);
+    });
+    //var tmp: string = this.resultTemp.message;
+    //console.warn("RT tmp : " + tmp);
+    //this.zzzz()
+    return this.resultTemp.message;
+  }/*
+  blablabla(blabla){
+    this.resultTemp = blabla;
+    console.warn("RT blabla : " + this.resultTemp.message);
+  }
+  zzzz(){
+    console.warn("RT zzzzzz : " + this.resultTemp.message);
+    return this.resultTemp.message
+  }*/
+
 
   login(email: string, password: string): User {
     let result: any = {};
