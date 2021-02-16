@@ -9,10 +9,9 @@ import { Observable } from 'rxjs';
 export class UploadService {
   constructor(private httpClient: HttpClient) { }
 
-  postFile(fileToUpload: File): Observable<boolean> {
+  postFile(fileToUpload: File, endpoint: string): Observable<boolean> {
     let h = new HttpHeaders();
     h.append('Accept', 'application/json, text/plain,');
-    const endpoint = 'http://localhost:8080/registrations';
     const formData: FormData = new FormData();
     formData.append('fichier', fileToUpload, fileToUpload.name);
     console.log(fileToUpload.name);
