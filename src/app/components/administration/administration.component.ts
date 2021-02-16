@@ -12,9 +12,9 @@ export class AdministrationComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  coucou:string;
-  getCoucou() {
-    this.httpClientService.getCoucou().subscribe(res => {this.coucou = res.message});
+  salutation:string;
+  getHello() {
+    this.httpClientService.getHello().subscribe(res => {this.salutation = res.message});
   }
 
 }

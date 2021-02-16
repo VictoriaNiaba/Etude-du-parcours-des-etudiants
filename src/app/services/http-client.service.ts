@@ -15,7 +15,7 @@ import { User } from '../models/User';
 })
 export class HttpClientService {
 
-  baseUrl = "http://localhost:8080";
+  baseUrl = "http://localhost:3000";
 
   constructor(private httpClient:HttpClient) { }
 
@@ -25,7 +25,7 @@ export class HttpClientService {
     })
   }
   
-  getCoucou(){
+  getHello(){
     return this.httpClient.get<any>(`${this.baseUrl}/salutations`);
   }
   
