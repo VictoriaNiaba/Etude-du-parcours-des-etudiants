@@ -17,6 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormationDetailsComponent } from './components/formations/formation-details/formation-details.component';
 import { FormationEditComponent } from './components/formations/formation-edit/formation-edit.component';
 import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
     }),
     HttpClientModule,
     NgbModule,
-    NgbPaginationModule
+    NgbPaginationModule,
+    AutocompleteLibModule
   ],
   providers: [],
   bootstrap: [AppComponent]

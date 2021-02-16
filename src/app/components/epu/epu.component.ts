@@ -181,6 +181,41 @@ export class EpuComponent implements OnInit {
     console.log('on chart init:', e);
   }
 
+
+  /**/
+  keyword = 'name';
+  getFormation() {
+    return [
+        {
+        id: 1,
+        name: 'Bac S'
+        },
+        {
+        id: 2,
+        name: 'Master informatique'
+        },
+        {
+        id: 3,
+        name: 'BTS SNIR'
+        },
+        {
+        id: 4,
+        name: 'Licence Informatique'
+        }
+    ];
+  }
+
+  selectEvent(event) {
+    console.info(`Selection : ${event.name}`);
+  }
+  onChangeSearch(event) {
+    console.info(`Change : ${event.name}`);
+  }
+  onFocused(event) {
+    console.info(`Focus : ${event.name}`);
+  }
+
+
 }
 
 /* https://echarts.apache.org/en/option.html#title */
