@@ -36,7 +36,7 @@ export class RegistrationsComponent implements OnInit {
 
   uploadFileToService() {
     this.uploadService.postFile(this.fileToUpload).subscribe(data => {
-      // do something, if upload success
+
       }, error => {
         console.log(error);
       });

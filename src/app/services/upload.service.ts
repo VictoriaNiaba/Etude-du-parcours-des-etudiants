@@ -1,20 +1,35 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadService {
-  httpClient: any;
+  constructor(private httpClient: HttpClient) { }
 
-  constructor() { }
-  //https://stackoverflow.com/questions/47936183/angular-file-upload
   postFile(fileToUpload: File): Observable<boolean> {
-    const endpoint = 'your-destination-url';
+    let h = new HttpHeaders();
+    h.append('Accept', 'application/json, text/plain,');
+    const endpoint = 'http://localhost:8080/registrations';
     const formData: FormData = new FormData();
-    formData.append('fileKey', fileToUpload, fileToUpload.name);
+    formData.append('fichier', fileToUpload, fileToUpload.name);
+    console.log(fileToUpload.name);
+    console.log(fileToUpload);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const text = reader.result.toString().trim();
+        console.log(text);
+    }
+    reader.readAsText(fileToUpload);
+    console.log(formData);
     return this.httpClient
-      .post(endpoint, formData, { headers: "text/csv" })
-      .map(() => { return true; });
+      .post(endpoint, formData, { headers: h })
+      .pipe(map(() => { return true; }));
+  }
+
+  handleError(e: any) {
+    throw new Error('Method not implemented.');
   }
 }
