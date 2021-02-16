@@ -10,7 +10,7 @@ import { UploadService } from 'src/app/services/upload.service';
 })
 export class FormationsComponent implements OnInit {
   formations: Array<Formation>;
-  pageSize = 3;
+  pageSize = 10;
   page: number;
   collectionSize: number;
   fileToUpload: File = null;

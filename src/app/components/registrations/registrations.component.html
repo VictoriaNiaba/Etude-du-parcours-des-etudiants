@@ -42,7 +42,7 @@
         <div class="card-body" style="display: flex; flex-direction: column;">
           <label class="btn btn-info">
             Charger un CSV d'inscription.<br/>
-            <input type="file" id="file" (change)="handleFileInput($event.target.files)" style="display:none" onchange="$('#upload-file-info').text(this.files[0].name)">
+            <input type="file" accept=".csv, text/csv" id="file" (change)="handleFileInput($event.target.files)" style="display:none" onchange="$('#upload-file-info').text(this.files[0].name)">
             <i class="fas fa-upload"></i>
           </label>
           <span class="label label-info text-muted text-medium" id="upload-file-info"> --- </span>

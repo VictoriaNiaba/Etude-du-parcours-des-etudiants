@@ -7,57 +7,91 @@
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/formation/new">Ajouter une formation</a>
+        <a class="nav-link" routerLink="/formation/new">
+          Ajouter une formation
+        </a>
       </li>
-	  <li class="nav-item ml-auto searchInput">
-      <div class="col-auto">
-        <div class="input-group">
-          <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Rechercher">
-          <div class="input-group-prepend">
-          <div class="input-group-text"><i class="fas fa-search"></i></div>
+      <li class="nav-item ml-auto searchInput">
+        <div class="col-auto">
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              id="inlineFormInputGroup"
+              placeholder="Rechercher"
+            />
+            <div class="input-group-prepend">
+              <div class="input-group-text"><i class="fas fa-search"></i></div>
+            </div>
           </div>
         </div>
-		  </div>
-	  </li>
+      </li>
     </ul>
   </div>
   <div class="card-body d-flex justify-content-between">
-	  <!-- ---------------------------------- -->
+    <!-- ---------------------------------- -->
     <div class="left col col-lg-9">
-    <div style="width: 100%;">
-      <div class="box">
-      <div *ngFor="let formation of formations | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize" class="box-item">
-        <a class="btn btn-primary" routerLink="/formation/{{formation.formation_code}}">
-          <div class="formation-code">
-            {{formation.formation_code}}
+      <div style="width: 100%;">
+        <div class="box">
+          <div
+            *ngFor="
+              let formation of formations
+                | slice: (page - 1) * pageSize:(page - 1) * pageSize + pageSize
+            "
+            class="box-item"
+          >
+            <a
+              class="btn btn-primary"
+              routerLink="/formation/{{ formation.formation_code }}"
+            >
+              <div class="formation-code">
+                {{ formation.formation_code }}
+              </div>
+              <div class="formation-name">
+                {{ formation.formation_name }}
+              </div>
+            </a>
           </div>
-          <div class="formation-name">
-            {{formation.formation_name}}
-          </div>
-        </a>
+        </div>
+        <div class="pagination-numbers">
+          <ngb-pagination
+            [pageSize]="pageSize"
+            [collectionSize]="collectionSize"
+            [(page)]="page"
+          ></ngb-pagination>
+        </div>
       </div>
     </div>
-      <div class="pagination-numbers">
-        <ngb-pagination [pageSize] = "pageSize" [collectionSize]="collectionSize" [(page)]="page"></ngb-pagination>
-      </div>
-    </div>
-  </div>
-	<!-- ---------------------------------- -->
-  <div class="col col-lg-3">
-    <div class="card btn-upload">
-      <div class="card-header">
-        Importer une année de formations
-      </div>
-      <div class="card-body" style="display: flex; flex-direction: column;">
-        <label class="btn btn-info">
-          Charger un CSV de formation.<br/>
-          <input type="file" id="file" (change)="handleFileInput($event.target.files)" style="display:none" onchange="$('#upload-file-infoF').text(this.files[0].name)">
-          <i class="fas fa-upload"></i>
-        </label>
-        <span class="label label-info text-muted text-medium" id="upload-file-infoF"> --- </span>
-        <a class="btn btn-success" (click)="uploadFileToService()">
-          Valider
-        </a>
+    <!-- ---------------------------------- -->
+    <div class="col col-lg-3">
+      <div class="card btn-upload">
+        <div class="card-header">
+          Importer une année de formations
+        </div>
+        <div class="card-body" style="display: flex; flex-direction: column;">
+          <label class="btn btn-info">
+            Charger un CSV de formation.
+            <br />
+            <input
+              type="file"
+              id="file"
+              accept=".csv, text/csv"
+              (change)="handleFileInput($event.target.files)"
+              style="display: none;"
+              onchange="$('#upload-file-info-Formation').text(this.files[0].name)"
+            />
+            <i class="fas fa-upload"></i>
+          </label>
+          <span
+            class="label label-info text-muted text-medium"
+            id="upload-file-info-Formation"
+          >
+            ---
+          </span>
+          <a class="btn btn-success" (click)="uploadFileToService()">
+            Valider
+          </a>
+        </div>
       </div>
     </div>
   </div>
