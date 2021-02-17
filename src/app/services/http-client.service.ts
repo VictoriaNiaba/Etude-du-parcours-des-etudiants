@@ -15,7 +15,14 @@ import { User } from '../models/User';
 })
 export class HttpClientService {
 
+  //*
+  //json_server
   baseUrl = "http://localhost:3000";
+  /*/
+  //spring server
+  baseUrl = "http://localhost:8080";
+  //*/
+  
 
   constructor(private httpClient:HttpClient) { }
 
@@ -29,13 +36,12 @@ export class HttpClientService {
     return this.httpClient.get<any>(`${this.baseUrl}/salutations`);
   }
   
+  login(email: string, password: string) {
+    return this.httpClient.get<User>(`${this.baseUrl}/users?email=${email}&password=${password}`);
+  }
 
-
-  login(email: string, password: string): User {
-    let result: any = {};
-    this.httpClient.get<User>(`${this.baseUrl}/users?email=${email}&password=${password}`).pipe(retry(1), catchError(null)).subscribe((res: {}) => {
-      result = res;
-    });
-    return result;
+  //"year": 2000, "nb_registrations": 8001, "timeStamp": "01/01/2000" 
+  getRegistrations() {
+    return this.httpClient.get<any>(`${this.baseUrl}/registrations`);
   }
 }

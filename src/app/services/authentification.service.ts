@@ -15,14 +15,17 @@ export class AuthentificationService {
   }
 
   login(email: string, password: string) {
-    let user = this.httpClientService.login(email, password);
-    console.log(user.email);
-    if(user.email === null) return null;
-    console.log("Auth");
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    //todo: remove ??
-    window.location.reload();
-    return user;
+    this.httpClientService.login(email, password).subscribe(res => {
+      let user: User;
+      user = res;
+      if(user.email === null) return null;
+      console.log("Auth");
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      window.location.href = 'admin';
+      //this.router.navigate(['admin']);
+      //window.location.reload();
+      return user;
+    });
   }
 
   logout() {

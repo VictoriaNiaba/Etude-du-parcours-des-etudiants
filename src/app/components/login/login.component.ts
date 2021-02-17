@@ -10,8 +10,6 @@ import { AuthentificationService } from '../../services/authentification.service
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
-  message: string;
   signInForm: FormGroup;
   submitted = false;
 
@@ -36,19 +34,17 @@ export class LoginComponent implements OnInit {
   get formControl() { return this.signInForm.controls; }
 
   onSubmit() {
+    //formulaire
     this.submitted = true;
     if (this.signInForm.invalid) {
         return;
     }
+    //todo: delete theses 2 lines :)
     const email = this.signInForm.value['email'];
     const psw = this.signInForm.value['password'];
-    console.log(`${email}, ${psw}`);
-    let result: User = this.AuthentificationService.login(this.signInForm.value['email'], this.signInForm.value['password']);
-    if(result == null) this.message = ('Identifiants incorrect');
-    else {
-      this.message = null;
-      this.router.navigate(['admin']);
-    }
+
+    //login hhtpclient
+    this.AuthentificationService.login(this.signInForm.value['email'], this.signInForm.value['password']);
   }
 
   autoLogin() {

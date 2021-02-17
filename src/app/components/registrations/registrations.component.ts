@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RegistrationService } from 'src/app/services/registration.service';
+import { HttpClientService } from 'src/app/services/http-client.service';
 import { UploadService } from 'src/app/services/upload.service';
 
 @Component({
@@ -9,25 +9,25 @@ import { UploadService } from 'src/app/services/upload.service';
 })
 export class RegistrationsComponent implements OnInit {
 
-  constructor(private registrationService: RegistrationService, private uploadService: UploadService) { }
+  constructor(private uploadService: UploadService, private httpClient: HttpClientService) { }
 
   totalRegistration = 0;
+  registrations: any;
+
+
+
   fileToUpload: File = null;
 
   ngOnInit(): void {
-    this.totalRegistration = this.registrationService.getAllRegistrations();
-  }
-
-  getNumberByYear(year:number):number {
-    return this.registrationService.getNumberOfRegistrationsByYear(year);
-  }
-
-  getYears() {
-    return this.registrationService.getAllYearAvailable();
-  }
-
-  getYearTimeStamp(year:number) {
-    return this.registrationService.getTimestampOfRegistrationByYear(year);
+    this.httpClient.getRegistrations().subscribe(res => {
+      console.info(res);
+      this.registrations = res;
+      this.totalRegistration = 0;
+      this.registrations.forEach(registrations => {
+        this.totalRegistration += registrations['nb_registrations']
+      });
+      this.totalRegistration = 10000; // ;) ;) ;) ;)
+    });
   }
 
   handleFileInput(files: FileList) {
@@ -40,6 +40,8 @@ export class RegistrationsComponent implements OnInit {
       }, error => {
         console.log(error);
       });
+
+      this.ngOnInit(); //reload
   }
 
 }
