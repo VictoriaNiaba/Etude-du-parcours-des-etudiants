@@ -98,7 +98,10 @@
     </div>
     <div>
       <!-- Affichage simple -->
-      <div class="simplePathsDisplay" *ngFor="let path of paths">
+      <div class="btn btn-primary">Total : {{totalStudentPaths}}</div>
+
+      <div class="simplePathsDisplay" *ngFor="let path of paths; let ind = index">
+        <div class="text-danger">{{localStudentPaths[ind]}} :: {{localStudentPaths[ind]*100/totalStudentPaths | number:'1.0-1'}}%</div> &nbsp;
         <div class="text-warning">{{getFirstStep()}}</div>
         <div *ngFor="let step of path['steps']; let index = index">
           <div class="text-primary" style="margin: 0px 10px; font-size: 10px;">

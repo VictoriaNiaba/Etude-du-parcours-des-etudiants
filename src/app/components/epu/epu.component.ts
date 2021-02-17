@@ -221,13 +221,26 @@ export class EpuComponent implements OnInit {
 
   /* */
   paths: any;
+  totalStudentPaths: number;
+  localStudentPaths = [];
   firstStep: string = null;
   lastStep: string = "PRSIN5AI";
   getFirstStep() {
     return this.firstStep ? this.firstStep : "POST-BAC";
   }
   getPaths(){
-    this.httpClient.getPaths(this.firstStep, this.lastStep).subscribe(res => this.paths = res);
+    this.httpClient.getPaths(this.firstStep, this.lastStep).subscribe(res => {
+      this.paths = res;
+      this.totalStudentPaths = 0;
+      this.paths.forEach(path => {
+        let localTemp = 0;
+        path['registered'].forEach(stepRegistrationNumber => {
+          localTemp += stepRegistrationNumber;
+          this.totalStudentPaths += stepRegistrationNumber;
+        });
+        this.localStudentPaths.push(localTemp); //moyenne : localTemp/path['registered'].length
+      });
+    });
   }
 
 }
