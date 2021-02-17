@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClientService } from 'src/app/services/http-client.service';
 
 @Component({
   selector: 'app-epu',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EpuComponent implements OnInit {
 
-  constructor() { }
+  constructor(private httpClient: HttpClientService) { }
 
   ngOnInit(): void {
+    this.getPaths();
   }
 
   /* https://echarts.apache.org/en/api.html#echartsInstance.on 
@@ -134,13 +136,6 @@ export class EpuComponent implements OnInit {
     ]
   };
 
-  
-
-
-
-
-
-
 
   /*stats*/
   options_stats_2 = {
@@ -223,6 +218,17 @@ export class EpuComponent implements OnInit {
     console.info(`Focus : ${event.name}`);
   }
 
+
+  /* */
+  paths: any;
+  firstStep: string = null;
+  lastStep: string = "PRSIN5AI";
+  getFirstStep() {
+    return this.firstStep ? this.firstStep : "POST-BAC";
+  }
+  getPaths(){
+    this.httpClient.getPaths(this.firstStep, this.lastStep).subscribe(res => this.paths = res);
+  }
 
 }
 

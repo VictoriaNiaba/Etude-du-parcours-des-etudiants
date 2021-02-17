@@ -14,8 +14,6 @@ export class RegistrationsComponent implements OnInit {
   totalRegistration = 0;
   registrations: any;
 
-
-
   fileToUpload: File = null;
 
   ngOnInit(): void {

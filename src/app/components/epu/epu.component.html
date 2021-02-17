@@ -88,13 +88,28 @@
         </li>
       </ul>
     </div>
-    <div class="chart">
+    <div class="chart h">
       <div
         echarts
         id="EPU-chart"
         [options]="options"
         (chartClick)="chartClicked($event)"
       ></div>
+    </div>
+    <div>
+      <!-- Affichage simple -->
+      <div class="simplePathsDisplay" *ngFor="let path of paths">
+        <div class="text-warning">{{getFirstStep()}}</div>
+        <div *ngFor="let step of path['steps']; let index = index">
+          <div class="text-primary" style="margin: 0px 10px; font-size: 10px;">
+            <i class="fas fa-minus" style="align-self: center;"></i>
+            <div style="align-self: center;">{{path['registered'][index]}}</div>
+            <i class="fas fa-arrow-right" style="align-self: center;"></i>
+          </div>
+          <div class="text-info" style="align-self: center;">{{path['steps'][index]}}</div>
+        </div>
+      </div>
+      <!-- fin de l'affichage simple -->
     </div>
     <div class="card-footer">
       <div class="slidecontainer">

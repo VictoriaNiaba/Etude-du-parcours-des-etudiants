@@ -41,5 +41,19 @@
     "POST-CSV": {},
     "salutations": {
         "message": "salutations le monde (mock)"
-    }
+    },
+    "paths": [
+        {
+            "steps": ["MESSIN-PRSIN5AA","MESSIN-PRSIN5AB","MESSIN-PRSIN5AC","MESSIN-PRSIN5AI"],
+            "registered": [300,333,330,303]
+        },
+        {
+            "steps": ["MESSIN-PRSIN5AE","MESSIN-PRSIN5AD","MESSIN-PRSIN5AC","MESSIN-PRSIN5AF","MESSIN-PRSIN5AI"],
+            "registered": [200,222,202,220,200]
+        },
+        {
+            "steps": ["MESSIN-PRSIN5AD","MESSIN-PRSIN5AC","MESSIN-PRSIN5AG","MESSIN-PRSIN5AI"],
+            "registered": [11,10,11,10]
+        }
+    ]
 }

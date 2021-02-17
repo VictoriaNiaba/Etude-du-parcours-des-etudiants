@@ -136,3 +136,7 @@
     cursor: pointer; /* Cursor on hover */
   }
 
+.simplePathsDisplay, .simplePathsDisplay div {
+ display: flex;
+ flex-wrap: nowrap;
+}
