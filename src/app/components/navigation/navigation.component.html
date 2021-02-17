@@ -35,8 +35,8 @@
           aria-haspopup="true"
           aria-expanded="false" >
           <span (mouseover)="changeText=true" (mouseout)="changeText=false">
-            <span *ngIf="!changeText">Liens pour les devs 🙂</span>
-            <span *ngIf="changeText">Liens pour les devs 😝</span>
+            <span *ngIf="!changeText">Liens pour les devs<span class="h">🙂</span></span>
+            <span *ngIf="changeText">Liens pour les devs<span class="h">😝</span></span>
           </span>
         </a>
         <div class="dropdown-menu">

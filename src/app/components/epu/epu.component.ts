@@ -105,7 +105,7 @@ export class EpuComponent implements OnInit {
           },
           lineStyle: {
             normal: {
-              width: 5,
+              width: 2,
               curveness: 0.2
             }
           }
@@ -113,7 +113,7 @@ export class EpuComponent implements OnInit {
           source: 'Node 2',
           target: 'Node 3',
           lineStyle: {
-            normal: { width: 5, curveness: -0.2 }
+            normal: { width: 2, curveness: -0.2 }
           }
         }, {
           source: 'Node 4',
