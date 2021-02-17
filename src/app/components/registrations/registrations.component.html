@@ -28,7 +28,7 @@
             <tr *ngFor="let item of registrations">
               <td>{{item['year']}}</td>
               <td>{{ item['timeStamp'] | date:'dd/MM/yyyy'  }}</td>
-              <td>1000<!--{{ item['nb_registrations'] }}--></td> <!-- ;) ;) ;) -->
+              <td>{{ item['nb_registrations'] }}</td>
             </tr>
         </tbody>
       </table>

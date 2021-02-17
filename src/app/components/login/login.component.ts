@@ -39,12 +39,11 @@ export class LoginComponent implements OnInit {
     if (this.signInForm.invalid) {
         return;
     }
-    //todo: delete theses 2 lines :)
     const email = this.signInForm.value['email'];
     const psw = this.signInForm.value['password'];
 
     //login hhtpclient
-    this.AuthentificationService.login(this.signInForm.value['email'], this.signInForm.value['password']);
+    this.AuthentificationService.login(email, psw);
   }
 
   autoLogin() {

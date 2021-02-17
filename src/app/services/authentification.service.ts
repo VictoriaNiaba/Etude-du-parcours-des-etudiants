@@ -22,8 +22,6 @@ export class AuthentificationService {
       console.log("Auth");
       localStorage.setItem('currentUser', JSON.stringify(user));
       window.location.href = 'admin';
-      //this.router.navigate(['admin']);
-      //window.location.reload();
       return user;
     });
   }
