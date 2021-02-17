@@ -15,7 +15,8 @@ import { User } from '../models/User';
 })
 export class HttpClientService {
 
-  //*
+  //ajouter/retirer un / à la ligne suivante pour switch
+  /*
   //json_server
   baseUrl = "http://localhost:3000";
   /*/
@@ -37,11 +38,12 @@ export class HttpClientService {
   }
   
   login(email: string, password: string) {
-    return this.httpClient.get<User>(`${this.baseUrl}/users?email=${email}&password=${password}`);
+    //return this.httpClient.get<User>(`${this.baseUrl}/users?email=${email}&password=${password}`);
+    return this.httpClient.get<User>(`http://localhost:3000/users?email=${email}&password=${password}`); //passage via mock car non codé !
   }
 
-  //"year": 2000, "nb_registrations": 8001, "timeStamp": "01/01/2000" 
   getRegistrations() {
-    return this.httpClient.get<any>(`${this.baseUrl}/registrations`);
+    //return this.httpClient.get<any>(`${this.baseUrl}/registrations`);
+    return this.httpClient.get<any>(`http://localhost:3000/registrations`);//passage via mock car non codé !
   }
 }
