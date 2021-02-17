@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Output, SystemJsNgModuleLoader } from '@angular/core';
 import { catchError, retry } from 'rxjs/operators';
+import { Formation } from '../models/formation';
 import { User } from '../models/User';
 
 /*
@@ -49,5 +50,17 @@ export class HttpClientService {
 
   getPaths(firstStep: string, lastStep: string) {
     return this.httpClient.get<any>('http://localhost:3000/paths');
+  }
+
+  getSteps(){
+    return this.httpClient.get<any>('http://localhost:3000/steps');
+  }
+
+  getFormations(){
+    return this.httpClient.get<Array<Formation>>('http://localhost:3000/formations');
+  }
+
+  getFormationByCode(code: string){
+    return this.httpClient.get<Formation>(`http://localhost:3000/formations?formation_code=${code}`);
   }
 }

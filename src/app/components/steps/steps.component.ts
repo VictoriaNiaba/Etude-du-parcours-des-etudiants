@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { STEPS } from 'src/app/mock/STEPS';
 import { Step } from 'src/app/models/Step';
+import { HttpClientService } from 'src/app/services/http-client.service';
 import { UploadService } from 'src/app/services/upload.service';
 
 @Component({
@@ -15,12 +16,15 @@ export class StepsComponent implements OnInit {
   page: number;
   collectionSize: number;
 
-  constructor(private uploadService: UploadService) { }
+  constructor(private uploadService: UploadService, private httpClientService: HttpClientService) { }
 
   ngOnInit(): void {
-    this.steps = STEPS;
-    this.collectionSize = this.steps.length;
-    this.page = this.collectionSize/25;
+    this.httpClientService.getSteps().subscribe(res => { 
+      this.steps=res;
+      console.log(this.steps)
+      this.collectionSize = this.steps.length;
+      this.page = this.collectionSize/25;
+    });
   }
 
   handleFileInput(files: FileList) {
