@@ -23,7 +23,7 @@ export class FormationDetailsComponent implements OnInit {
     //this.formation = this.formationService.getByCode(this.route.snapshot.paramMap.get('id'));
     this.httpClientService.getFormationByCode(this.route.snapshot.paramMap.get('id')).subscribe(res => { 
       this.formation=res[0];
-      console.log(this.formation)
+      console.log("Formation : ",this.formation)
     });
     this.canEdit=this.setEdit();
     this.currentUser = this.authenticationService.currentUser;

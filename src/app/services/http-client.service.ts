@@ -62,5 +62,6 @@ export class HttpClientService {
 
   getFormationByCode(code: string){
     return this.httpClient.get<Formation>(`http://localhost:3000/formations?formation_code=${code}`);
+    //return this.httpClient.get<Formation>(`http://localhost:3000/formations?formation_code=${code}`);
   }
 }

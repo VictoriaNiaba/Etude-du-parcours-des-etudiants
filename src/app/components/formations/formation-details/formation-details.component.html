@@ -1,5 +1,6 @@
 <div class="container">
-    <div class="card mb-3">
+    <!-- formation n'était pas défini dans le contexte donc null, un formation.formation_code par exemple ne fonctionnait pas... #payeTonTypeScript ... du coup j'ai ngIf :) -->
+    <div *ngIf="formation" class="card mb-3">
         <h3 class="card-header">{{ formation.formation_code }}</h3>
         <div class="card-body">
             <ul class="list-group list-group-flush">
@@ -7,14 +8,20 @@
                 <li class="list-group-item">Intitulé : {{ formation.formation_name }}</li>
                 <li class="list-group-item">Type : {{ formation.type }}</li>
                 <li class="list-group-item">Description : {{ formation.description }}</li>
-                <li class="list-group-item">URL : <a href="{{ formation.url }}">{{ formation.url }}</a></li>
+                <!-- On redirige vers localhost:4200/www.google.com , il fallait ajouter " '//' + " pour ne plus être local -->
+                <li class="list-group-item">URL : <a [attr.href]="'//' + formation.url" target="_blank" >{{ formation.url }}</a></li>
                 <li class="list-group-item">Date d'Ajout : {{ formation.add_date }}</li>
                 <li class="list-group-item">Date de dernière Modification : {{ formation.last_modification }}</li>
             </ul>
             <br>
             <h5>Liste des Etapes</h5>
-            <ul class="list-group list-group-flush">
-            </ul>
+            <div class="d-flex flex-wrap">
+                <!-- Do what you want to do -->
+                <a *ngFor="let step of formation.steps" [attr.href]="'#' + step"
+                class="btn btn-outline-primary" style="margin: 1px;">
+                    {{step}}
+                </a>
+            </div>
         </div>
         <div class="card-footer text-muted">
             <div class="d-flex justify-content-between">
