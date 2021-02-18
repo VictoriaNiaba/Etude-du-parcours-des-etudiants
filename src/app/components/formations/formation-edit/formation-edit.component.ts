@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Formation } from 'src/app/models/formation';
+import { Step } from 'src/app/models/Step';
 import { HttpClientService } from 'src/app/services/http-client.service';
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-formation-edit',
@@ -15,6 +17,8 @@ export class FormationEditComponent implements OnInit {
   editForm: FormGroup;
   isAddMode: Boolean;
   submitted = false;
+  steps: Array<Step> = [];
+  stepsOfFormation: Array<Step> = [];
   id: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private httpClientService: HttpClientService) { }
@@ -30,10 +34,25 @@ export class FormationEditComponent implements OnInit {
       type: ['', [Validators.required]],
       url: ['', [Validators.required]],
     });
+    this.httpClientService.getSteps().subscribe(res=>{
+      this.steps = res;
+    });
     if (!this.isAddMode) {
       this.httpClientService.getFormationByCode(this.route.snapshot.paramMap.get('id')).subscribe(res => {
         this.formation = res[0];
         this.editForm.setValue({ id: this.formation.id, formation_name: this.formation.formation_name, description: this.formation.description, type: this.formation.type, url: this.formation.url });
+        this.formation.steps.forEach(element => {
+          this.httpClientService.getStepByCode(element).subscribe(res => { 
+            this.stepsOfFormation.push(res[0])
+          });
+        });
+        //Pour éviter des duplications dans les listes
+        if(this.stepsOfFormation != null && this.steps != null){
+          let stepsTmp = this.steps
+          this.steps = this.stepsOfFormation.concat(stepsTmp);
+          this.steps = this.steps.filter((item,index) => this.steps.indexOf(item)==index);
+          this.steps = [...new Set([...stepsTmp, ...this.stepsOfFormation])]
+        }
       });
     }
   }
@@ -74,4 +93,14 @@ export class FormationEditComponent implements OnInit {
     })
   }
 
+  drop(event: CdkDragDrop<string[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(event.previousContainer.data,
+                        event.container.data,
+                        event.previousIndex,
+                        event.currentIndex);
+    }
+  }
 }

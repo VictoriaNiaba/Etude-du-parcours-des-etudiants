@@ -55,6 +55,10 @@ export class HttpClientService {
     return this.httpClient.get<any>('http://localhost:3000/steps');
   }
 
+  getStepByCode(code){
+    return this.httpClient.get<any>(`http://localhost:3000/steps?step_code=${code}`);
+  }
+
   getFormations(){
     return this.httpClient.get<Array<Formation>>('http://localhost:3000/formations');
   }

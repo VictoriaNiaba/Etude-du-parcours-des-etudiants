@@ -19,6 +19,7 @@ import { FormationEditComponent } from './components/formations/formation-edit/f
 import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { StepsComponent } from './components/steps/steps.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { StepsComponent } from './components/steps/steps.component';
     HttpClientModule,
     NgbModule,
     NgbPaginationModule,
-    AutocompleteLibModule
+    AutocompleteLibModule,
+    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]

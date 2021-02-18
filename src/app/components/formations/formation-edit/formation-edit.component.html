@@ -45,6 +45,30 @@
                     </div>
                 </div>
             </div>
+            <div class="example-container">
+                <h4>Liste des étapes</h4>
+                <div
+                    cdkDropList
+                    #stepsList="cdkDropList"
+                    [cdkDropListData]="steps"
+                    [cdkDropListConnectedTo]="[stepsFormationList]"
+                    class="example-list"
+                    (cdkDropListDropped)="drop($event)">
+                    <div class="example-box" *ngFor="let item of steps" cdkDrag>{{item.step_code}} - {{item.step_name}}</div>
+                </div>
+            </div>
+            <div class="example-container">
+                <h4>Etapes de la formation</h4>
+                <div
+                    cdkDropList
+                    #stepsFormationList="cdkDropList"
+                    [cdkDropListData]="stepsOfFormation"
+                    [cdkDropListConnectedTo]="[stepsList]"
+                    class="example-list"
+                    (cdkDropListDropped)="drop($event)">
+                    <div class="example-box" *ngFor="let item of stepsOfFormation" cdkDrag>{{item.step_code}} - {{item.step_name}}</div>
+                </div>
+            </div>
             <div class="form-group">
                 <button class="btn btn-primary">
                     Valider
@@ -57,9 +81,6 @@
                 </div>
             </div>
             <br>
-            <div *ngIf="!isAddMode">
-                <p>Ici on aura la modif des étapes</p>
-            </div>
         </form>
     </div>
 </div>
