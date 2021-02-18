@@ -1,58 +1,65 @@
 <div class="container">
-<h1 *ngIf="isAddMode">Ajout d'une nouvelle formation</h1>
-<h1 *ngIf="!isAddMode">Edition d'une formation</h1>
-<form [formGroup]="editForm" (ngSubmit)="onSubmit()">
-    <div class="form-row">
-        <div class="form-group">
-            <label>Code</label>
-            <input type="text" formControlName="formation_code" class="form-control" [ngClass]="{ 'is-invalid': submitted && formControl.formation_code.errors }"/>
-            <div *ngIf="submitted && formControl.formation_code.errors" class="invalid-feedback">
-                <div *ngIf="formControl.formation_code.errors.required">Le code est requis</div>
+    <h1 *ngIf="isAddMode">Ajout d'une nouvelle formation</h1>
+    <h1 *ngIf="!isAddMode">Edition d'une formation</h1>
+    <div *ngIf="formation || isAddMode">
+        <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Code</label>
+                    <input type="text" formControlName="id" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && formControl.id.errors }" />
+                    <div *ngIf="submitted && formControl.id.errors" class="invalid-feedback">
+                        <div *ngIf="formControl.id.errors.required">Le code est requis</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Intitulé</label>
+                    <input type="text" formControlName="formation_name" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && formControl.formation_name.errors }" />
+                    <div *ngIf="submitted && formControl.formation_name.errors" class="invalid-feedback">
+                        <div *ngIf="formControl.formation_name.errors.required">Le nom est requise</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="textarea" formControlName="description" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && formControl.description.errors }" />
+                    <div *ngIf="submitted && formControl.description.errors" class="invalid-feedback">
+                        <div *ngIf="formControl.description.errors.required">La description est requise</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <input type="text" formControlName="type" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && formControl.type.errors }" />
+                    <div *ngIf="submitted && formControl.type.errors" class="invalid-feedback">
+                        <div *ngIf="formControl.type.errors.required">Le type est requis</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>URL</label>
+                    <input type="text" formControlName="url" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && formControl.url.errors }" />
+                    <div *ngIf="submitted && formControl.url.errors" class="invalid-feedback">
+                        <div *ngIf="formControl.url.errors.required">L'url' est requis</div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label>Intitulé</label>
-            <input type="text" formControlName="formation_name" class="form-control" [ngClass]="{ 'is-invalid': submitted && formControl.formation_name.errors }"/>
-            <div *ngIf="submitted && formControl.formation_name.errors" class="invalid-feedback">
-                <div *ngIf="formControl.formation_name.errors.required">Le nom est requise</div>
+            <div class="form-group">
+                <button class="btn btn-primary">
+                    Valider
+                </button>
+                <div *ngIf="!isAddMode">
+                    <a routerLink="/formation/{{formation.id}}" class="btn btn-secondary">Retour</a>
+                </div>
+                <div *ngIf="isAddMode">
+                    <a routerLink="/admin" class="btn btn-secondary">Retour</a>
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label>Description</label>
-            <input type="textarea" formControlName="description" class="form-control" [ngClass]="{ 'is-invalid': submitted && formControl.description.errors }"/>
-            <div *ngIf="submitted && formControl.description.errors" class="invalid-feedback">
-                <div *ngIf="formControl.description.errors.required">La description est requise</div>
+            <br>
+            <div *ngIf="!isAddMode">
+                <p>Ici on aura la modif des étapes</p>
             </div>
-        </div>
-        <div class="form-group">
-            <label>Type</label>
-            <input type="text" formControlName="type" class="form-control" [ngClass]="{ 'is-invalid': submitted && formControl.type.errors }"/>
-            <div *ngIf="submitted && formControl.type.errors" class="invalid-feedback">
-                <div *ngIf="formControl.type.errors.required">Le type est requis</div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label>URL</label>
-            <input type="text" formControlName="url" class="form-control" [ngClass]="{ 'is-invalid': submitted && formControl.url.errors }"/>
-            <div *ngIf="submitted && formControl.url.errors" class="invalid-feedback">
-                <div *ngIf="formControl.url.errors.required">L'url' est requis</div>
-            </div>
-        </div>
+        </form>
     </div>
-    <div class="form-group">
-        <button class="btn btn-primary">
-            Valider
-        </button>
-        <div *ngIf="!isAddMode">
-            <a routerLink="/formation/{{formation.formation_code}}" class="btn btn-secondary">Retour</a>
-        </div>
-        <div *ngIf="isAddMode">
-            <a routerLink="/admin" class="btn btn-secondary">Retour</a>
-        </div>
-    </div>
-    <br>
-    <div *ngIf="!isAddMode">
-        <p>Ici on aura la modif des étapes</p>
-    </div>
-</form>
 </div>

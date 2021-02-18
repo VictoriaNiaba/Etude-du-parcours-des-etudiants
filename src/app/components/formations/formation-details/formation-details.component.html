@@ -1,23 +1,20 @@
 <div class="container">
-    <!-- formation n'était pas défini dans le contexte donc null, un formation.formation_code par exemple ne fonctionnait pas... #payeTonTypeScript ... du coup j'ai ngIf :) -->
     <div *ngIf="formation" class="card mb-3">
-        <h3 class="card-header">{{ formation.formation_code }}</h3>
+        <h3 class="card-header">{{ formation.id }}</h3>
         <div class="card-body">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">Code : {{ formation.formation_code }}</li>
+                <li class="list-group-item">Code : {{ formation.id }}</li>
                 <li class="list-group-item">Intitulé : {{ formation.formation_name }}</li>
                 <li class="list-group-item">Type : {{ formation.type }}</li>
                 <li class="list-group-item">Description : {{ formation.description }}</li>
-                <!-- On redirige vers localhost:4200/www.google.com , il fallait ajouter " '//' + " pour ne plus être local -->
                 <li class="list-group-item">URL : <a [attr.href]="'//' + formation.url" target="_blank" >{{ formation.url }}</a></li>
-                <li class="list-group-item">Date d'Ajout : {{ formation.add_date }}</li>
-                <li class="list-group-item">Date de dernière Modification : {{ formation.last_modification }}</li>
+                <li class="list-group-item">Date d'Ajout : {{ formation.add_date | date:'dd-MM-yyyy à HH:mm:ss' }}</li>
+                <li class="list-group-item">Date de dernière Modification : {{ formation.last_modification | date:'dd-MM-yyyy à HH:mm:ss' }}</li>
             </ul>
             <br>
             <h5>Liste des Etapes</h5>
             <div class="d-flex flex-wrap">
-                <!-- Do what you want to do -->
-                <a *ngFor="let step of formation.steps" [attr.href]="'#' + step"
+                <a *ngFor="let step of formation.steps"
                 class="btn btn-outline-primary" style="margin: 1px;">
                     {{step}}
                 </a>
@@ -26,8 +23,10 @@
         <div class="card-footer text-muted">
             <div class="d-flex justify-content-between">
                 <a routerLink="/admin" class="btn btn-secondary">Retour</a>
-                <a *ngIf="canEdit === true" routerLink="/formation/{{formation.formation_code}}/edit"
+                <a *ngIf="canEdit === true" routerLink="/formation/{{formation.id}}/edit"
                     class="btn btn-info" role="button">Modifier</a>
+                <a *ngIf="canEdit === true" (click)="delete(formation.id)"
+                    class="btn btn-danger" role="button">Supprimer</a>
             </div>
         </div>
     </div>

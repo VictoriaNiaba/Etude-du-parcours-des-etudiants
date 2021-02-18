@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, Output, SystemJsNgModuleLoader } from '@angular/core';
-import { catchError, retry } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
 import { Formation } from '../models/formation';
 import { User } from '../models/User';
 
@@ -61,7 +60,20 @@ export class HttpClientService {
   }
 
   getFormationByCode(code: string){
-    return this.httpClient.get<Formation>(`http://localhost:3000/formations?formation_code=${code}`);
-    //return this.httpClient.get<Formation>(`http://localhost:3000/formations?formation_code=${code}`);
+    return this.httpClient.get<Formation>(`http://localhost:3000/formations?id=${code}`);
+    //return this.httpClient.get<Formation>(`http://localhost:3000/formations?id=${code}`);
+  }
+
+  addFormation(data: Formation){
+    return this.httpClient.post<Formation>(`http://localhost:3000/formations/`, JSON.stringify(data), this.httpHeader);
+  }
+
+  updateFormation(code, data: Formation){
+    console.log(data)
+    return this.httpClient.put<Formation>(`http://localhost:3000/formations/` + code, JSON.stringify(data), this.httpHeader);
+  }
+
+  deleteFormation(code){
+    return this.httpClient.delete<Formation>(`http://localhost:3000/formations/` + code, this.httpHeader);
   }
 }

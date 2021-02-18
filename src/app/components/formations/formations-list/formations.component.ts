@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Formation } from 'src/app/models/formation';
-import { FormationService } from 'src/app/services/formation.service';
 import { HttpClientService } from 'src/app/services/http-client.service';
 import { UploadService } from 'src/app/services/upload.service';
 
@@ -16,7 +14,7 @@ export class FormationsComponent implements OnInit {
   collectionSize: number;
   fileToUpload: File = null;
 
-  constructor(private formationService: FormationService, private uploadService: UploadService, private httpClientService: HttpClientService) { }
+  constructor(private uploadService: UploadService, private httpClientService: HttpClientService) { }
 
   ngOnInit(): void {
     this.httpClientService.getFormations().subscribe(res => { 

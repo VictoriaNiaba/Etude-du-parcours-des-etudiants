@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { STEPS } from 'src/app/mock/STEPS';
 import { Step } from 'src/app/models/Step';
 import { HttpClientService } from 'src/app/services/http-client.service';
 import { UploadService } from 'src/app/services/upload.service';
