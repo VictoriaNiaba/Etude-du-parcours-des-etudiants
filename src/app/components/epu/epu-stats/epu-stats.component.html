@@ -1,5 +1,5 @@
 <!-- stats -->
-<div class="card text-center h">
+<div #statistics class="card text-center h">
   <div class="card-header">
     <ul class="nav nav-tabs card-header-tabs">
       <li class="nav-item">
@@ -24,7 +24,6 @@
           (chartInit)="onChartInit1($event)"
           [options]="getOptions()"
           class="chart-stats-1"
-          #chartStats1
           id="chartStats1"
         ></div>
       </div>
@@ -42,7 +41,6 @@
           (chartInit)="onChartInit2($event)"
           [options]="getOptions()"
           class="chart-stats-1"
-          #chartStats2
           id="chartStats2"
         ></div>
       </div>

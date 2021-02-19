@@ -1,5 +1,6 @@
 import { Input } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpClientService } from 'src/app/services/http-client.service';
 import { EpuStatsComponent } from '../epu-stats/epu-stats.component';
 
@@ -10,7 +11,7 @@ import { EpuStatsComponent } from '../epu-stats/epu-stats.component';
 })
 export class EpuGrapheComponent implements OnInit {
 
-  constructor(private httpClient: HttpClientService) { }
+  constructor(private httpClient: HttpClientService,private router: Router) { }
 
   ngOnInit(): void {
     this.getPaths();
@@ -47,109 +48,112 @@ export class EpuGrapheComponent implements OnInit {
   @Input() statsComponent: EpuStatsComponent;
   chartClicked(e: any) {
     if (e.dataType === 'node')
-      alert(e.name)
-      this.statsComponent.setFormation(e.name);
+      this.stepClick(e.name);
+  }
+  stepClick(name:string){
+    this.statsComponent.setFormation(name);
   }
 
-
   title = 'pfe-frontend';
-  options = {
-    title: {
-      text: 'Test'
-    },
-    animationDurationUpdate: 1500,
-    animationEasingUpdate: 'quinticInOut',
-    series: [
-      {
-        type: 'graph',
-        layout: 'none',
-        symbolSize: 60,
-        roam: true,
-        label: {
+  getOption(){
+    return {
+      title: {
+        text: 'Test'
+      },
+      animationDurationUpdate: 1500,
+      animationEasingUpdate: 'quinticInOut',
+      series: [
+        {
+          type: 'graph',
+          layout: 'none',
+          symbolSize: 60,
+          roam: true,
+          label: {
+              show: true,
+              position: 'top',
+              formatter: function (params) {
+                let labelText: string = params['value'];
+                let nb2show = 15;
+                if (labelText.length < nb2show)
+                  return labelText;
+                else
+                  return labelText.slice(0, nb2show) + "...";
+            }
+          },
+          edgeSymbol: ['circle', 'arrow'],
+          edgeSymbolSize: [4, 10],
+          data: [{
+            name: 'MESSIN-PRSIN5AA',
+            value: 'BAC S',
+            type: 'node',
+            x: 300,
+            y: 300
+          }, {
+            name: 'MESSIN-PRSIN5AB',
+            value: 'Licence informatique',
+            type: 'node',
+            x: 500,
+            y: 200
+          }, {
+            name: 'MESSIN-PRSIN5AC',
+            value: 'Master informatique',
+            type: 'node',
+            x: 700,
+            y: 300
+          }, {
+            name: 'MESSIN-PRSIN5AI',
+            value: 'BTS SNIR',
+            type: 'node',
+            x: 500,
+            y: 400
+          }],
+          tooltip: {
+            trigger: 'item',
+            showDelay: 0.1,
+            transitionDuration: 0.2,
             show: true,
-            position: 'top',
             formatter: function (params) {
-              let labelText: string = params['value'];
-              let nb2show = 15;
-              if (labelText.length < nb2show)
-                return labelText;
+              if (params.type === 'node')
+                return `${params.name}`;
               else
-                return labelText.slice(0, nb2show) + "...";
-          }
-        },
-        edgeSymbol: ['circle', 'arrow'],
-        edgeSymbolSize: [4, 10],
-        data: [{
-          name: 'Node 1',
-          value: 'BAC S',
-          type: 'node',
-          x: 300,
-          y: 300
-        }, {
-          name: 'Node 2',
-          value: 'Licence informatique',
-          type: 'node',
-          x: 500,
-          y: 200
-        }, {
-          name: 'Node 3',
-          value: 'Master informatique',
-          type: 'node',
-          x: 700,
-          y: 300
-        }, {
-          name: 'Node 4',
-          value: 'BTS SNIR',
-          type: 'node',
-          x: 500,
-          y: 400
-        }],
-        tooltip: {
-          trigger: 'item',
-          showDelay: 0.1,
-          transitionDuration: 0.2,
-          show: true,
-          formatter: function (params) {
-            if (params.type === 'node')
-              return `${params.name}`;
-            else
-              return "";
-          }
-        },
-        links: [{
-          source: 'Node 1',
-          target: 'Node 2',
-          label: {
-              show: true
-          }
-        }, {
-          source: 'Node 2',
-          target: 'Node 3',
-          label: {
-              show: true
-          }
-        }, {
-          source: 'Node 4',
-          target: 'Node 2',
-          label: {
-              show: true
-          }
-        }, {
-          source: 'Node 1',
-          target: 'Node 4',
-          label: {
-              show: true
-          }
-        }],
-        lineStyle: {
-            opacity: 0.9,
-            width: 2,
-            curveness: 0.1
-        },
-        zoom: 0.8
-      }
-    ]
-  };
+                return "";
+            }
+          },
+          links: [{
+            source: 'MESSIN-PRSIN5AA',
+            target: 'MESSIN-PRSIN5AB',
+            label: {
+                show: true
+            }
+          }, {
+            source: 'MESSIN-PRSIN5AB',
+            target: 'MESSIN-PRSIN5AC',
+            label: {
+                show: true
+            }
+          }, {
+            source: 'MESSIN-PRSIN5AI',
+            target: 'MESSIN-PRSIN5AB',
+            label: {
+                show: true
+            }
+          }, {
+            source: 'MESSIN-PRSIN5AA',
+            target: 'MESSIN-PRSIN5AI',
+            label: {
+                show: true
+            }
+          }],
+          lineStyle: {
+              opacity: 0.9,
+              width: 2,
+              curveness: 0.1
+          },
+          zoom: 0.8
+        }
+      ]
+    };
+  }
 
   /**/
   keyword = 'name';

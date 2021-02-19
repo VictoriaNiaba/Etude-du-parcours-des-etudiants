@@ -88,7 +88,7 @@
       <div
         echarts
         id="EPU-chart"
-        [options]="options"
+        [options]="getOption()"
         (chartClick)="chartClicked($event)"
       ></div>
     </div>
@@ -105,7 +105,7 @@
             <div style="align-self: center;">{{path['registered'][index]}}</div>
             <i class="fas fa-arrow-right" style="align-self: center;"></i>
           </div>
-          <a class="badge badge-info" style="align-self: center;" (click)="statsComponent.setFormation(path['steps'][index])">{{path['steps'][index]}}</a>
+          <a class="badge badge-info" style="align-self: center;" (click)="stepClick(path['steps'][index])">{{path['steps'][index]}}</a>
         </div>
       </div>
     </div>
