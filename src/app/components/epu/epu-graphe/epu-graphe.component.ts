@@ -22,7 +22,6 @@ export class EpuGrapheComponent implements OnInit {
 
   paths: Path[] = new Array<Path>();
   totalStudentPaths: number;
-  localStudentPaths = [];
   firstStep: string = null;
   lastStep: string = "PRSIN5AI";
   getFirstStep() {
