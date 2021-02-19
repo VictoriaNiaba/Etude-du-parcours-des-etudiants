@@ -1,6 +1,8 @@
 import { Input } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Path } from 'src/app/models/Path';
+import { Step } from 'src/app/models/Step';
 import { HttpClientService } from 'src/app/services/http-client.service';
 import { EpuStatsComponent } from '../epu-stats/epu-stats.component';
 
@@ -18,7 +20,7 @@ export class EpuGrapheComponent implements OnInit {
   }
 
 
-  paths: any;
+  paths: Path[] = new Array<Path>();
   totalStudentPaths: number;
   localStudentPaths = [];
   firstStep: string = null;
@@ -28,15 +30,27 @@ export class EpuGrapheComponent implements OnInit {
   }
   getPaths(){
     this.httpClient.getPaths(this.firstStep, this.lastStep).subscribe(res => {
-      this.paths = res;
+
+      res.forEach(path => {
+        let pathTemp = new Path();
+        for(let i=0; i<path['steps'].length; i++) {
+          let step = new Step( //init
+            path['steps'][i],
+            path['steps'][i],
+            path['registered'][i],
+            0, //other
+            0); //redoublement
+          pathTemp.addSteps(step);
+          //console.log('>>',step.step_name);
+        }
+        //console.log('>> mean : ',pathTemp.getMeanStudents());
+        this.paths.push(pathTemp);
+        //console.log('>> -----');
+      });
+
       this.totalStudentPaths = 0;
       this.paths.forEach(path => {
-        let localTemp = 0;
-        path['registered'].forEach(stepRegistrationNumber => {
-          localTemp += stepRegistrationNumber;
-          this.totalStudentPaths += stepRegistrationNumber;
-        });
-        this.localStudentPaths.push(localTemp); //moyenne : localTemp/path['registered'].length
+        this.totalStudentPaths += path.getNbStudentIndependant(); 
       });
     });
   }

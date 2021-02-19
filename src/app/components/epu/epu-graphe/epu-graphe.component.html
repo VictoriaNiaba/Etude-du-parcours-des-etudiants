@@ -96,17 +96,21 @@
     <!-- Affichage simple -->
     <div>
       <div class="btn btn-outline-primary disabled" style="width: 100%;">Total : {{totalStudentPaths}}</div>
-      <div class="simplePathsDisplay" *ngFor="let path of paths; let ind = index" style="padding: 0px 5px">
-        <div class="text-danger">{{localStudentPaths[ind]}} :: {{localStudentPaths[ind]*100/totalStudentPaths | number:'1.0-1'}}%</div> &nbsp;
+
+      <div class="simplePathsDisplay" *ngFor="let path of paths; let ind = index" style="padding: 0px 5px"> <!-- Pour chaque path -->
+
+        <div class="text-danger">{{path.getNbStudentIndependant()}} :: {{path.getNbStudentIndependant()*100/totalStudentPaths | number:'1.0-1'}}%</div> &nbsp;
         <div class="text-warning">{{getFirstStep()}}</div>
-        <div *ngFor="let step of path['steps']; let index = index">
+
+        <div *ngFor="let step of path.path_steps; let index = index"> <!-- pour chaque step -->
           <div class="text-primary" style="margin: 0px 10px; font-size: 10px;">
             <i class="fas fa-minus" style="align-self: center;"></i>
-            <div style="align-self: center;">{{path['registered'][index]}}</div>
+            <div style="align-self: center;">{{path.getSteps(index).getStatsTotal()}}</div>
             <i class="fas fa-arrow-right" style="align-self: center;"></i>
           </div>
-          <a class="badge badge-info" style="align-self: center;" (click)="stepClick(path['steps'][index])">{{path['steps'][index]}}</a>
+          <a class="badge badge-info" style="align-self: center;" (click)="stepClick(path.getSteps(index).step_code)">{{path.getSteps(index).step_code}}</a>
         </div>
+
       </div>
     </div>
     <!-- fin de l'affichage simple -->
