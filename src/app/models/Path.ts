@@ -13,4 +13,9 @@ export class Path {
         });
         return tmp_nb/this.path_steps.length;
     }
+    addSteps(...path_steps: Step[]){
+        path_steps.forEach(path => {
+            this.path_steps.push(path);
+        });
+    }
 }
