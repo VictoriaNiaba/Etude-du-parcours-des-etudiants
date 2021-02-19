@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.univamu.epu.path.model.Path;
 import fr.univamu.epu.path.services.PathRepository;
 import fr.univamu.epu.path.services.PathGenerator;
+import fr.univamu.epu.path.services.PathMapper;
 
 @RestController
 @CrossOrigin("*")
@@ -23,11 +24,15 @@ public class PathControllerREST {
 	private PathRepository pathRepository;
 	@Autowired
 	private PathGenerator pathGenerator;
+	@Autowired
+	private PathMapper pathMapper;
 
 	@GetMapping(value = "")
-	public ResponseEntity<Page<Path>> getPaths(Pageable pageable) {
+	public ResponseEntity<Page<PathDto>> getPaths(Pageable pageable) {
 		Page<Path> paths = pathRepository.findAll(pageable);
-		return ResponseEntity.ok().body(paths);
+		Page<PathDto> pathsDto = paths.map(path -> pathMapper.pathToDto(path));
+
+		return ResponseEntity.ok().body(pathsDto);
 	}
 
 	@PostMapping(value = "_generate")
