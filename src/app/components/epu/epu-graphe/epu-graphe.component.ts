@@ -65,6 +65,7 @@ export class EpuGrapheComponent implements OnInit {
       this.stepClick(e.name);
   }
   stepClick(name:string){
+    //trouver le step cliqué dans paths puis récupérer les statistiques et envoyer à la place de name puis modifier setFormation + affichage
     this.statsComponent.setFormation(name);
   }
 
