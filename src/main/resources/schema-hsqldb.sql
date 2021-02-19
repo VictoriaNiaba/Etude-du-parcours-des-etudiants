@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS administrative_registration(
    Table: path
  ***************************************************************/
 CREATE TABLE IF NOT EXISTS path(
-	path_code               VARCHAR (10) NOT NULL,
+	path_code               VARCHAR (36) NOT NULL,
 	avg_student_count_per_year  DOUBLE  NOT NULL
 	,CONSTRAINT path_PK PRIMARY KEY (path_code)
 );
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS step_formation(
  ***************************************************************/
 CREATE TABLE IF NOT EXISTS path_step(
 	step_code      VARCHAR (10) NOT NULL,
-	path_code      VARCHAR (10) NOT NULL,
+	path_code      VARCHAR (36) NOT NULL,
 	step_position  SMALLINT  NOT NULL
 	,CONSTRAINT path_step_PK PRIMARY KEY (step_code,path_code)
 );

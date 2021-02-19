@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS administrative_registration(
 -------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS path(
-        path_code              Varchar (10) NOT NULL ,
+        path_code              Varchar (36) NOT NULL ,
         avg_student_count_per_year Double NOT NULL
 	,CONSTRAINT path_PK PRIMARY KEY (path_code)
 )ENGINE=InnoDB;
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS step_formation(
 
 CREATE TABLE IF NOT EXISTS path_step(
         step_code     Varchar (10) NOT NULL ,
-        path_code     Varchar (10) NOT NULL ,
+        path_code     Varchar (36) NOT NULL ,
         step_position Smallint NOT NULL
 	,CONSTRAINT path_step_PK PRIMARY KEY (step_code,path_code)
 
