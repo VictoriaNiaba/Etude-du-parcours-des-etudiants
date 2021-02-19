@@ -17,6 +17,7 @@ export class EpuGrapheComponent implements OnInit {
 
   ngOnInit(): void {
     this.getPaths();
+    this.initSearch();
   }
 
 
@@ -169,36 +170,18 @@ export class EpuGrapheComponent implements OnInit {
     };
   }
 
-  /**/
-  keyword = 'name';
-  getFormation() {
-    return [
-        {
-        id: 1,
-        name: 'Bac S'
-        },
-        {
-        id: 2,
-        name: 'Master informatique'
-        },
-        {
-        id: 3,
-        name: 'BTS SNIR'
-        },
-        {
-        id: 4,
-        name: 'Licence Informatique'
-        }
-    ];
+  /*Recherche*/
+  keyword = 'formation_name';
+  formationSearch: any[];
+  initSearch() {
+    this.httpClient.getFormations().subscribe(res => {
+      this.formationSearch = res;
+    });
   }
-
   selectEvent(event) {
-    console.info(`Selection : ${event.name}`);
+    console.info(`Selection : ${event.id}`);
   }
   onChangeSearch(event) {
-    console.info(`Change : ${event.name}`);
-  }
-  onFocused(event) {
-    console.info(`Focus : ${event.name}`);
+    console.info(`Change : ${event.id}`);
   }
 }

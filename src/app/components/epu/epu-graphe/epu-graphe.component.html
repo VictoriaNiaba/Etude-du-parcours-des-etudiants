@@ -18,20 +18,19 @@
             <!---->
             <div class="ng-autocomplete">
               <ng-autocomplete
-                [data]="getFormation()"
+                [data]="formationSearch"
                 [searchKeyword]="keyword"
                 placeholder="Je suis en ..."
                 (selected)="selectEvent($event)"
                 (inputChanged)="onChangeSearch($event)"
-                (inputFocused)="onFocused($event)"
                 [itemTemplate]="itemTemplate"
                 [notFoundTemplate]="notFoundTemplate"
               ></ng-autocomplete>
 
               <ng-template #itemTemplate let-item>
-                <div class="d-flex flex-sm-nowrap">
-                  <!--<a [innerHTML]="item.id"></a>-->
-                  <a [innerHTML]="item.name"></a>
+                <div class="d-flex flex-column text-left flex-sm-wrap" style="margin-bottom: 5px;">
+                  <a [innerHTML]="item.id" style="font-size: 10px; padding:0px 5px;"></a>
+                  <a [innerHTML]="item.formation_name" style="padding:0px 5px;"></a>
                 </div>
               </ng-template>
 
@@ -57,20 +56,19 @@
             <!---->
             <div class="ng-autocomplete">
               <ng-autocomplete
-                [data]="getFormation()"
+                [data]="formationSearch"
                 [searchKeyword]="keyword"
                 placeholder="Je vais en ..."
                 (selected)="selectEvent($event)"
                 (inputChanged)="onChangeSearch($event)"
-                (inputFocused)="onFocused($event)"
                 [itemTemplate]="itemTemplate2"
                 [notFoundTemplate]="notFoundTemplate2"
               ></ng-autocomplete>
               <!-- historyIdentifier="getFormation()" -->
               <ng-template #itemTemplate2 let-item>
-                <div class="d-flex flex-sm-nowrap">
-                  <!--<a [innerHTML]="item.id"></a>-->
-                  <a [innerHTML]="item.name"></a>
+                <div class="d-flex flex-column text-left flex-sm-wrap" style="margin-bottom: 5px;">
+                  <a [innerHTML]="item.id" style="font-size: 10px; padding:0px 5px;"></a>
+                  <a [innerHTML]="item.formation_name" style="padding:0px 5px;"></a>
                 </div>
               </ng-template>
 

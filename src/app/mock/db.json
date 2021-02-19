@@ -2,7 +2,7 @@
   "formations": [
     {
       "id": "MESSIN-PRSIN5AA",
-      "formation_name": "MASTER INFORMATIQUE",
+      "formation_name": "MASTER INFORMATIQUE A",
       "description": "AAAAAAAZ La formation permet d’acquérir les principes et techniques AAAAAAA.",
       "type": "MASTER",
       "url": "www.google.com",
@@ -15,7 +15,7 @@
     },
     {
       "id": "MESSIN-PRSIN5AB",
-      "formation_name": "MASTER INFORMATIQUE",
+      "formation_name": "MASTER INFORMATIQUE B",
       "description": "BBBBBBB La formation permet d’acquérir les principes et techniques BBBBBBB.",
       "type": "MASTER",
       "url": "www.google.com",
@@ -29,7 +29,7 @@
     },
     {
       "id": "MESSIN-PRSIN5AC",
-      "formation_name": "MASTER INFORMATIQUE",
+      "formation_name": "MASTER INFORMATIQUE C",
       "description": "CCCCCCC La formation permet d’acquérir les principes et techniques CCCCCCC.",
       "type": "MASTER",
       "url": "www.google.com",
@@ -43,7 +43,7 @@
     },
     {
       "id": "MESSIN-PRSIN5AD",
-      "formation_name": "MASTER INFORMATIQUE",
+      "formation_name": "MASTER INFORMATIQUE D",
       "description": "DDDDDDD La formation permet d’acquérir les principes et techniques DDDDDDD.",
       "type": "MASTER",
       "url": "www.google.com",
@@ -57,7 +57,7 @@
     },
     {
       "id": "MESSIN-PRSIN5AE",
-      "formation_name": "MASTER INFORMATIQUE",
+      "formation_name": "MASTER INFORMATIQUE E",
       "description": "EEEEEEE La formation permet d’acquérir les principes et techniques EEEEEEE.",
       "type": "MASTER",
       "url": "www.google.com",
@@ -71,7 +71,7 @@
     },
     {
       "id": "MESSIN-PRSIN5AF",
-      "formation_name": "MASTER INFORMATIQUE",
+      "formation_name": "MASTER INFORMATIQUE F",
       "description": "FFFFFFF La formation permet d’acquérir les principes et techniques FFFFFFF.",
       "type": "MASTER",
       "url": "www.google.com",
@@ -84,7 +84,7 @@
     },
     {
       "id": "MESSIN-PRSIN5AG",
-      "formation_name": "MASTER INFORMATIQUE",
+      "formation_name": "MASTER INFORMATIQUE G",
       "description": "GGGGGGG La formation permet d’acquérir les principes et techniques GGGGGGG.",
       "type": "MASTER",
       "url": "www.google.com",
@@ -96,7 +96,7 @@
     },
     {
       "id": "MESSIN-PRSIN5AH",
-      "formation_name": "MASTER INFORMATIQUE",
+      "formation_name": "MASTER INFORMATIQUE H",
       "description": "HHHHHHH La formation permet d’acquérir les principes et techniques HHHHHHH.",
       "type": "MASTER",
       "url": "www.google.com",
@@ -109,7 +109,7 @@
     },
     {
       "id": "MESSIN-PRSIN5AI",
-      "formation_name": "MASTER INFORMATIQUE",
+      "formation_name": "MASTER INFORMATIQUE I",
       "description": "IIIIIII La formation permet d’acquérir les principes et techniques IIIIIII.",
       "type": "MASTER",
       "url": "www.google.com",
@@ -122,7 +122,7 @@
     },
     {
       "id": "MESSIN-PRSIN5AJ",
-      "formation_name": "MASTER INFORMATIQUE",
+      "formation_name": "MASTER INFORMATIQUE J",
       "description": "JJJJJJJ La formation permet d’acquérir les principes et techniques JJJJJJJ.",
       "type": "MASTER",
       "url": "www.google.com",
@@ -135,7 +135,7 @@
     },
     {
       "id": "ME3SIN",
-      "formation_name": "Licence Informatique",
+      "formation_name": "LICENCE INFORMATIQUE",
       "description": "AZZZZZZZZZZZZZ",
       "type": "LICENCE",
       "url": "www.google.com",
