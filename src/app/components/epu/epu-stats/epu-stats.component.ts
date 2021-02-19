@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClientService } from 'src/app/services/http-client.service';
 
 @Component({
-  selector: 'app-stats',
-  templateUrl: './stats.component.html',
-  styleUrls: ['./stats.component.scss']
+  selector: 'app-epu-stats',
+  templateUrl: './epu-stats.component.html',
+  styleUrls: ['./epu-stats.component.scss']
 })
-export class StatsComponent implements OnInit {
+export class EpuStatsComponent implements OnInit {
 
   constructor(private httpClient: HttpClientService) { }
 

@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClientService } from 'src/app/services/http-client.service';
 
 @Component({
-  selector: 'app-graphe',
-  templateUrl: './graphe.component.html',
-  styleUrls: ['./graphe.component.scss']
+  selector: 'app-epu-graphe',
+  templateUrl: './epu-graphe.component.html',
+  styleUrls: ['./epu-graphe.component.scss']
 })
-export class GrapheComponent implements OnInit {
+export class EpuGrapheComponent implements OnInit {
 
   constructor(private httpClient: HttpClientService) { }
 

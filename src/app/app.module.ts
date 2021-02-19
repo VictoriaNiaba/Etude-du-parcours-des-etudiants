@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 
 import { NgxEchartsModule } from 'ngx-echarts';
 import { LoginComponent } from './components/login/login.component';
-import { EpuComponent } from './components/epu/epu.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -20,14 +19,14 @@ import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { StepsComponent } from './components/steps/steps.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { GrapheComponent } from './components/epu/graphe/graphe.component';
-import { StatsComponent } from './components/epu/stats/stats.component';
+import { EpuGrapheComponent } from './components/epu/epu-graphe/epu-graphe.component';
+import { EpuStatsComponent } from './components/epu/epu-stats/epu-stats.component';
+import { EpuPageComponent } from './components/epu/epu-page/epu-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    EpuComponent,
     NavigationComponent,
     FooterComponent,
     AdministrationComponent,
@@ -36,8 +35,9 @@ import { StatsComponent } from './components/epu/stats/stats.component';
     FormationDetailsComponent,
     FormationEditComponent,
     StepsComponent,
-    GrapheComponent,
-    StatsComponent
+    EpuGrapheComponent,
+    EpuStatsComponent,
+    EpuPageComponent
   ],
   imports: [
     BrowserModule,

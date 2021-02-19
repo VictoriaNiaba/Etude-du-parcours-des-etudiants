@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AppComponent } from './app.component';
 import { AdministrationComponent } from './components/administration/administration.component';
 import { AuthGuardService as AuthGuard } from './services/auth-guard.service';
-import { EpuComponent } from './components/epu/epu.component';
 import { LoginComponent } from './components/login/login.component';
+import { EpuPageComponent } from './components/epu/epu-page/epu-page.component'
 import { FormationDetailsComponent } from './components/formations/formation-details/formation-details.component';
 import { FormationEditComponent } from './components/formations/formation-edit/formation-edit.component';
 
@@ -28,7 +27,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: '', component: EpuComponent
+    path: '', component: EpuPageComponent
   }
 ];
 

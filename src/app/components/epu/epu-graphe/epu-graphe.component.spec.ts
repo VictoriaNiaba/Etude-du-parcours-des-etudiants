@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GrapheComponent } from './graphe.component';
+import { EpuGrapheComponent } from './epu-graphe.component';
 
 describe('GrapheComponent', () => {
-  let component: GrapheComponent;
-  let fixture: ComponentFixture<GrapheComponent>;
+  let component: EpuGrapheComponent;
+  let fixture: ComponentFixture<EpuGrapheComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GrapheComponent ]
+      declarations: [ EpuGrapheComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GrapheComponent);
+    fixture = TestBed.createComponent(EpuGrapheComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
