@@ -1,5 +1,7 @@
+import { Input } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { HttpClientService } from 'src/app/services/http-client.service';
+import { EpuStatsComponent } from '../epu-stats/epu-stats.component';
 
 @Component({
   selector: 'app-epu-graphe',
@@ -13,6 +15,7 @@ export class EpuGrapheComponent implements OnInit {
   ngOnInit(): void {
     this.getPaths();
   }
+
 
   paths: any;
   totalStudentPaths: number;
@@ -41,9 +44,11 @@ export class EpuGrapheComponent implements OnInit {
   /* https://echarts.apache.org/en/api.html#echartsInstance.on 
   >>>  If Object, one or more properties below can be included, and any of them is optional.
   */
+  @Input() statsComponent: EpuStatsComponent;
   chartClicked(e: any) {
     if (e.dataType === 'node')
       alert(e.name)
+      this.statsComponent.setFormation(e.name);
   }
 
 
@@ -61,7 +66,6 @@ export class EpuGrapheComponent implements OnInit {
         symbolSize: 60,
         roam: true,
         label: {
-          normal: {
             show: true,
             position: 'top',
             formatter: function (params) {
@@ -71,18 +75,10 @@ export class EpuGrapheComponent implements OnInit {
                 return labelText;
               else
                 return labelText.slice(0, nb2show) + "...";
-            }
           }
         },
         edgeSymbol: ['circle', 'arrow'],
         edgeSymbolSize: [4, 10],
-        edgeLabel: {
-          normal: {
-            textStyle: {
-              fontSize: 20
-            }
-          }
-        },
         data: [{
           name: 'Node 1',
           value: 'BAC S',
@@ -121,39 +117,34 @@ export class EpuGrapheComponent implements OnInit {
           }
         },
         links: [{
-          source: 0,
-          target: 1,
-          symbolSize: [5, 20],
+          source: 'Node 1',
+          target: 'Node 2',
           label: {
-            normal: {
               show: true
-            }
-          },
-          lineStyle: {
-            normal: {
-              width: 2,
-              curveness: 0.2
-            }
           }
         }, {
           source: 'Node 2',
           target: 'Node 3',
-          lineStyle: {
-            normal: { width: 2, curveness: -0.2 }
+          label: {
+              show: true
           }
         }, {
           source: 'Node 4',
-          target: 'Node 2'
+          target: 'Node 2',
+          label: {
+              show: true
+          }
         }, {
           source: 'Node 1',
-          target: 'Node 4'
+          target: 'Node 4',
+          label: {
+              show: true
+          }
         }],
         lineStyle: {
-          normal: {
             opacity: 0.9,
             width: 2,
-            curveness: 0.2
-          }
+            curveness: 0.1
         },
         zoom: 0.8
       }
