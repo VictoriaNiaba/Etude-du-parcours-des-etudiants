@@ -1,0 +1,19 @@
+.stats {
+    padding: 1em;
+    text-align: justify;
+    width: 100%;
+}
+.stats-line {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: left;
+    align-self: center;
+}
+.stats-line .stats-item {
+    max-width: 700px;
+}
+.chart-stats-1 {
+    padding-top: 5px;
+    width: 300px;
+    height: 350px;
+}

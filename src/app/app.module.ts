@@ -20,6 +20,8 @@ import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { StepsComponent } from './components/steps/steps.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { GrapheComponent } from './components/epu/graphe/graphe.component';
+import { StatsComponent } from './components/epu/stats/stats.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     RegistrationsComponent,
     FormationDetailsComponent,
     FormationEditComponent,
-    StepsComponent
+    StepsComponent,
+    GrapheComponent,
+    StatsComponent
   ],
   imports: [
     BrowserModule,

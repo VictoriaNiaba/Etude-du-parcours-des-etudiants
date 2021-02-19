@@ -1,0 +1,114 @@
+.chart {
+    background-color: lightcyan;
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+.searchInput {
+    display: inline-flex;
+    justify-content: center;
+    padding: 0px 5px 5px 5px;
+}
+.searchInput>*{
+    align-self: center;
+    padding: 0px 2px;
+}
+.searchInput .input-group {
+    display: flex;
+    flex-direction: column;
+}
+.searchInput label {
+    margin-bottom: 2px;
+    text-align: left;
+}
+.searchInput .group-step {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.searchInput .input-group .ng-autocomplete {
+    width: 100%;
+}
+
+.epu-tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+/* Tooltip text */
+.epu-tooltip .tooltiptext {
+    visibility: hidden;
+    width: 220px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    padding: 5px 5px;
+    border-radius: 6px;
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    top: 125%;
+    left: 50%;
+    margin-left: -110px;
+    /* Fade in tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+/* Tooltip arrow */
+.epu-tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;  /* At the top of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+/* Show the tooltip text when you mouse over the tooltip container */
+.epu-tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.simplePathsDisplay, .simplePathsDisplay div {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.slidecontainer {
+    width: 100%; /* Width of the outside container */
+    text-align: left;
+}
+/* The slider itself */
+.slider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 100%; /* Full-width */
+    height: 25px; /* Specified height */
+    background: #d3d3d3; /* Grey background */
+    outline: none; /* Remove outline */
+    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+}
+/* Mouse-over effects */
+.slider:hover {
+    opacity: 1; /* Fully shown on mouse-over */
+}
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: #18bc9c; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+}
+
+.slider::-moz-range-thumb {
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: #18bc9c; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+}

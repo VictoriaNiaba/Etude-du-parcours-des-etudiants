@@ -1,0 +1,125 @@
+<div class="card text-center">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <div class="nav-link active" href="#">
+            <h2>Parcours des étudiants</h2>
+          </div>
+        </li>
+        <li class="nav-item searchInput">
+          <div class="input-group">
+            <div class="group-step">
+              <label>Étape de départ</label>
+              <a class="epu-tooltip">
+                <i class="fas fa-info-circle"></i>
+                <span class="tooltiptext">Vous pouvez indiquer votre étape de formation ou votre formation générale</span>
+              </a>
+            </div>
+            <!---->
+            <div class="ng-autocomplete">
+              <ng-autocomplete
+                [data]="getFormation()"
+                [searchKeyword]="keyword"
+                placeholder="Je suis en ..."
+                (selected)="selectEvent($event)"
+                (inputChanged)="onChangeSearch($event)"
+                (inputFocused)="onFocused($event)"
+                [itemTemplate]="itemTemplate"
+                [notFoundTemplate]="notFoundTemplate"
+              ></ng-autocomplete>
+
+              <ng-template #itemTemplate let-item>
+                <div class="d-flex flex-sm-nowrap">
+                  <!--<a [innerHTML]="item.id"></a>-->
+                  <a [innerHTML]="item.name"></a>
+                </div>
+              </ng-template>
+
+              <ng-template #notFoundTemplate let-notFound>
+                <div [innerHTML]="notFound"></div>
+              </ng-template>
+            </div>
+            <!---->
+            <div class="input-group-prepend"></div>
+          </div>
+          <div>
+            <br />
+            <i class="fas fa-arrow-right"></i>
+          </div>
+          <div class="input-group">
+            <div class="group-step">
+              <label>Étape d'arrivée</label>
+              <a class="epu-tooltip">
+                <i class="fas fa-info-circle"></i>
+                <span class="tooltiptext">Vous pouvez indiquer votre étape de formation ou votre formation générale</span>
+              </a>
+            </div>
+            <!---->
+            <div class="ng-autocomplete">
+              <ng-autocomplete
+                [data]="getFormation()"
+                [searchKeyword]="keyword"
+                placeholder="Je vais en ..."
+                (selected)="selectEvent($event)"
+                (inputChanged)="onChangeSearch($event)"
+                (inputFocused)="onFocused($event)"
+                [itemTemplate]="itemTemplate2"
+                [notFoundTemplate]="notFoundTemplate2"
+              ></ng-autocomplete>
+              <!-- historyIdentifier="getFormation()" -->
+              <ng-template #itemTemplate2 let-item>
+                <div class="d-flex flex-sm-nowrap">
+                  <!--<a [innerHTML]="item.id"></a>-->
+                  <a [innerHTML]="item.name"></a>
+                </div>
+              </ng-template>
+
+              <ng-template #notFoundTemplate2 let-notFound>
+                <div [innerHTML]="notFound"></div>
+              </ng-template>
+            </div>
+            <!---->
+            <div class="input-group-prepend"></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="chart h">
+      <div
+        echarts
+        id="EPU-chart"
+        [options]="options"
+        (chartClick)="chartClicked($event)"
+      ></div>
+    </div>
+    <div>
+      <!-- Affichage simple -->
+      <div class="btn btn-primary" style="width: 100%;">Total : {{totalStudentPaths}}</div>
+      <div class="simplePathsDisplay" *ngFor="let path of paths; let ind = index" style="padding: 0px 5px">
+        <div class="text-danger">{{localStudentPaths[ind]}} :: {{localStudentPaths[ind]*100/totalStudentPaths | number:'1.0-1'}}%</div> &nbsp;
+        <div class="text-warning">{{getFirstStep()}}</div>
+        <div *ngFor="let step of path['steps']; let index = index">
+          <div class="text-primary" style="margin: 0px 10px; font-size: 10px;">
+            <i class="fas fa-minus" style="align-self: center;"></i>
+            <div style="align-self: center;">{{path['registered'][index]}}</div>
+            <i class="fas fa-arrow-right" style="align-self: center;"></i>
+          </div>
+          <div class="text-info" style="align-self: center;">{{path['steps'][index]}}</div>
+        </div>
+      </div>
+      <!-- fin de l'affichage simple -->
+    </div>
+    <div class="card-footer">
+      <div class="slidecontainer">
+        Nombre de parcours à afficher : {{ 0 }}
+        <input
+          type="range"
+          min="1"
+          max="20"
+          value="10"
+          class="slider"
+          id="myRange"
+        />
+      </div>
+    </div>
+  </div>
