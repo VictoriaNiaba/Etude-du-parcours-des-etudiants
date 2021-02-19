@@ -13,6 +13,107 @@ import { EpuStatsComponent } from '../epu-stats/epu-stats.component';
 })
 export class EpuGrapheComponent implements OnInit {
 
+  chartOptions = {
+    title: {
+      text: 'Test'
+    },
+    tooltip: {
+      trigger: 'item',
+      showDelay: 0.1,
+      transitionDuration: 0.2,
+      show: true,
+      formatter: function (params) {
+        if (params.dataType == 'node')
+          return `<div class="text-secondary" style="font-size:10">${params.name}</div>${params.value}`;
+        else
+          return "";
+      }
+    },
+    animationDurationUpdate: 1500,
+    animationEasingUpdate: 'quinticInOut',
+    series: [
+      {
+        type: 'graph',
+        layout: 'none',
+        symbolSize: 60,
+        roam: true,
+        label: {
+            show: true,
+            position: 'top',
+            formatter: function (params) {
+              let labelText: string = params['value'];
+              let nb2show = 15;
+              if (labelText.length < nb2show)
+                return labelText;
+              else
+                return labelText.slice(0, nb2show) + "...";
+          }
+        },
+        edgeSymbol: ['circle', 'arrow'],
+        edgeSymbolSize: [4, 10],
+        data: [{
+          name: 'MESSIN-PRSIN5AA',
+          value: 'BAC S',
+          type: 'node',
+          x: 300,
+          y: 300
+        }, {
+          name: 'MESSIN-PRSIN5AB',
+          value: 'Licence informatique',
+          type: 'node',
+          x: 500,
+          y: 200
+        }, {
+          name: 'MESSIN-PRSIN5AC',
+          value: 'Master informatique',
+          type: 'node',
+          x: 700,
+          y: 300
+        }, {
+          name: 'MESSIN-PRSIN5AI',
+          value: 'BTS SNIR',
+          type: 'node',
+          x: 500,
+          y: 400
+        }],
+        links: [{
+          source: 'MESSIN-PRSIN5AA',
+          target: 'MESSIN-PRSIN5AB',
+          label: {
+              show: true
+          }
+        }, {
+          source: 'MESSIN-PRSIN5AB',
+          target: 'MESSIN-PRSIN5AC',
+          label: {
+              show: true
+          }
+        }, {
+          source: 'MESSIN-PRSIN5AI',
+          target: 'MESSIN-PRSIN5AB',
+          label: {
+              show: true
+          }
+        }, {
+          source: 'MESSIN-PRSIN5AA',
+          target: 'MESSIN-PRSIN5AI',
+          label: {
+              show: true
+          }
+        }],
+        lineStyle: {
+            opacity: 0.9,
+            width: 2,
+            curveness: 0.1
+        },
+        zoom: 0.8
+      }
+    ]
+  };
+
+
+
+
   constructor(private httpClient: HttpClientService,private router: Router) { }
 
   ngOnInit(): void {
@@ -69,113 +170,12 @@ export class EpuGrapheComponent implements OnInit {
     this.statsComponent.setFormation(name);
   }
 
-  title = 'pfe-frontend';
-  getOption(){
-    return {
-      title: {
-        text: 'Test'
-      },
-      animationDurationUpdate: 1500,
-      animationEasingUpdate: 'quinticInOut',
-      series: [
-        {
-          type: 'graph',
-          layout: 'none',
-          symbolSize: 60,
-          roam: true,
-          label: {
-              show: true,
-              position: 'top',
-              formatter: function (params) {
-                let labelText: string = params['value'];
-                let nb2show = 15;
-                if (labelText.length < nb2show)
-                  return labelText;
-                else
-                  return labelText.slice(0, nb2show) + "...";
-            }
-          },
-          edgeSymbol: ['circle', 'arrow'],
-          edgeSymbolSize: [4, 10],
-          data: [{
-            name: 'MESSIN-PRSIN5AA',
-            value: 'BAC S',
-            type: 'node',
-            x: 300,
-            y: 300
-          }, {
-            name: 'MESSIN-PRSIN5AB',
-            value: 'Licence informatique',
-            type: 'node',
-            x: 500,
-            y: 200
-          }, {
-            name: 'MESSIN-PRSIN5AC',
-            value: 'Master informatique',
-            type: 'node',
-            x: 700,
-            y: 300
-          }, {
-            name: 'MESSIN-PRSIN5AI',
-            value: 'BTS SNIR',
-            type: 'node',
-            x: 500,
-            y: 400
-          }],
-          tooltip: {
-            trigger: 'item',
-            showDelay: 0.1,
-            transitionDuration: 0.2,
-            show: true,
-            formatter: function (params) {
-              if (params.type === 'node')
-                return `${params.name}`;
-              else
-                return "";
-            }
-          },
-          links: [{
-            source: 'MESSIN-PRSIN5AA',
-            target: 'MESSIN-PRSIN5AB',
-            label: {
-                show: true
-            }
-          }, {
-            source: 'MESSIN-PRSIN5AB',
-            target: 'MESSIN-PRSIN5AC',
-            label: {
-                show: true
-            }
-          }, {
-            source: 'MESSIN-PRSIN5AI',
-            target: 'MESSIN-PRSIN5AB',
-            label: {
-                show: true
-            }
-          }, {
-            source: 'MESSIN-PRSIN5AA',
-            target: 'MESSIN-PRSIN5AI',
-            label: {
-                show: true
-            }
-          }],
-          lineStyle: {
-              opacity: 0.9,
-              width: 2,
-              curveness: 0.1
-          },
-          zoom: 0.8
-        }
-      ]
-    };
-  }
-
   /*Recherche*/
   keyword = 'formation_name';
   formationSearch: any[];
   initSearch() {
     this.httpClient.getFormations().subscribe(res => {
-      this.formationSearch = res;
+      this.formationSearch = res; //peut être limité à id + formation_name sauf si on doit utiliser toutes les données de formation dans le component !
     });
   }
   selectEvent(event) {

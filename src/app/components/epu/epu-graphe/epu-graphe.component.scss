@@ -5,7 +5,6 @@
     margin: 0px;
 }
 .searchInput {
-    background-color: red;
     display: inline-flex;
     flex-grow: 1;
     justify-content: center;
@@ -30,6 +29,16 @@
 }
 .searchInput .input-group .ng-autocomplete {
     width: 100%;
+}
+.searchInput .inside {
+    margin-bottom: 5px;
+}
+.searchInput .inside>.top {
+    font-size: 10px;
+    padding: 0px 5px;
+}
+.searchInput .inside>.bottom {
+    padding:0px 5px;
 }
 
 .epu-tooltip {
