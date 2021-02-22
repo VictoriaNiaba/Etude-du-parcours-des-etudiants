@@ -8,7 +8,7 @@ import lombok.NonNull;
 @Data
 public class PathDto {
 	@NonNull
-	private String code;
+	private List<String> steps;
 	@NonNull
-	private List<String> stepCodes;
+	private List<Integer> registered;
 }

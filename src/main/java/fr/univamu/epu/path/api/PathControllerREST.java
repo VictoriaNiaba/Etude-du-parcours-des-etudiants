@@ -1,8 +1,13 @@
 package fr.univamu.epu.path.api;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,10 +33,12 @@ public class PathControllerREST {
 	private PathMapper pathMapper;
 
 	@GetMapping(value = "")
-	public ResponseEntity<Page<PathDto>> getPaths(Pageable pageable) {
-		Page<Path> paths = pathRepository.findAll(pageable);
-		Page<PathDto> pathsDto = paths.map(path -> pathMapper.pathToDto(path));
-
+	public ResponseEntity<List<PathDto>> getPaths() {
+		List<Path> paths = pathRepository.findAll(Sort.by(Sort.Direction.DESC, "avgStudentCountPerYear"));
+		paths = paths.subList(0, 10);
+		List<PathDto> pathsDto = new ArrayList<>();
+		for(Path path : paths)
+			pathsDto.add(pathMapper.pathToDto(path));
 		return ResponseEntity.ok().body(pathsDto);
 	}
 

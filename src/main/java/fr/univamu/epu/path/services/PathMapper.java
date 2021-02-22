@@ -1,6 +1,7 @@
 package fr.univamu.epu.path.services;
 
 import java.util.List;
+import java.util.Random;
 import java.util.ArrayList;
 
 import org.springframework.stereotype.Service;
@@ -19,13 +20,15 @@ public class PathMapper {
 	 * @return un cheminement prêt à être renvoyé via l'API REST
 	 */
 	public PathDto pathToDto(Path path) {
-		List<String> stepCodes = new ArrayList<>();
-
+		List<String> steps = new ArrayList<>();
+		List<Integer> registered = new ArrayList<>();
+		
 		path.getPathSteps().forEach(pathStep -> {
 			String stepCode = pathStep.getPrimaryKey().getStepCode();
-			stepCodes.add(stepCode);
+			steps.add(stepCode);
+			registered.add((int) path.getAvgStudentCountPerYear());
 		});
-
-		return new PathDto(path.getCode(), stepCodes);
+		
+		return new PathDto(steps,registered);
 	}
 }
