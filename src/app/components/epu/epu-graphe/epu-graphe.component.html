@@ -97,7 +97,7 @@
 
       <div class="simplePathsDisplay" *ngFor="let path of paths; let ind = index" style="padding: 0px 5px"> <!-- Pour chaque path -->
 
-        <div class="text-danger">{{path.getNbStudentIndependant()}} :: {{path.getNbStudentIndependant()*100/totalStudentPaths | number:'1.0-1'}}%</div> &nbsp;
+        <div class="text-danger">{{path.getNbStudent()}} :: {{path.getNbStudent()*100/totalStudentPaths | number:'1.0-1'}}%</div> &nbsp;
         <div class="text-warning">{{getFirstStep()}}</div>
 
         <div *ngFor="let step of path.path_steps; let index = index"> <!-- pour chaque step -->

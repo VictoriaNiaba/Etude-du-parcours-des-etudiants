@@ -13,10 +13,10 @@ export class Path {
         });
         return tmp_nb/this.path_steps.length;
     }
-    getNbStudentIndependant(): number{ //pour le moment on fait ça mais il faudrait que paths contienne l'info suivante : nombre d'étudiants INDEPENDANTS
+    getNbStudent(): number{ //pour le moment on fait ça mais il faudrait que paths contienne l'info suivante : nombre d'étudiants INDEPENDANTS
         let tmp = 0;
         this.path_steps.forEach(step => {
-            tmp += step.getStatsTotal() - step.step_stats_repeating;
+            tmp += step.getStatsTotal();
         });
         return tmp;
     }

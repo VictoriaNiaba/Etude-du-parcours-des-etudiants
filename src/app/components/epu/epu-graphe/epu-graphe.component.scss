@@ -82,7 +82,24 @@
     opacity: 1;
 }
 
-.simplePathsDisplay, .simplePathsDisplay div {
+.simplePathsDisplay {
+    display: flex;
+    flex-wrap: wrap;
+}
+.simplePathsDisplay>div {
+    padding: 5px 0px;
+}
+.simplePathsDisplay::after {
+    left: 5%;
+    content : "";
+    position: absolute;
+    width: 25%;
+    border-bottom: rgba($color: #000000, $alpha: 0.3) solid 1px;
+}
+.simplePathsDisplay:nth-child(even) {
+    background-color: rgba($color: #000000, $alpha: 0.05);
+}
+.simplePathsDisplay div {
     display: flex;
     flex-wrap: nowrap;
 }

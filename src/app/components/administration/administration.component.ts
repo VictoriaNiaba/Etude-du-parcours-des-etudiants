@@ -14,7 +14,9 @@ export class AdministrationComponent implements OnInit {
 
   salutation:string;
   getHello() {
-    this.httpClientService.getHello().subscribe(res => {this.salutation = res.message});
+    this.httpClientService.getHello().subscribe(res => {
+      this.salutation = res.message
+    });
   }
 
 }

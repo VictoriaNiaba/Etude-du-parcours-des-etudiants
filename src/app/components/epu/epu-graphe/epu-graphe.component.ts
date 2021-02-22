@@ -151,7 +151,7 @@ export class EpuGrapheComponent implements OnInit {
 
       this.totalStudentPaths = 0;
       this.paths.forEach(path => {
-        this.totalStudentPaths += path.getNbStudentIndependant(); 
+        this.totalStudentPaths += path.getNbStudent(); 
       });
     });
   }
