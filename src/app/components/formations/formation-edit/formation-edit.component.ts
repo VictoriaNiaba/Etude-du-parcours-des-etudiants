@@ -67,7 +67,10 @@ export class FormationEditComponent implements OnInit {
     }
 
     if (this.isAddMode) {
-      this.formation = new Formation(this.editForm.value.id,this.editForm.value.formation_name,this.editForm.value.description,this.editForm.value.type,this.editForm.value.url,[],new Date,new Date);
+      //Pour obtenir seulement les codes
+      let tmpList: string[] = [];
+      this.stepsOfFormation.forEach(element => tmpList.push(element.step_code));
+      this.formation = new Formation(this.editForm.value.id,this.editForm.value.formation_name,this.editForm.value.description,this.editForm.value.type,this.editForm.value.url, tmpList,new Date,new Date);
       this.create(this.formation);
       console.log(this.formation);
     } else {
@@ -76,6 +79,9 @@ export class FormationEditComponent implements OnInit {
       this.formation.description = this.editForm.value.description;
       this.formation.type = this.editForm.value.type;
       this.formation.url = this.editForm.value.url;
+      //Pour obtenir seulement les codes
+      this.formation.steps = [];
+      this.stepsOfFormation.forEach(element => this.formation.steps.push(element.step_code));
       this.formation.last_modification = new Date;
       this.update(this.formation);
     }

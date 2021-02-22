@@ -6,11 +6,11 @@ export class Formation {
     description: string;
     type: string;
     url: string;
-    steps: [];
+    steps: string[];
     add_date: Date;
     last_modification: Date;
 
-    constructor(id: string, formation_name: string, description: string, type: string, url: string, steps: [], add_date: Date, last_modification: Date) {
+    constructor(id: string, formation_name: string, description: string, type: string, url: string, steps: string[], add_date: Date, last_modification: Date) {
         this.id = id;
         this.formation_name = formation_name;
         this.description = description;
