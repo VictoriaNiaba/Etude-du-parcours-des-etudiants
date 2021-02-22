@@ -34,3 +34,5 @@ blog/bin/
 **/*.iml
 **/.idea
 **/.gradle
+
+data/
