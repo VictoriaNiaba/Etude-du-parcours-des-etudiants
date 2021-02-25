@@ -4,15 +4,16 @@
     <ul class="nav nav-tabs card-header-tabs">
       <li class="nav-item">
         <div class="nav-link active" href="#">
-          <h2 *ngIf="!formationName">Statistiques</h2>
-          <h2 *ngIf="formationName">{{formationName}}</h2>
+          <h2 *ngIf="!step">Statistiques</h2>
+          <h2 *ngIf="step">{{step.step_name}}</h2>
         </div>
       </li>
     </ul>
   </div>
-  <div *ngIf="formationName" class="stats">
+  <div *ngIf="step" class="stats">
     <div class="stats-line">
       <div class="stats-item">
+        <!-- Blabla sur la formation ??? à voir -->
         Anim nisi fugiat reprehenderit laborum eu exercitation tempor voluptate
         sit elit et labore laboris elit. Ullamco in irure non aute consectetur
         deserunt occaecat non do cupidatat anim proident sint cillum. Voluptate
@@ -22,7 +23,7 @@
         <div
           echarts
           (chartInit)="onChartInit1($event)"
-          [options]="getOptions()"
+          [options]="options"
           class="chart-stats-1"
           id="chartStats1"
         ></div>
@@ -30,6 +31,7 @@
     </div>
     <div class="stats-line">
       <div class="stats-item">
+        <!-- Blabla sur la formation ??? à voir -->
         Anim nisi fugiat reprehenderit laborum eu exercitation tempor voluptate
         sit elit et labore laboris elit. Ullamco in irure non aute consectetur
         deserunt occaecat non do cupidatat anim proident sint cillum. Voluptate
@@ -39,14 +41,15 @@
         <div
           echarts
           (chartInit)="onChartInit2($event)"
-          [options]="getOptions()"
+          [options]="options"
           class="chart-stats-1"
           id="chartStats2"
         ></div>
       </div>
+      <!-- Ajout de la liste des formations lié <= récupération par requête lors du setFormation() -->
     </div>
   </div>
-  <div *ngIf="!formationName" class="stats">
+  <div *ngIf="!step" class="stats">
     <div class="text-center text-white bg-primary" style="margin: 40px 0px">Cliquez sur une formation pour en afficher les statistiques</div>
   </div>
 </div>
