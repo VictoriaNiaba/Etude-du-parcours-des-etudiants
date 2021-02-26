@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @ComponentScan("fr.univamu.epu.dao")
 @EnableTransactionManagement
-public class SpringDAOConfiguration {
+public class SpringDAOConfig {
 
 	/*
 	 * Définition de la source de données
@@ -49,7 +49,7 @@ public class SpringDAOConfiguration {
 		properties.setProperty("hibernate.hbm2ddl.auto", "create-drop"); // create-drop pour drop à la fin du test ou update
 		properties.setProperty("hibernate.dialect", //
 				"org.hibernate.dialect.HSQLDialect");
-		properties.setProperty("hibernate.show_sql", "true");
+		properties.setProperty("hibernate.show_sql", "false");
 		properties.setProperty("hibernate.format_sql", "true");
 		em.setJpaProperties(properties);
 		return em;

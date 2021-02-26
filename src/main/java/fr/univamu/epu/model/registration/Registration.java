@@ -22,7 +22,7 @@ public class Registration implements Serializable{
 	private String studentCode;
 
 	@Id
-	@Column(name = "step_code", nullable = false, unique = false)
+	@Column(name = "year", nullable = false, unique = false)
 	private Integer year;
 	
 	@Id

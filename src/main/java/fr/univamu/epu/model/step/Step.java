@@ -32,6 +32,21 @@ public class Step implements Serializable {
 	public String toString() {
 		return "Step [stepCode=" + stepCode + ", name=" + name + "]";
 	}
-	
+
+	public String getStepCode() {
+		return stepCode;
+	}
+
+	public void setStepCode(String stepCode) {
+		this.stepCode = stepCode;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 }
