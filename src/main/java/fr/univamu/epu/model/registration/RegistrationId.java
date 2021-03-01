@@ -2,20 +2,27 @@ package fr.univamu.epu.model.registration;
 
 import java.io.Serializable;
 
-import fr.univamu.epu.model.step.Step;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
 
+@Embeddable
 public class RegistrationId implements Serializable {
-    private Step step;
 
-    private String studentCode;
+	@JoinColumn(name = "step", referencedColumnName = "step_code")
+    String stepCode;
     
-    private Integer year;
+    @Column(name = "student_code", length = 10, nullable = false, unique = false)
+    String studentCode;
 
-	public RegistrationId(Step step, String studentCode, Integer year) {
+	@Column(name = "year", nullable = false, unique = false)
+    Integer year;
+
+	public RegistrationId(String stepCode, String studentCode, Integer year) {
 		super();
-		this.step = step;
+		this.stepCode = stepCode;
 		this.studentCode = studentCode;
 		this.year = year;
 	}
-
+	
 }

@@ -50,7 +50,7 @@ public class SpringDAOConfig {
 		properties.setProperty("hibernate.dialect", //
 				"org.hibernate.dialect.HSQLDialect");
 		properties.setProperty("hibernate.show_sql", "false");
-		properties.setProperty("hibernate.format_sql", "true");
+		properties.setProperty("hibernate.format_sql", "false");
 		em.setJpaProperties(properties);
 		return em;
 	}

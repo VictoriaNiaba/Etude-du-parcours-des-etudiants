@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.univamu.epu.model.registration.Registration;
+import fr.univamu.epu.model.registration.RegistrationId;
 import fr.univamu.epu.model.step.Step;
 
 @Service
@@ -23,7 +25,7 @@ public class Dao {
 	@PersistenceContext(type = PersistenceContextType.EXTENDED)
 	EntityManager em;
 
-	// DAO Step
+	// DAO STEP
 	public Step addStep(Step s) {
 		em.persist(s);
 		// System.out.println("addStep witdh id=" + s.getStepCode());
@@ -61,14 +63,38 @@ public class Dao {
 	}
 
 	public Collection<Step> getAllSteps() {
-		Collection<Step> StepsLazy = em.createQuery("Select s from Step s", Step.class).getResultList();
-		//TODO: gros doutes sur la nécéssité du lazy
-		Collection<Step> Steps = new ArrayList<Step>();
-		for (Step s : StepsLazy) {
-			Steps.add(this.findStep(s.getStepCode()));
-		}
+		Collection<Step> Steps = em.createQuery("Select s from Step s", Step.class).getResultList();
 		return Steps;
 	}
 	
+	// DAO REGISTRATION
+	public Registration addRegistration(Registration r) {
+		em.persist(r);
+		// System.out.println("addRegistration witdh id=" + r.getRegistrationCode());
+		return r;
+	}
 
+	public Registration findRegistration(RegistrationId RegistrationId) {
+		Registration r = em.find(Registration.class, RegistrationId);
+		// System.out.println("findRegistration with id=" + r.getRegistrationCode());
+		return r;
+	}
+	public void updateRegistration(Registration r) {
+		em.merge(r);
+		// System.out.println("updateRegistration with id=" + r.getRegistrationCode());
+	}
+
+	public void removeRegistration(RegistrationId RegistrationId) { // à tester
+		Registration r = findRegistration(RegistrationId);
+		updateRegistration(r);
+		em.remove(em.merge(r));
+		// System.out.println("removeRegistration = " + r.getRegistrationName());
+	}
+
+	public Collection<Registration> getAllRegistrations() {
+		Collection<Registration> Registrations = em.createQuery("Select r from Registration r", Registration.class).getResultList();
+		return Registrations;
+	}
+	
+	
 }
