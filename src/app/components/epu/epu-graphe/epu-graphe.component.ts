@@ -64,6 +64,14 @@ export class EpuGrapheComponent implements OnInit {
     let links: any[] = [];
     let linksDuplicate: any[] = [];
 
+    //Noeud Post BAC
+    let postBacNode = {
+      name: 'POST-BAC',
+      value: 'POST-BAC',
+      type: 'node'
+    }
+    data.push(postBacNode)
+    
     this.paths.forEach(path => {
       let pathSteps = path.path_steps;
       //On crée nos noeuds sans duplication
@@ -80,8 +88,8 @@ export class EpuGrapheComponent implements OnInit {
 
         //On cherche les liens qui peuvent être dupliqués
         let currentSourceStepCode: String = index - 1 < 0 ? this.getFirstStep().step_code : pathSteps[index - 1].step_code;
-        let linkFilter = links.filter(link => 
-          link.source == currentSourceStepCode 
+        let linkFilter = links.filter(link =>
+          link.source == currentSourceStepCode
           && link.target == pathSteps[index].step_code
         );
 
@@ -102,7 +110,7 @@ export class EpuGrapheComponent implements OnInit {
           links.push(tmpLink);
         }
         //On stock les liens qui sont dupliqués
-        else{
+        else {
           linksDuplicate.push(tmpLink);
         }
       }
@@ -111,7 +119,7 @@ export class EpuGrapheComponent implements OnInit {
     //On ajoute la valeur des liens dupliqués au liens existants
     linksDuplicate.forEach(linkDuplicate => {
       links.forEach(link => {
-        if(linkDuplicate.source == link.source && linkDuplicate.target == link.target){
+        if (linkDuplicate.source == link.source && linkDuplicate.target == link.target) {
           link.value += linkDuplicate.value;
         }
       })
