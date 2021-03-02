@@ -65,13 +65,15 @@ export class EpuGrapheComponent implements OnInit {
     let linksDuplicate: any[] = [];
 
     //Noeud Post BAC
-    let postBacNode = {
-      name: 'POST-BAC',
-      value: 'POST-BAC',
-      type: 'node'
+    if (this.getFirstStep().step_code == "POST-BAC") {
+      let postBacNode = {
+        name: 'POST-BAC',
+        value: 'POST-BAC',
+        type: 'node'
+      }
+      data.push(postBacNode);
     }
-    data.push(postBacNode)
-    
+
     this.paths.forEach(path => {
       let pathSteps = path.path_steps;
       //On crée nos noeuds sans duplication
