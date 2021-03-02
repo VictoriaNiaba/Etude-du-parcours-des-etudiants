@@ -248,7 +248,7 @@
         300,
         333,
         330,
-        303
+        2000
       ]
     },
     {
@@ -256,15 +256,13 @@
         "MESSIN-PRSIN5AE",
         "MESSIN-PRSIN5AD",
         "MESSIN-PRSIN5AC",
-        "MESSIN-PRSIN5AF",
         "MESSIN-PRSIN5AI"
       ],
       "registered": [
         200,
         222,
         202,
-        220,
-        200
+        1000
       ]
     },
     {

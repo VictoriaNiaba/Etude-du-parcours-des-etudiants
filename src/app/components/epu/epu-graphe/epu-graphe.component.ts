@@ -15,92 +15,184 @@ export class EpuGrapheComponent implements OnInit {
 
   chartOptions: any;
 
-  constructor(private httpClient: HttpClientService,private router: Router) { }
+  constructor(private httpClient: HttpClientService, private router: Router) { }
 
   ngOnInit(): void {
     this.getPaths();
     this.initSearch();
-    this.changeOptions();
+  }
+
+  paths: Path[] = new Array<Path>();
+  totalStudentPaths: number;
+  firstStep: Step = new Step("POST-BAC", "POST-BAC");
+  lastStep: string = "PRSIN5AI";
+  getFirstStep(): Step {
+    //Temporaire
+    return this.firstStep ? this.firstStep : new Step("POST-BAC", "POST-BAC");
+  }
+  getPaths() {
+    this.httpClient.getPaths(this.firstStep.step_name, this.lastStep).subscribe(res => {
+      //Temporaire
+      this.getFirstStep();
+      res.forEach(path => {
+        let pathTemp = new Path();
+        for (let i = 0; i < path['steps'].length; i++) {
+          let step = new Step( //init
+            path['steps'][i],
+            //TODO: récupérer le nom des steps
+            path['steps'][i],
+            path['registered'][i],
+            0, //other
+            0); //redoublement
+          pathTemp.addSteps(step);
+          //console.log('>>',step.step_name);
+        }
+        //console.log('>> mean : ',pathTemp.getMeanStudents());
+        this.paths.push(pathTemp);
+        //console.log('>> -----');
+      });
+      this.totalStudentPaths = 0;
+      this.paths.forEach(path => {
+        this.totalStudentPaths += path.getNbStudent();
+      });
+      this.changeOptions()
+    })
   }
 
   changeOptions() {
+    let data: any[] = [];
+    let links: any[] = [];
+    let linksDuplicate: any[] = [];
 
-    //for...
-    let data:any[] = [
-      {
-        name: 'MESSIN-PRSIN5AA',
-        value: 'BAC S',
-        type: 'node',
-        //x: 300,
-        //y: 300
-      }, {
-        name: 'MESSIN-PRSIN5AB',
-        value: 'Licence informatique',
-        type: 'node',
-        //x: 500,
-        //y: 200
-      }, {
-        name: 'MESSIN-PRSIN5AC',
-        value: 'Master informatique',
-        type: 'node',
-        //x: 700,
-        //y: 300
-      }, {
-        name: 'MESSIN-PRSIN5AI',
-        value: 'BTS SNIR',
-        type: 'node',
-        //x: 500,
-        //y: 400
-      }
-    ];
+    this.paths.forEach(path => {
+      let pathSteps = path.path_steps;
+      //On crée nos noeuds sans duplication
+      for (let index = 0; index < pathSteps.length; index++) {
+        if (data.length == 0 || data.filter(element => element.name == pathSteps[index].step_code).length == 0) {
+          let tmpData = {
+            name: pathSteps[index].step_code,
+            value: pathSteps[index].step_name,
+            type: 'node'
+          }
+          data.push(tmpData);
+        }
 
-    let links:any = [
-      {
-        source: 'MESSIN-PRSIN5AA',
-        target: 'MESSIN-PRSIN5AB',
-        value: 11, //valeur sur le label
-        label: { //obligatoire pour afficher value (??? pas trouvé mieux donc faut répéter ?)
+
+        //On cherche les liens qui peuvent être dupliqués
+        let currentSourceStepCode: String = index - 1 < 0 ? this.getFirstStep().step_code : pathSteps[index - 1].step_code;
+        let linkFilter = links.filter(link => 
+          link.source == currentSourceStepCode 
+          && link.target == pathSteps[index].step_code
+        );
+
+        let tmpLink = {
+          source: currentSourceStepCode,
+          target: pathSteps[index].step_code,
+          value: pathSteps[index].getStatsTotal(),
+          label: {
             show: true,
             formatter: function (params) {
               return params['value']
             }
+          }
         }
-      }, {
-        source: 'MESSIN-PRSIN5AB',
-        target: 'MESSIN-PRSIN5AC',
-        value: 22,
-        label: {
-            show: true,
-            formatter: function (params) {
-              return params['value']
-            }
+
+        //Si le lien n'existe pas déjà on le crée
+        if (linkFilter.length == 0) {
+          links.push(tmpLink);
         }
-      }, {
-        source: 'MESSIN-PRSIN5AI',
-        target: 'MESSIN-PRSIN5AB',
-        value: 33,
-        label: {
-            show: true,
-            formatter: function (params) {
-              return params['value']
-            }
-        }
-      }, {
-        source: 'MESSIN-PRSIN5AA',
-        target: 'MESSIN-PRSIN5AI',
-        value: 44,
-        label: {
-            show: true,
-            formatter: function (params) {
-              return params['value']
-            }
+        //On stock les liens qui sont dupliqués
+        else{
+          linksDuplicate.push(tmpLink);
         }
       }
-    ];
+    });
 
+    //On ajoute la valeur des liens dupliqués au liens existants
+    linksDuplicate.forEach(linkDuplicate => {
+      links.forEach(link => {
+        if(linkDuplicate.source == link.source && linkDuplicate.target == link.target){
+          link.value += linkDuplicate.value;
+        }
+      })
+    })
+
+    /*
+        let data: any[] = [
+          {
+            name: 'MESSIN-PRSIN5AA',
+            value: 'BAC S',
+            type: 'node',
+            //x: 300,
+            //y: 300
+          }, {
+            name: 'MESSIN-PRSIN5AB',
+            value: 'Licence informatique',
+            type: 'node',
+            //x: 500,
+            //y: 200
+          }, {
+            name: 'MESSIN-PRSIN5AC',
+            value: 'Master informatique',
+            type: 'node',
+            //x: 700,
+            //y: 300
+          }, {
+            name: 'MESSIN-PRSIN5AI',
+            value: 'BTS SNIR',
+            type: 'node',
+            //x: 500,
+            //y: 400
+          }
+        ];
+    
+        let links: any = [
+          {
+            source: 'MESSIN-PRSIN5AA',
+            target: 'MESSIN-PRSIN5AB',
+            value: 11, //valeur sur le label
+            label: { //obligatoire pour afficher value (??? pas trouvé mieux donc faut répéter ?)
+              show: true,
+              formatter: function (params) {
+                return params['value']
+              }
+            }
+          }, {
+            source: 'MESSIN-PRSIN5AB',
+            target: 'MESSIN-PRSIN5AC',
+            value: 22,
+            label: {
+              show: true,
+              formatter: function (params) {
+                return params['value']
+              }
+            }
+          }, {
+            source: 'MESSIN-PRSIN5AI',
+            target: 'MESSIN-PRSIN5AB',
+            value: 33,
+            label: {
+              show: true,
+              formatter: function (params) {
+                return params['value']
+              }
+            }
+          }, {
+            source: 'MESSIN-PRSIN5AA',
+            target: 'MESSIN-PRSIN5AI',
+            value: 44,
+            label: {
+              show: true,
+              formatter: function (params) {
+                return params['value']
+              }
+            }
+          }
+        ];
+    */
     this.chartOptions = {
       title: {
-        text: 'Test'
+        text: 'Graphe'
       },
       tooltip: {
         trigger: 'item',
@@ -130,15 +222,15 @@ export class EpuGrapheComponent implements OnInit {
           symbolSize: 60,
           roam: true,
           label: {
-              show: true,
-              position: 'top',
-              formatter: function (params) {
-                let labelText: string = params['value'];
-                let nb2show = 15;
-                if (labelText.length < nb2show)
-                  return labelText;
-                else
-                  return labelText.slice(0, nb2show) + "...";
+            show: true,
+            position: 'top',
+            formatter: function (params) {
+              let labelText: string = params['value'];
+              let nb2show = 15;
+              if (labelText.length < nb2show)
+                return labelText;
+              else
+                return labelText.slice(0, nb2show) + "...";
             }
           },
           edgeSymbol: ['circle', 'arrow'],
@@ -146,50 +238,15 @@ export class EpuGrapheComponent implements OnInit {
           data: data,
           links: links,
           lineStyle: {
-              opacity: 0.9,
-              width: 2,
-              curveness: 0.1
+            opacity: 0.9,
+            width: 2,
+            curveness: 0.1
           },
           zoom: 0.8
         }
       ]
     };
     console.log("Graph updated")
-  }
-
-
-  paths: Path[] = new Array<Path>();
-  totalStudentPaths: number;
-  firstStep: string = null;
-  lastStep: string = "PRSIN5AI";
-  getFirstStep() {
-    return this.firstStep ? this.firstStep : "POST-BAC";
-  }
-  getPaths(){
-    this.httpClient.getPaths(this.firstStep, this.lastStep).subscribe(res => {
-
-      res.forEach(path => {
-        let pathTemp = new Path();
-        for(let i=0; i<path['steps'].length; i++) {
-          let step = new Step( //init
-            path['steps'][i],
-            path['steps'][i],
-            path['registered'][i],
-            0, //other
-            0); //redoublement
-          pathTemp.addSteps(step);
-          //console.log('>>',step.step_name);
-        }
-        //console.log('>> mean : ',pathTemp.getMeanStudents());
-        this.paths.push(pathTemp);
-        //console.log('>> -----');
-      });
-
-      this.totalStudentPaths = 0;
-      this.paths.forEach(path => {
-        this.totalStudentPaths += path.getNbStudent(); 
-      });
-    });
   }
 
 
@@ -201,20 +258,20 @@ export class EpuGrapheComponent implements OnInit {
     if (e.dataType === 'node')
       this.stepClick(e.name);
   }
-  stepClick(name:string){
+  stepClick(name: string) {
     //trouver le step cliqué dans paths puis récupérer les statistiques et envoyer à la place de name puis modifier setFormation + affichage
     let res: Step;
     this.paths.forEach(path => {
-      path.path_steps.filter( x => {
-        if(x.step_name === name) {
+      path.path_steps.filter(x => {
+        if (x.step_name === name) {
           res = x;
           return;
         }
       });
-      if(res) return;
+      if (res) return;
     });
-    if(res)
-       return this.statsComponent.setFormation(res);
+    if (res)
+      return this.statsComponent.setFormation(res);
     return console.error('Click failed');
   }
 
