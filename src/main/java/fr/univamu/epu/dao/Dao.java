@@ -73,6 +73,21 @@ public class Dao {
 		// System.out.println("addRegistration witdh id=" + r.getRegistrationCode());
 		return r;
 	}
+	
+	public void batchInsertRegistration(Collection<Registration> regs){
+		int count = 0;
+		for(Registration r : regs) {
+			if(count % 10000 == 0) {
+				//System.out.println(count/10000 + "/" + regs.size()/10000);
+				em.flush();
+				em.clear();
+			}
+			em.persist(r);
+			++count;
+		}	
+	}
+	
+	
 
 	public Registration findRegistration(RegistrationId RegistrationId) {
 		Registration r = em.find(Registration.class, RegistrationId);

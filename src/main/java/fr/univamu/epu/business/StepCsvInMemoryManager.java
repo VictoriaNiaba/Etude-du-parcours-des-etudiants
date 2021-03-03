@@ -31,19 +31,15 @@ public class StepCsvInMemoryManager implements StepManager {
 
 	@PostConstruct
 	public void init() {
-		System.out.println("PC step csv manager");
+		System.out.println("==init StepCsvManager");
 		if (dao.getAllSteps().isEmpty()){
-
 			System.out.println("on appel le parse");
 			scp.parse(new File("files/etapes.csv"));
-
-			System.out.println("parse fini");
+			System.out.println("parse fini on met tout dans le DAO");
 			for(Step s : scp.getSteps())
 				dao.addStep(s);
 		}
-		
-		System.out.println("init terminé:) step csv manager");
-		System.out.println(dao.getAllSteps());
+		System.out.println("steps dans le dao! size:"+dao.getAllSteps().size());
 	}
 	
 	@Override

@@ -14,6 +14,7 @@ import fr.univamu.epu.dao.Dao;
 import fr.univamu.epu.model.registration.Registration;
 import fr.univamu.epu.model.registration.RegistrationId;
 import fr.univamu.epu.services.csvimport.RegistrationCsvParser;
+import fr.univamu.epu.services.path.PathBuilder;
 
 
 @Service("registrationManager")
@@ -31,17 +32,15 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 
 	@PostConstruct
 	public void init() {
-		System.out.println("PC IA csv manager");
+		System.out.println("==init RegistrationCsvManager");
 		if (dao.getAllRegistrations().isEmpty()){
+			System.out.println("on appel le parse");
 			rcp.parse(new File("files/IA.csv"));
-			for(Registration r : rcp.getRegistrations()) {
-				System.out.println("reg  dao add:"+r);
-				dao.addRegistration(r);
-			}
+			System.out.println("parse fini on met tout dans le DAO");	
+			dao.batchInsertRegistration(rcp.getRegistrations());
 		}
+		System.out.println("init terminé:) registration manager, reg:" + dao.getAllRegistrations().size());
 		
-		System.out.println("init terminé:) registration manager");
-		System.out.println(dao.getAllRegistrations());
 	}
 	
 	@Override

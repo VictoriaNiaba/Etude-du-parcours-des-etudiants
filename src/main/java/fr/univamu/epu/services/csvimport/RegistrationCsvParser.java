@@ -17,12 +17,9 @@ import fr.univamu.epu.model.step.Step;
 
 @Service("registrationCsvParser")
 public class RegistrationCsvParser implements CsvParser {
-	
-	@Autowired
-	StepManager stepManager;
 
-	private Set<Registration> registrations = new HashSet<>();	
-	
+	private Set<Registration> registrations = new HashSet<>();
+
 	public RegistrationCsvParser() {
 		super();
 	}
@@ -30,33 +27,35 @@ public class RegistrationCsvParser implements CsvParser {
 	@Override
 	public void parse(File file) {
 		try (Scanner scanner = new Scanner(file);) {
-		    while (scanner.hasNextLine()) {
-		    	registrations.add(getRegistrationFromLine(scanner.nextLine()));
-		    }
+			while (scanner.hasNextLine()) {
+				registrations.add(getRegistrationFromLine(scanner.nextLine()));
+			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	private Registration getRegistrationFromLine(String line) {
-	    try (Scanner rowScanner = new Scanner(line)) {
-	        rowScanner.useDelimiter(";");
-        	if(!rowScanner.hasNext()) return null;
-        	String studentCode = rowScanner.next();
-        	if(!rowScanner.hasNext()) return null;
-        	String stepCode = rowScanner.next();
-    		Step step = stepManager.find(stepCode);
-    		if(step == null) {
-    			System.out.println("CSV IA SCANNER: step not found: "+ stepCode);
-    			//creer l'etape a la volée
-    		}
-        	if(!rowScanner.hasNext()) return null;
-        	Integer year = Integer.parseInt(rowScanner.next());
-        	Registration reg = new Registration( new RegistrationId(stepCode, studentCode, year), step);
-        	System.out.println("la reg:"+reg);
-        	return reg;
-	    }
+		try (Scanner rowScanner = new Scanner(line)) {
+			rowScanner.useDelimiter(";");
+			if (!rowScanner.hasNext())
+				return null;
+			String studentCode = rowScanner.next();
+			if (!rowScanner.hasNext())
+				return null;
+			String stepCode = rowScanner.next();
+			/*
+			 * Step step = stepManager.find(stepCode); if(step == null) {
+			 * System.out.println("CSV IA SCANNER: step not found: "+ stepCode); //creer
+			 * l'etape a la volée }
+			 */
+			if (!rowScanner.hasNext())
+				return null;
+			Integer year = Integer.parseInt(rowScanner.next());
+			Registration reg = new Registration(new RegistrationId(stepCode, studentCode, year));
+			return reg;
+		}
 	}
 
 	public Set<Registration> getRegistrations() {

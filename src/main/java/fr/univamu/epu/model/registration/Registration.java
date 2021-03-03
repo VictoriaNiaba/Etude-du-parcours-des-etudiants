@@ -15,27 +15,19 @@ import javax.persistence.OneToOne;
 import fr.univamu.epu.model.step.Step;
 
 @Entity(name = "Registration")
-public class Registration implements Serializable{
-	
+public class Registration implements Serializable {
 
-	@EmbeddedId RegistrationId id;
-	
-	@MapsId("stepCode")
-	@OneToOne(cascade = CascadeType.ALL)
-    private Step step;
+	@EmbeddedId
+	RegistrationId id;
 
-	public Registration ( ) {
-		 super();
+	public Registration() {
+		super();
 	}
-	
-	public Registration(RegistrationId id, Step step) {
+
+	public Registration(RegistrationId id) {
 		super();
 		this.id = id;
-		this.step = step;
 	}
-
-
-
 
 	public String getStudentCode() {
 		return id.studentCode;
@@ -45,17 +37,34 @@ public class Registration implements Serializable{
 		return id.year;
 	}
 
-
-	public Step getStep() {
-		return step;
-	}
-
-
 	@Override
 	public String toString() {
-		return "Registration [studentCode=" + id.studentCode + ", year=" + id.year + ", step=" + step + "]";
+		return "Registration [studentCode=" + id.studentCode + ", year=" + id.year + ", stepcode=" + id.stepCode + "]";
 	}
-	
-	
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Registration other = (Registration) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
 }

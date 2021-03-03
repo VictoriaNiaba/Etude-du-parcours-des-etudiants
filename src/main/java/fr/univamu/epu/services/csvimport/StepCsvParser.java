@@ -13,7 +13,7 @@ import fr.univamu.epu.model.step.Step;
 @Service("stepCsvParser")
 public class StepCsvParser implements CsvParser {
 
-	private Set<Step> steps = new HashSet<>();	
+	private Set<Step> steps = new HashSet<Step>();	
 	
 	public StepCsvParser() {
 		super();
@@ -44,7 +44,7 @@ public class StepCsvParser implements CsvParser {
 	        }
 	    }
 	    //BOM check System.out.println("SYSTEM POINT OUT PRINT :"+step.getStepCode() + " + "+step.getStepCode().length());
-	    System.out.println("la step:"+step);
+	    //System.out.println("la step:"+step);
 	    return step;
 	}
 
