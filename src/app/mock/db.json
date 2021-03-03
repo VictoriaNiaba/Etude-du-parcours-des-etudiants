@@ -8,10 +8,12 @@
       "url": "www.google.com",
       "steps": [
         "SIN4T0",
-        "SIN4T1"
+        "SIN4T1",
+        "SIN4T2",
+        "SIN4T6"
       ],
       "add_date": "01/01/2000",
-      "last_modification": "2021-02-18T09:31:25.665Z"
+      "last_modification": "2021-03-03T15:01:52.317Z"
     },
     {
       "id": "MESSIN-PRSIN5AB",
@@ -139,9 +141,11 @@
       "description": "AZZZZZZZZZZZZZ",
       "type": "LICENCE",
       "url": "www.google.com",
-      "steps": [],
+      "steps": [
+        "SIN4T0"
+      ],
       "add_date": "2021-02-18T09:31:58.516Z",
-      "last_modification": "2021-02-18T09:31:58.516Z"
+      "last_modification": "2021-03-03T14:58:03.456Z"
     }
   ],
   "registrations": [
