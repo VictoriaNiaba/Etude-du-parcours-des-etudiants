@@ -10,8 +10,7 @@ import fr.univamu.epu.services.path.PathBuilder;
 @Service("pathManager")
 public class PathInMemoryManager {
 	
-	@Autowired
-	PathBuilder pb;
+	
 	
 	public PathInMemoryManager() {
 		super();
@@ -19,8 +18,7 @@ public class PathInMemoryManager {
 
 	@PostConstruct
 	public void init() {
-		System.out.println("==pathManager init");
-		pb.generatePaths();
+		System.out.println("==pathManager init QUE DALLE");
 	}
 	
 }

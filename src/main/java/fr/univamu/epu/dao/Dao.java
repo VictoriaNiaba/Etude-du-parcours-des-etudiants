@@ -78,7 +78,7 @@ public class Dao {
 		int count = 0;
 		for(Registration r : regs) {
 			if(count % 10000 == 0) {
-				//System.out.println(count/10000 + "/" + regs.size()/10000);
+				System.out.println(count/10000 + "/" + regs.size()/10000);
 				em.flush();
 				em.clear();
 			}

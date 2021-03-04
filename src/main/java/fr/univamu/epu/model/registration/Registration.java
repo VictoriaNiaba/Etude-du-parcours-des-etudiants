@@ -36,7 +36,11 @@ public class Registration implements Serializable {
 	public Integer getYear() {
 		return id.year;
 	}
-
+	
+	public String getStepCode() {
+		return id.stepCode;
+	}
+	
 	@Override
 	public String toString() {
 		return "Registration [studentCode=" + id.studentCode + ", year=" + id.year + ", stepcode=" + id.stepCode + "]";

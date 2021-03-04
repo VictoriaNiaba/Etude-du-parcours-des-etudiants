@@ -24,6 +24,9 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 	Dao dao;
 	
 	@Autowired
+	PathBuilder pb;
+	
+	@Autowired
 	RegistrationCsvParser rcp;
 	
 	public RegistrationCsvInMemoryManager() {
@@ -39,7 +42,9 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 			System.out.println("parse fini on met tout dans le DAO");	
 			dao.batchInsertRegistration(rcp.getRegistrations());
 		}
-		System.out.println("init terminé:) registration manager, reg:" + dao.getAllRegistrations().size());
+		System.out.println("reg daoé:" + dao.getAllRegistrations().size());
+		System.out.println("generations des cheminements  RegManager");
+		pb.buildPaths();
 		
 	}
 	
