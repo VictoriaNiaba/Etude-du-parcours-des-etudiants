@@ -1,7 +1,8 @@
 package fr.univamu.epu.services.csvimport;
 
-import java.io.File;
+import java.io.InputStream;
+import java.util.Set;
 
-public interface CsvParser {	
-	public void parse(File file);
+public interface CsvParser<T> {	
+	public Set<T> parse(InputStream inputStream);
 }

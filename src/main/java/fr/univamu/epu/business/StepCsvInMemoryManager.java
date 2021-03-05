@@ -1,19 +1,19 @@
 package fr.univamu.epu.business;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Collection;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import fr.univamu.epu.dao.Dao;
 import fr.univamu.epu.model.step.Step;
-import fr.univamu.epu.services.csvimport.RegistrationCsvParser;
-import fr.univamu.epu.services.csvimport.StepCsvParser;
+import fr.univamu.epu.services.csvimport.CsvParser;
 
 
 @Service("stepManager")
@@ -23,23 +23,24 @@ public class StepCsvInMemoryManager implements StepManager {
 	Dao dao;
 	
 	@Autowired
-	StepCsvParser scp;
+	CsvParser<Step> scp;
 	
 	public StepCsvInMemoryManager() {
 		super();
 	}
 
 	@PostConstruct
-	public void init() {
+	public void init() throws FileNotFoundException {
 		System.out.println("==init StepCsvManager");
 		if (dao.getAllSteps().isEmpty()){
 			System.out.println("on appel le parse");
-			scp.parse(new File("files/etapes.csv"));
+			Set<Step> steps = scp.parse(new FileInputStream(new File("files/etapes.csv")));
 			System.out.println("parse fini on met tout dans le DAO");
-			for(Step s : scp.getSteps())
-				dao.addStep(s);
+			for(Step step : steps) {
+				dao.addStep(step);
+			}	
 		}
-		System.out.println("steps dans le dao! size:"+dao.getAllSteps().size());
+		System.out.println("steps dans le dao! size:" + dao.getAllSteps().size());
 	}
 	
 	@Override

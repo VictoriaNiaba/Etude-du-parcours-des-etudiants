@@ -1,13 +1,14 @@
 package fr.univamu.epu.business;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Collection;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import fr.univamu.epu.dao.Dao;
@@ -34,13 +35,13 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 	}
 
 	@PostConstruct
-	public void init() {
+	public void init() throws FileNotFoundException {
 		System.out.println("==init RegistrationCsvManager");
 		if (dao.getAllRegistrations().isEmpty()){
 			System.out.println("on appel le parse");
-			rcp.parse(new File("files/IA.csv"));
+			Set<Registration> registrations = rcp.parse(new FileInputStream(new File("files/IA.csv")));
 			System.out.println("parse fini on met tout dans le DAO");	
-			dao.batchInsertRegistration(rcp.getRegistrations());
+			dao.batchInsertRegistration(registrations);
 		}
 		System.out.println("reg daoé:" + dao.getAllRegistrations().size());
 		System.out.println("generations des cheminements  RegManager");
