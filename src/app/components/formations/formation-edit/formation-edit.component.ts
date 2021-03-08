@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Formation } from 'src/app/models/formation';
 import { Step } from 'src/app/models/Step';
@@ -19,21 +19,39 @@ export class FormationEditComponent implements OnInit {
   submitted = false;
   steps: Array<Step> = [];
   stepsOfFormation: Array<Step> = [];
-  id: string;
+  id: string = null;
 
   constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private httpClientService: HttpClientService) { }
 
   ngOnInit(): void {
+    //-------------Initialisation----------------
     this.id = this.route.snapshot.paramMap.get('id');
     if (this.id === null) { this.isAddMode = true; }
     else { this.isAddMode = false; }
+
+    //Custom Validator pour savoir si l'ID utilisé n'est pas déjà pris
+    const uniqueIdValidator = (control: AbstractControl): { [key: string]: boolean } | null => {
+      let formationTmp: Formation [] = [];
+      this.httpClientService.getFormations().subscribe(res => {
+        formationTmp = res;
+        formationTmp.forEach(f =>{
+          if(control.value === f.id && control.value !== undefined && control.value != this.id){
+            console.log(f.id, control.value)
+            return { uniqueId: true };
+          }
+        });
+      });
+      return null;
+    }
+
     this.editForm = this.formBuilder.group({
-      id: ['', [Validators.required]],
+      id: ['', [Validators.required, uniqueIdValidator]],
       formation_name: ['', [Validators.required]],
       description: ['', Validators.required],
       type: ['', [Validators.required]],
       url: ['', [Validators.required]],
     });
+
 
     //Préparation des listes pour le drag and drop
     //On récupère toutes les étapes
@@ -81,19 +99,24 @@ export class FormationEditComponent implements OnInit {
       //Pour obtenir seulement les codes
       let tmpList: string[] = [];
       this.stepsOfFormation.forEach(element => tmpList.push(element.step_code));
+
+      //On crée une nouvelle formation
       this.formation = new Formation(this.editForm.value.id, this.editForm.value.formation_name, this.editForm.value.description, this.editForm.value.type, this.editForm.value.url, tmpList, new Date, new Date);
       this.create(this.formation);
       console.log(this.formation);
     } else {
+      //On met à jour les valeurs en mode édition
       this.formation.id = this.editForm.value.id;
       this.formation.formation_name = this.editForm.value.formation_name;
       this.formation.description = this.editForm.value.description;
       this.formation.type = this.editForm.value.type;
       this.formation.url = this.editForm.value.url;
+      this.formation.last_modification = new Date;
+
       //Pour obtenir seulement les codes
       this.formation.steps = [];
       this.stepsOfFormation.forEach(element => this.formation.steps.push(element.step_code));
-      this.formation.last_modification = new Date;
+
       this.update(this.formation);
     }
   }
@@ -110,6 +133,7 @@ export class FormationEditComponent implements OnInit {
     })
   }
 
+  //Pour le drag and drop des étapes
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);

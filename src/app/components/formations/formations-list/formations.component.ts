@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClientService } from 'src/app/services/http-client.service';
-import { UploadService } from 'src/app/services/upload.service';
 
 @Component({
   selector: 'app-formations',
@@ -14,7 +13,7 @@ export class FormationsComponent implements OnInit {
   collectionSize: number;
   fileToUpload: File = null;
 
-  constructor(private uploadService: UploadService, private httpClientService: HttpClientService) { }
+  constructor(private httpClientService: HttpClientService) { }
 
   ngOnInit(): void {
     this.httpClientService.getFormations().subscribe(res => { 
@@ -30,7 +29,7 @@ export class FormationsComponent implements OnInit {
   }
 
   uploadFileToService() {
-    this.uploadService.postFile(this.fileToUpload, "http://localhost:8080/steps").subscribe(data => {
+    this.httpClientService.postFile(this.fileToUpload, "/formations/_upload").subscribe(data => {
 
       }, error => {
         console.log(error);

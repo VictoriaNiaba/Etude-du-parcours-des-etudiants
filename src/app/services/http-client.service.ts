@@ -1,5 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Formation } from '../models/formation';
 import { User } from '../models/User';
 
@@ -79,5 +81,28 @@ export class HttpClientService {
 
   deleteFormation(code){
     return this.httpClient.delete<Formation>(`http://localhost:3000/formations/` + code, this.httpHeader);
+  }
+
+  postFile(fileToUpload: File, endpoint: string): Observable<boolean> {
+    let h = new HttpHeaders();
+    h.set('Accept', 'application/json, text/plain, text/csv, application/vnd.ms-excel');
+    const formData: FormData = new FormData();
+    formData.append('fichier', fileToUpload, fileToUpload.name);
+    //#region debug
+    console.log(fileToUpload.name);
+    console.log(fileToUpload);
+    /*
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const text = reader.result.toString().trim();
+        console.log(text);
+    }
+    reader.readAsText(fileToUpload);
+    */
+    console.log(formData);
+    //#endregion debug
+    return this.httpClient
+      .post(this.baseUrl + endpoint, formData, { headers: h })
+      .pipe(map(() => { return true; }));
   }
 }

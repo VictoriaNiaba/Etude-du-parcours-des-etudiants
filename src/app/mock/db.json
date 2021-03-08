@@ -7,13 +7,13 @@
       "type": "MASTER",
       "url": "www.google.com",
       "steps": [
-        "SIN4T0",
         "SIN4T1",
         "SIN4T2",
-        "SIN4T6"
+        "SIN4T6",
+        "SIN4T0"
       ],
       "add_date": "01/01/2000",
-      "last_modification": "2021-03-03T15:01:52.317Z"
+      "last_modification": "2021-03-08T16:38:37.937Z"
     },
     {
       "id": "MESSIN-PRSIN5AB",
@@ -22,12 +22,12 @@
       "type": "MASTER",
       "url": "www.google.com",
       "steps": [
-        "SIN4T0",
         "SIN4T1",
-        "SIN4T2"
+        "SIN4T2",
+        "SIN4T0"
       ],
       "add_date": "01/01/2000",
-      "last_modification": "01/01/2001"
+      "last_modification": "2021-03-08T15:59:52.815Z"
     },
     {
       "id": "MESSIN-PRSIN5AC",
@@ -41,7 +41,7 @@
         "SIN4T3"
       ],
       "add_date": "01/01/2000",
-      "last_modification": "01/01/2001"
+      "last_modification": "2021-03-08T16:16:40.030Z"
     },
     {
       "id": "MESSIN-PRSIN5AD",

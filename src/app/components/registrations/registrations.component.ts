@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClientService } from 'src/app/services/http-client.service';
-import { UploadService } from 'src/app/services/upload.service';
 
 @Component({
   selector: 'app-registrations',
@@ -9,7 +8,7 @@ import { UploadService } from 'src/app/services/upload.service';
 })
 export class RegistrationsComponent implements OnInit {
 
-  constructor(private uploadService: UploadService, private httpClient: HttpClientService) { }
+  constructor(private httpClientService: HttpClientService) { }
 
   totalRegistration = 0;
   registrations: any;
@@ -17,7 +16,7 @@ export class RegistrationsComponent implements OnInit {
   fileToUpload: File = null;
 
   ngOnInit(): void {
-    this.httpClient.getRegistrations().subscribe(res => {
+    this.httpClientService.getRegistrations().subscribe(res => {
       console.info(res);
       this.registrations = res;
       this.totalRegistration = 0;
@@ -32,7 +31,7 @@ export class RegistrationsComponent implements OnInit {
   }
 
   uploadFileToService() {
-    this.uploadService.postFile(this.fileToUpload, "http://localhost:8080/registration").subscribe(data => {
+    this.httpClientService.postFile(this.fileToUpload, "/registrations/_upload").subscribe(data => {
 
       }, error => {
         console.log(error);

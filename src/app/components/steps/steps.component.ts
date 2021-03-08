@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Step } from 'src/app/models/Step';
 import { HttpClientService } from 'src/app/services/http-client.service';
-import { UploadService } from 'src/app/services/upload.service';
 
 @Component({
   selector: 'app-steps',
@@ -15,7 +14,7 @@ export class StepsComponent implements OnInit {
   page: number;
   collectionSize: number;
 
-  constructor(private uploadService: UploadService, private httpClientService: HttpClientService) { }
+  constructor(private httpClientService: HttpClientService) { }
 
   ngOnInit(): void {
     this.httpClientService.getSteps().subscribe(res => { 
@@ -31,7 +30,7 @@ export class StepsComponent implements OnInit {
   }
 
   uploadFileToService() {
-    this.uploadService.postFile(this.fileToUpload, "http://localhost:8080/steps").subscribe(data => {
+    this.httpClientService.postFile(this.fileToUpload, "/steps/_upload").subscribe(data => {
 
       }, error => {
         console.log(error);

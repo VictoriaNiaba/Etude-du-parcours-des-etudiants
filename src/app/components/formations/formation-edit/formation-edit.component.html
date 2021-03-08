@@ -1,86 +1,90 @@
 <div class="container">
-    <h1 *ngIf="isAddMode">Ajout d'une nouvelle formation</h1>
-    <h1 *ngIf="!isAddMode">Edition d'une formation</h1>
-    <div *ngIf="formation || isAddMode">
-        <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Code</label>
-                    <input type="text" formControlName="id" class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && formControl.id.errors }" />
-                    <div *ngIf="submitted && formControl.id.errors" class="invalid-feedback">
-                        <div *ngIf="formControl.id.errors.required">Le code est requis</div>
+    <div class="card mb-3">
+        <h3 class="card-header" *ngIf="isAddMode">Ajout d'une nouvelle formation</h3>
+        <h3 class="card-header" *ngIf="!isAddMode">Edition d'une formation</h3>
+        <div class="card-body">
+            <div *ngIf="formation || isAddMode">
+                <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label>Code</label>
+                            <input type="text" formControlName="id" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && formControl.id.errors }" />
+                            <div *ngIf="submitted && formControl.id.errors" class="invalid-feedback">
+                                <div *ngIf="formControl.id.errors.required">Le code est requis</div>
+                                <div *ngIf="formControl.id.errors.uniqueId">Le code doit être unique</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Intitulé</label>
+                            <input type="text" formControlName="formation_name" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && formControl.formation_name.errors }" />
+                            <div *ngIf="submitted && formControl.formation_name.errors" class="invalid-feedback">
+                                <div *ngIf="formControl.formation_name.errors.required">Le nom est requise</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input type="textarea" formControlName="description" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && formControl.description.errors }" />
+                            <div *ngIf="submitted && formControl.description.errors" class="invalid-feedback">
+                                <div *ngIf="formControl.description.errors.required">La description est requise</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Type</label>
+                            <input type="text" formControlName="type" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && formControl.type.errors }" />
+                            <div *ngIf="submitted && formControl.type.errors" class="invalid-feedback">
+                                <div *ngIf="formControl.type.errors.required">Le type est requis</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>URL</label>
+                            <input type="text" formControlName="url" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && formControl.url.errors }" />
+                            <div *ngIf="submitted && formControl.url.errors" class="invalid-feedback">
+                                <div *ngIf="formControl.url.errors.required">L'url' est requis</div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>Intitulé</label>
-                    <input type="text" formControlName="formation_name" class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && formControl.formation_name.errors }" />
-                    <div *ngIf="submitted && formControl.formation_name.errors" class="invalid-feedback">
-                        <div *ngIf="formControl.formation_name.errors.required">Le nom est requise</div>
+                    <div class="example-container">
+                        <h4>Liste des étapes</h4>
+                        <div cdkDropList #stepsList="cdkDropList" [cdkDropListData]="steps"
+                            [cdkDropListConnectedTo]="[stepsFormationList]" class="example-list"
+                            (cdkDropListDropped)="drop($event)">
+                            <div class="example-box" *ngFor="let item of steps" cdkDrag>{{item.step_code}} -
+                                {{item.step_name}}
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <input type="textarea" formControlName="description" class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && formControl.description.errors }" />
-                    <div *ngIf="submitted && formControl.description.errors" class="invalid-feedback">
-                        <div *ngIf="formControl.description.errors.required">La description est requise</div>
+                    <div class="example-container">
+                        <h4>Etapes de la formation</h4>
+                        <div cdkDropList #stepsFormationList="cdkDropList" [cdkDropListData]="stepsOfFormation"
+                            [cdkDropListConnectedTo]="[stepsList]" class="example-list"
+                            (cdkDropListDropped)="drop($event)">
+                            <div class="example-box" *ngFor="let item of stepsOfFormation" cdkDrag>{{item.step_code}} -
+                                {{item.step_name}}</div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>Type</label>
-                    <input type="text" formControlName="type" class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && formControl.type.errors }" />
-                    <div *ngIf="submitted && formControl.type.errors" class="invalid-feedback">
-                        <div *ngIf="formControl.type.errors.required">Le type est requis</div>
+                    <div class="form-group">
+                        <div class="card-footer text-muted">
+                            <div class="d-flex justify-content-between">
+                                <div *ngIf="!isAddMode">
+                                    <button routerLink="/formation/{{formation.id}}"
+                                        class="btn btn-secondary">Retour</button>
+                                </div>
+                                <div *ngIf="isAddMode">
+                                    <button routerLink="/admin" class="btn btn-secondary">Retour</button>
+                                </div>
+                                <button class="btn btn-primary">
+                                    Valider
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>URL</label>
-                    <input type="text" formControlName="url" class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && formControl.url.errors }" />
-                    <div *ngIf="submitted && formControl.url.errors" class="invalid-feedback">
-                        <div *ngIf="formControl.url.errors.required">L'url' est requis</div>
-                    </div>
-                </div>
+                </form>
             </div>
-            <div class="example-container">
-                <h4>Liste des étapes</h4>
-                <div
-                    cdkDropList
-                    #stepsList="cdkDropList"
-                    [cdkDropListData]="steps"
-                    [cdkDropListConnectedTo]="[stepsFormationList]"
-                    class="example-list"
-                    (cdkDropListDropped)="drop($event)">
-                    <div class="example-box" *ngFor="let item of steps" cdkDrag>{{item.step_code}} - {{item.step_name}}</div>
-                </div>
-            </div>
-            <div class="example-container">
-                <h4>Etapes de la formation</h4>
-                <div
-                    cdkDropList
-                    #stepsFormationList="cdkDropList"
-                    [cdkDropListData]="stepsOfFormation"
-                    [cdkDropListConnectedTo]="[stepsList]"
-                    class="example-list"
-                    (cdkDropListDropped)="drop($event)">
-                    <div class="example-box" *ngFor="let item of stepsOfFormation" cdkDrag>{{item.step_code}} - {{item.step_name}}</div>
-                </div>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-primary">
-                    Valider
-                </button>
-                <div *ngIf="!isAddMode">
-                    <a routerLink="/formation/{{formation.id}}" class="btn btn-secondary">Retour</a>
-                </div>
-                <div *ngIf="isAddMode">
-                    <a routerLink="/admin" class="btn btn-secondary">Retour</a>
-                </div>
-            </div>
-            <br>
-        </form>
+        </div>
     </div>
 </div>
