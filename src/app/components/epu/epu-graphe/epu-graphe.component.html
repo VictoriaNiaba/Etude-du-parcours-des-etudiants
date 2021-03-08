@@ -18,14 +18,15 @@
             <!---->
             <div class="ng-autocomplete">
               <ng-autocomplete
+                #searchStart
                 [data]="formationSearch"
                 [searchKeyword]="keyword"
                 placeholder="Je suis en ..."
-                (selected)="selectEvent($event)"
-                (inputChanged)="onChangeSearch($event)"
+                (selected)="selectEventStart($event)"
                 [itemTemplate]="itemTemplate"
                 [notFoundTemplate]="notFoundTemplate"
               ></ng-autocomplete>
+              <!-- (inputChanged)="onChangeSearchStart($event)" -->
 
               <ng-template #itemTemplate let-item>
                 <div class="d-flex flex-column text-left flex-sm-wrap inside">
@@ -37,6 +38,10 @@
               <ng-template #notFoundTemplate let-notFound>
                 <div [innerHTML]="notFound"></div>
               </ng-template>
+
+              <div *ngFor="let formation of formationsStart" class="searchItems">
+                <div class="badge badge-success" (click)="removeFromFormationStart(formation)">{{formation.formation_name}}</div>
+              </div>
             </div>
             <!---->
             <div class="input-group-prepend"></div>
@@ -56,15 +61,16 @@
             <!---->
             <div class="ng-autocomplete">
               <ng-autocomplete
+                #searchEnd
                 [data]="formationSearch"
                 [searchKeyword]="keyword"
                 placeholder="Je vais en ..."
-                (selected)="selectEvent($event)"
-                (inputChanged)="onChangeSearch($event)"
+                (selected)="selectEventEnd($event)"
                 [itemTemplate]="itemTemplate2"
                 [notFoundTemplate]="notFoundTemplate2"
               ></ng-autocomplete>
-              <!-- historyIdentifier="getFormation()" -->
+              <!-- historyIdentifier="getFormation()"
+                (inputChanged)="onChangeSearchEnd($event)" -->
               <ng-template #itemTemplate2 let-item>
                 <div class="d-flex flex-column text-left flex-sm-wrap inside">
                   <a [innerHTML]="item.id" class="top text-secondary"></a>
@@ -75,6 +81,10 @@
               <ng-template #notFoundTemplate2 let-notFound>
                 <div [innerHTML]="notFound"></div>
               </ng-template>
+
+              <div *ngFor="let formation of formationsEnd" class="searchItems">
+                <div class="badge badge-danger" (click)="removeFromFormationEnd(formation)">{{formation.formation_name}}</div>
+              </div>
             </div>
             <!---->
             <div class="input-group-prepend"></div>

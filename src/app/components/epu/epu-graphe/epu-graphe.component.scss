@@ -41,6 +41,16 @@
 .searchInput .inside>.bottom {
     padding:0px 5px;
 }
+.searchItems {
+    background-color: #EEE;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+.searchItems > * {
+    margin: 1px 1px;
+    cursor:pointer;
+}
 
 .epu-tooltip {
     position: relative;

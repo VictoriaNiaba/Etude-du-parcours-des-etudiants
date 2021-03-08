@@ -1,7 +1,9 @@
-import { Input } from '@angular/core';
+import { Input, ViewChild } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormControlName } from '@angular/forms';
 import { Router } from '@angular/router';
 import { element } from 'protractor';
+import { Formation } from 'src/app/models/formation';
 import { Path } from 'src/app/models/Path';
 import { Step } from 'src/app/models/Step';
 import { HttpClientService } from 'src/app/services/http-client.service';
@@ -20,7 +22,7 @@ export class EpuGrapheComponent implements OnInit {
 
   ngOnInit(): void {
     this.getPaths();
-    this.initSearch();
+    this.searchInit();
   }
 
   paths: Path[] = new Array<Path>();
@@ -225,15 +227,73 @@ export class EpuGrapheComponent implements OnInit {
   /*Recherche*/
   keyword = 'formation_name';
   formationSearch: any[];
-  initSearch() {
+  formationsStart = new Array<any>();
+  formationsEnd = new Array<any>();
+
+  searchInit() {
     this.httpClient.getFormations().subscribe(res => {
       this.formationSearch = res; //peut être limité à id + formation_name sauf si on doit utiliser toutes les données de formation dans le component !
     });
   }
-  selectEvent(event) {
-    console.info(`Selection : ${event.id}`);
+
+  search() {
+    let formationsNameStart = this.formationsStart.map(formation => formation.id);
+    let formationsNameEnd = this.formationsEnd.map(formation => formation.id);
+    console.info("Recherche :");
+    console.info("START", formationsNameStart);
+    console.info("END", formationsNameEnd);
+    /*
+    this.httpClient.getPaths(formationsNameStart, formationsNameEnd).subscribe( ... ); //pour la mise en place de la recherche multiple
+    */
   }
-  onChangeSearch(event) {
-    console.info(`Change : ${event.id}`);
+
+  removeFromArray(array: any[], item: any) {
+    array.forEach((element,index)=>{
+      if(item==element) array.splice(index,1);
+    });
+  }
+  removeFromFormationStart(item: any) {
+    this.removeFromArray(this.formationsStart, item);
+    this.formationSearch.push(item);
+    this.search();
+  }
+  removeFromFormationEnd(item: any) {
+    this.removeFromArray(this.formationsEnd, item);
+    this.formationSearch.push(item);
+    this.search();
+  }
+
+  @ViewChild('searchStart') searchStart;
+  selectEventStart(event) {
+    if(this.formationsStart.find(formation => formation.id == event.id)) {
+      alert("Formation déjà ajoutée.")
+      return;
+    }
+    this.formationsStart.push(
+      this.formationSearch.find(formation => formation.id == event.id)
+    );
+    this.removeFromArray(
+      this.formationSearch,
+      this.formationSearch.find(formation => formation.id == event.id)
+    );
+    this.searchStart.clear();
+    this.search();
+  }
+
+  @ViewChild('searchEnd') searchEnd;
+  selectEventEnd(event) {
+    if(this.formationsEnd.find(formation => formation.id == event.id)) {
+      alert("Formation déjà ajoutée.")
+      return;
+    }
+    this.formationsEnd.push(
+      this.formationSearch.find(formation => formation.id == event.id)
+    );
+    this.removeFromArray(
+      this.formationSearch,
+      this.formationSearch.find(formation => formation.id == event.id)
+    );
+    this.searchEnd.clear();
+    this.search();
   }
 }
