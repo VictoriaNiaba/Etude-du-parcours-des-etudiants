@@ -1,6 +1,7 @@
 import { Input } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { element } from 'protractor';
 import { Path } from 'src/app/models/Path';
 import { Step } from 'src/app/models/Step';
 import { HttpClientService } from 'src/app/services/http-client.service';
@@ -30,10 +31,13 @@ export class EpuGrapheComponent implements OnInit {
     //Temporaire
     return this.firstStep ? this.firstStep : new Step("POST-BAC", "POST-BAC");
   }
+
+  //renseigne "paths" un tableau de path... suivant la base de données
   getPaths() {
     this.httpClient.getPaths(this.firstStep.step_name, this.lastStep).subscribe(res => {
-      //Temporaire
+
       this.getFirstStep();
+
       res.forEach(path => {
         let pathTemp = new Path();
         for (let i = 0; i < path['steps'].length; i++) {
@@ -45,11 +49,8 @@ export class EpuGrapheComponent implements OnInit {
             0, //other
             0); //redoublement
           pathTemp.addSteps(step);
-          //console.log('>>',step.step_name);
         }
-        //console.log('>> mean : ',pathTemp.getMeanStudents());
         this.paths.push(pathTemp);
-        //console.log('>> -----');
       });
       this.totalStudentPaths = 0;
       this.paths.forEach(path => {
@@ -59,12 +60,13 @@ export class EpuGrapheComponent implements OnInit {
     })
   }
 
-  changeOptions() {
+  //change les options du graphique
+  private changeOptions() {
     let data: any[] = [];
     let links: any[] = [];
     let linksDuplicate: any[] = [];
 
-    //Noeud Post BAC
+    //Ajoute le noeud Post BAC si nécessaire
     if (this.getFirstStep().step_code == "POST-BAC") {
       let postBacNode = {
         name: 'POST-BAC',
@@ -74,6 +76,7 @@ export class EpuGrapheComponent implements OnInit {
       data.push(postBacNode);
     }
 
+    let incrementCat = 0;
     this.paths.forEach(path => {
       let pathSteps = path.path_steps;
       //On crée nos noeuds sans duplication
@@ -82,6 +85,7 @@ export class EpuGrapheComponent implements OnInit {
           let tmpData = {
             name: pathSteps[index].step_code,
             value: pathSteps[index].step_name,
+            category: incrementCat,
             type: 'node'
           }
           data.push(tmpData);
@@ -116,6 +120,8 @@ export class EpuGrapheComponent implements OnInit {
           linksDuplicate.push(tmpLink);
         }
       }
+
+      incrementCat++;
     });
 
     //On ajoute la valeur des liens dupliqués au liens existants
@@ -143,6 +149,9 @@ export class EpuGrapheComponent implements OnInit {
             return "";
         }
       },
+      /*legend: [{
+          data: data.map(category => category['name'])
+      }],*/
       animationDurationUpdate: 1500,
       animationEasingUpdate: 'quinticInOut',
       series: [
@@ -153,7 +162,7 @@ export class EpuGrapheComponent implements OnInit {
           force: { //only force
             //initLayout: 'circular',
             gravity: 0,
-            repulsion: 999,
+            repulsion: 1000,
             edgeLength: 200
           },
           symbolSize: 60,
@@ -179,7 +188,8 @@ export class EpuGrapheComponent implements OnInit {
             width: 2,
             curveness: 0.1
           },
-          zoom: 0.8
+          zoom: 0.6,
+          categories: data,
         }
       ]
     };
