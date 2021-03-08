@@ -1,9 +1,12 @@
 package fr.univamu.epu.business;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +14,26 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import fr.univamu.epu.dao.Dao;
-import fr.univamu.epu.errorhandler.UploadException;
 import fr.univamu.epu.errorhandler.NotFoundException;
+import fr.univamu.epu.errorhandler.UploadException;
 import fr.univamu.epu.model.formation.Formation;
 import fr.univamu.epu.services.csvimport.CsvParser;
 
 @Service("formationManager")
-public class FormationInMemoryManager implements FormationManager {
+public class FormationCsvInMemoryManager implements FormationManager {
 	
 	@Autowired
 	Dao<Formation> dao;
 
 	@Autowired
 	CsvParser<Formation> fcp;
+	
+	@PostConstruct
+	public void init() throws FileNotFoundException {
+		if (dao.findAll(Formation.class).isEmpty()) {
+			upload(new FileInputStream("files/formations.csv"));
+		}
+	}
 	
 	@Override
 	public Collection<Formation> findAll() {

@@ -9,7 +9,7 @@ import fr.univamu.epu.dao.Dao;
 import fr.univamu.epu.model.path.Path;
 
 @Service("pathManager")
-public class PathInMemoryManager implements PathManager {
+public class PathCsvInMemoryManager implements PathManager {
 
 	@Autowired
 	Dao<Path> dao;

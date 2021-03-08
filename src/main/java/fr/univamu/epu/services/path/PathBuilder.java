@@ -93,9 +93,8 @@ public class PathBuilder {
 		// creations des paths a partir de la map
 		List<Path> paths = new ArrayList<Path>();
 		for (Entry<List<String>, List<Integer>> pathEntry : pathmap.entrySet()) {
-			if (pathEntry.getKey().size() > 2)
-				paths.add(
-						new Path(pathEntry.getKey(), pathEntry.getValue().get(0) / (pathEntry.getValue().size() - 1)));
+			//if (pathEntry.getKey().size() > 2)
+			paths.add(new Path(pathEntry.getKey(), pathEntry.getValue().get(0) / (pathEntry.getValue().size() - 1)));
 		}
 		
 		//ajout des paths dans le DAO
@@ -111,7 +110,7 @@ public class PathBuilder {
 		});
 
 		System.out.println("nb de paths : " + paths.size());
-		for (Path p : paths.subList(0, 50))
+		for (Path p : paths.subList(0, 20))
 			System.out.println(p);
 
 	}

@@ -1,10 +1,16 @@
 package fr.univamu.epu.model.step;
 
 import java.io.Serializable;
+import java.util.Set;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+import fr.univamu.epu.model.formation.Formation;
+
 
 
 @Entity(name = "Step")
@@ -14,9 +20,13 @@ public class Step implements Serializable {
 	@Column(name = "step_code", length = 10, nullable = false, unique = false)
 	private String stepCode;
 	
-	@Basic(optional = false)
+	@Basic(optional = true)
 	@Column(name = "name", length = 100, nullable = true)
 	private String name;
+	
+	@ManyToMany(mappedBy = "steps")
+	private Set<Formation> formations;
+
 	
 	public Step() {
 		super();
@@ -49,7 +59,12 @@ public class Step implements Serializable {
 		this.name = name;
 	}
 
-	
-	
+	public Set<Formation> getFormations() {
+		return formations;
+	}
+
+	public void setFormations(Set<Formation> formations) {
+		this.formations = formations;
+	}
 	
 }
