@@ -7,7 +7,6 @@ Back-end implémenté à l'aide de [Spring Boot](http://projects.spring.io/sprin
 Pour développer sur ce projet, vous aurez besoin de :
 
 - [JDK 15](https://www.oracle.com/fr/java/technologies/javase-jdk15-downloads.html)
-- [Configurer votre IDE](https://projectlombok.org/setup/eclipse) pour qu'il soit compatible avec la librairie [Lombok](https://projectlombok.org/)
 
 ## Lancer l'application
 
@@ -23,8 +22,8 @@ mvn spring-boot:run
 
 Une fois l'application lancée, vous pouvez consulter la documentation de l'API REST à deux URLs différentes :
 
-- http://localhost:8080/swagger-ui.html, sous forme de documentation interactive.
-- http://localhost:8080/v3/api-docs/, sous forme de document json.
+- [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html), sous forme de documentation interactive.
+- [http://localhost:8080/v3/api-docs/](http://localhost:8080/v3/api-docs/), sous forme de document json.
 
 ## Copyright
 
