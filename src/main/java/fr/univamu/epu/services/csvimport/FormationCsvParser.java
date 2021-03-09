@@ -30,9 +30,9 @@ public class FormationCsvParser implements CsvParser<Formation> {
 		try (Scanner rowScanner = new Scanner(line)) {
 			rowScanner.useDelimiter("\t");
 			if (rowScanner.hasNext())
-				f.setFormationCode(rowScanner.next());
+				f.setFormation_code(rowScanner.next());
 			if (rowScanner.hasNext())
-				f.setName(rowScanner.next());
+				f.setFormation_name(rowScanner.next());
 			if (rowScanner.hasNext())
 				f.setUrl(rowScanner.next());
 			if (rowScanner.hasNext())
