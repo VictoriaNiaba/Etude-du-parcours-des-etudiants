@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,12 @@ public class PathBuilder {
 
 	@Autowired
 	Dao<Registration> registrationDao;
+	@Autowired
+	Dao<Path> pathDao;
 
 	private Map<String, Integer> stepCount = new HashMap<String, Integer>();
 
+	// TODO: a séparer en plusieurs methodes pour que ça soit + lisible
 	public void buildPaths() {
 		System.out.println("construction DES CHEMINEMENTS");
 
@@ -37,14 +41,14 @@ public class PathBuilder {
 
 		// FILTRE DES ETAPES A ENLEVER
 		List<String> badSteps = new ArrayList<>();
-		badSteps.add("SC2IN1");
+		// badSteps.add("SC2IN1");
 
 		// gen des students paths
 		String currentStudentCode = "";
 		List<Registration> currentStudentRegs = new ArrayList<Registration>();
 		for (Registration reg : regs) {
 			if (!currentStudentCode.equals(reg.getStudentCode())) {
-				if (!currentStudentRegs.isEmpty())	{// changement de student code, on a toutes nos ia du student courant
+				if (!currentStudentRegs.isEmpty()) {// changement de student code, on a toutes nos ia du student courant
 					studentPaths.add(generateStudentPathFromRegs(currentStudentRegs));
 					currentStudentRegs = new ArrayList<Registration>();
 				}
@@ -55,39 +59,60 @@ public class PathBuilder {
 
 		System.out.println("student paths done => gen des paths");
 
-		// gen des paths
-		Map<List<String>, Integer> pathmap = new HashMap<List<String>, Integer>();
+		// gen des paths spécifique dans une map
+		Map<List<String>, List<Integer>> pathmap = new HashMap<List<String>, List<Integer>>();
 
 		for (List<Registration> sp : studentPaths) {
 			List<String> stepCodes = new ArrayList<String>();
+			List<Integer> countAndYears = new ArrayList<Integer>(2);
+
 			for (Registration reg : sp) {
-				// Filtre
 				if (badSteps.contains(reg.getStepCode()))
 					continue;
-				//
 				stepCodes.add(reg.getStepCode());
 			}
 			if (stepCodes.isEmpty())
 				continue;
-			if (!pathmap.containsKey(stepCodes))
-				pathmap.put(stepCodes, 1);
-			else
-				pathmap.put(stepCodes, (pathmap.get(stepCodes).intValue() + 1));
+			if (!pathmap.containsKey(stepCodes)) {
+				countAndYears.add(1);
+				countAndYears.add(sp.get(0).getYear()); // on met l'année du début du chemin pour compter le nombre d'année differentes
+			} else {
+				countAndYears = pathmap.get(stepCodes);
+				countAndYears.set(0, countAndYears.get(0).intValue() + 1);
+				for (int i = 1; i < countAndYears.size(); ++i) {
+					if (countAndYears.get(i).equals(sp.get(0).getYear())) {
+						break;
+					} else if (i == countAndYears.size() - 1) {
+						countAndYears.add(sp.get(0).getYear());
+					}
+				}
+			}
+			pathmap.put(stepCodes, countAndYears);
 		}
 
-		
+		// creations des paths a partir de la map
 		List<Path> paths = new ArrayList<Path>();
-		for (Map.Entry<List<String>, Integer> path : pathmap.entrySet()) {
-			paths.add(new Path(path.getKey(),path.getValue()));
+		for (Entry<List<String>, List<Integer>> pathEntry : pathmap.entrySet()) {
+			//if (pathEntry.getKey().size() > 2)
+			paths.add(new Path(pathEntry.getKey(), pathEntry.getValue().get(0) / (pathEntry.getValue().size() - 1)));
 		}
+		
+		//ajout des paths dans le DAO
+		System.out.println("paths générés, ajout dans le dao");
+		pathDao.addAll(paths);
+
+		//
+		paths = new ArrayList<Path>(pathDao.findAll(Path.class));
 		Collections.sort(paths, new Comparator<Path>() {
 			public int compare(Path o1, Path o2) {
 				return o2.getAvgStudentCountPerYear().compareTo(o1.getAvgStudentCountPerYear());
 			}
 		});
-		
-		System.out.println(paths.subList(0, 50));
-		
+
+		System.out.println("nb de paths : " + paths.size());
+		for (Path p : paths.subList(0, 20))
+			System.out.println(p);
+
 	}
 
 	public List<Registration> generateStudentPathFromRegs(List<Registration> regs) {
