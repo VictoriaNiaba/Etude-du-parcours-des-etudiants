@@ -6,33 +6,51 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import fr.univamu.epu.message.Error;
-import fr.univamu.epu.message.Response;
+import fr.univamu.epu.dtos.RestApiError;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    // Catch file size exceeded exception!
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-	@ExceptionHandler(MultipartException.class)
-    @ResponseBody
-    ResponseEntity<Response> handleControllerException(HttpServletRequest request, Throwable ex) {
-        HttpStatus status = getStatus(request);
-        Error err = new Error("0x123", ex.getMessage());
-        Response res = new Response("error", err);
-        
-        return new ResponseEntity(res, status);
-    }
+	@ExceptionHandler(Exception.class)
+	public final ResponseEntity<RestApiError> handleAllExceptions(Exception e, HttpServletRequest request) {
 
-    private HttpStatus getStatus(HttpServletRequest request) {
-        Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
-        if (statusCode == null) {
-            return HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-        return HttpStatus.valueOf(statusCode);
-    }
+		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+		String title = "Erreur interne du serveur";
+		String detail = e.getMessage();
+		String path = request.getRequestURI();
+
+		RestApiError apiError = new RestApiError(status, title, detail, path);
+
+		return ResponseEntity.status(status).body(apiError);
+	}
+
+	@ExceptionHandler(NotFoundException.class)
+	public final ResponseEntity<RestApiError> handleNotFoundException(NotFoundException e, HttpServletRequest request) {
+
+		HttpStatus status = HttpStatus.NOT_FOUND;
+		String title = "Ressource non-trouvée";
+		String detail = e.getMessage();
+		String path = request.getRequestURI();
+
+		RestApiError apiError = new RestApiError(status, title, detail, path);
+
+		return ResponseEntity.status(status).body(apiError);
+	}
+
+	@ExceptionHandler({ UploadException.class, MultipartException.class })
+	public final ResponseEntity<RestApiError> handleUploadException(UploadException e,
+			HttpServletRequest request) {
+
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		String title = "Mauvaise requête";
+		String detail = e.getMessage();
+		String path = request.getRequestURI();
+
+		RestApiError apiError = new RestApiError(status, title, detail, path);
+
+		return ResponseEntity.status(status).body(apiError);
+	}
 }

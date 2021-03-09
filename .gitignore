@@ -36,3 +36,5 @@ blog/bin/
 **/.gradle
 
 data/
+
+.factorypath

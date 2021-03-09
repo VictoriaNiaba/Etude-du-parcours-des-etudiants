@@ -18,14 +18,14 @@ import fr.univamu.epu.model.registration.Registration;
 public class PathBuilder {
 
 	@Autowired
-	Dao dao;
+	Dao<Registration> registrationDao;
 
 	private Map<String, Integer> stepCount = new HashMap<String, Integer>();
 
 	public void buildPaths() {
 		System.out.println("construction DES CHEMINEMENTS");
 
-		List<Registration> regs = new ArrayList<Registration>(dao.getAllRegistrations());
+		List<Registration> regs = new ArrayList<Registration>(registrationDao.findAll(Registration.class));
 		Collections.sort(regs, new Comparator<Registration>() {
 			public int compare(Registration o1, Registration o2) {
 				return o1.getStudentCode().compareTo(o2.getStudentCode());

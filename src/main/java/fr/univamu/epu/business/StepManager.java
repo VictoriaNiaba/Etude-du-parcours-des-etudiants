@@ -1,20 +1,24 @@
 package fr.univamu.epu.business;
 
+import java.io.InputStream;
 import java.util.Collection;
 
 import fr.univamu.epu.model.step.Step;
 
-
 public interface StepManager {
 
-	Collection<Step> findAll();
-
-	void update(Step step);
-
-	Step find(String stepCode);
-
-	void add(Step step);
-
-	void delete(String stepCode);
+	Step add(Step step);
 	
+	void addAll(Collection<Step> steps);
+
+	Step update(Step step);
+
+	void remove(String code);
+	
+	Step find(String code);
+
+	Collection<Step> findAll();
+	
+	void upload(InputStream inputStream);
+
 }
