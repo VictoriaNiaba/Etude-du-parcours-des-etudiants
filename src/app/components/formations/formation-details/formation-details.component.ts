@@ -19,7 +19,7 @@ export class FormationDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.httpClientService.getFormationByCode(this.route.snapshot.paramMap.get('code')).subscribe(res => { 
-      this.formation=res[0];
+      this.formation=res;
     });
     this.canEdit=this.setEdit();
     this.currentUser = this.authenticationService.currentUser;

@@ -18,7 +18,7 @@ import { User } from '../models/User';
 export class HttpClientService {
 
   //ajouter/retirer un / à la ligne suivante pour switch
-  //*
+  /*
   //json_server
   baseUrl = "http://localhost:3000";
   /*/
@@ -57,7 +57,7 @@ export class HttpClientService {
   }
 
   getStepByCode(code){
-    return this.httpClient.get<any>(`${this.baseUrl}/steps?step_code=${code}`);
+    return this.httpClient.get<any>(`${this.baseUrl}/steps/${code}`);
   }
 
   getFormations(){
@@ -65,7 +65,7 @@ export class HttpClientService {
   }
 
   getFormationByCode(code: string){
-    return this.httpClient.get<Formation>(`${this.baseUrl}/formations?formation_code=${code}`);
+    return this.httpClient.get<Formation>(`${this.baseUrl}/formations/${code}`);
   }
 
   addFormation(data: Formation){

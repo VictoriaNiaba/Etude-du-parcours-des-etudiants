@@ -66,7 +66,7 @@ export class FormationEditComponent implements OnInit {
             //Récupérer l'étape à partir du code
             this.httpClientService.getStepByCode(element).subscribe(res => {
               //On l'ajoute à la liste des étapes de la formation
-              this.stepsOfFormation.push(res[0]);
+              this.stepsOfFormation.push(res);
               //Pour le faire qu'une fois
               if (this.formation.steps.indexOf(element) == this.formation.steps.length - 1) {
                 //Pour éviter des duplications dans les listes
@@ -74,7 +74,7 @@ export class FormationEditComponent implements OnInit {
                   this.steps.forEach(step => {
                     if (sf.step_code === step.step_code) {
                       //On enlève l'item dupliqué dans la liste d'étapes
-                      this.steps.splice(this.steps.indexOf(step), 1)
+                      this.steps.splice(this.steps.indexOf(step), 1);
                     }
                   })
                 })
