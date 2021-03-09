@@ -129,7 +129,7 @@ export class FormationEditComponent implements OnInit {
 
   update(data) {
     this.httpClientService.updateFormation(this.code, data).subscribe(res => {
-      this.router.navigate(['/formation', this.editForm.value.formation_code]);
+      this.router.navigate(['/formation', this.formation.formation_code]);
     })
   }
 
