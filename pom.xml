@@ -43,6 +43,13 @@
 		</dependency>
 		<!-- END database dependencies -->
 
+		<!-- BEGIN validation dependencies -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<!-- END validation dependencies -->
+
 		<!-- BEGIN developper tools dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

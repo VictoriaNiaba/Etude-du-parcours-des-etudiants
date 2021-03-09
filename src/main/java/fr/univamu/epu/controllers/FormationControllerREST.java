@@ -19,46 +19,46 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import fr.univamu.epu.business.StepManager;
+import fr.univamu.epu.business.FormationManager;
 import fr.univamu.epu.errorhandler.UploadException;
-import fr.univamu.epu.model.step.Step;
+import fr.univamu.epu.model.formation.Formation;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/steps")
-public class StepControllerREST implements StepControllerSpecification {
+@RequestMapping("/formations")
+public class FormationControllerREST implements FormationControllerSpecification {
 	@Autowired
-	private StepManager stepManager;
+	private FormationManager formationManager;
 
 	@Override
 	@PostMapping
-	public ResponseEntity<Step> add(@RequestBody Step step) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(stepManager.add(step));
+	public ResponseEntity<Formation> add(@RequestBody Formation formation) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(formationManager.add(formation));
 	}
 
 	@Override
 	@PutMapping("/{code}")
-	public ResponseEntity<Step> update(@RequestBody Step step, @PathVariable String code) {
-		return ResponseEntity.ok(stepManager.update(step));
+	public ResponseEntity<Formation> update(@RequestBody Formation formation, @PathVariable String code) {
+		return ResponseEntity.ok(formationManager.update(formation));
 	}
 
 	@Override
 	@DeleteMapping("/{code}")
 	public ResponseEntity<Void> remove(@PathVariable String code) {
-		stepManager.remove(code);
+		formationManager.remove(code);
 		return ResponseEntity.noContent().build();
 	}
 
 	@Override
 	@GetMapping("/{code}")
-	public ResponseEntity<Step> find(@PathVariable String code) {
-		return ResponseEntity.ok(stepManager.find(code));
+	public ResponseEntity<Formation> find(@PathVariable String formationCode) {
+		return ResponseEntity.ok(formationManager.find(formationCode));
 	}
 
 	@Override
 	@GetMapping
-	public ResponseEntity<Collection<Step>> findAll() {
-		return ResponseEntity.ok(stepManager.findAll());
+	public ResponseEntity<Collection<Formation>> findAll() {
+		return ResponseEntity.ok(formationManager.findAll());
 	}
 
 	@Override
@@ -75,9 +75,8 @@ public class StepControllerREST implements StepControllerSpecification {
 			throw new UploadException("Le fichier fourni n'est pas au format CSV");
 		}
 
-		stepManager.upload(csvfile.getInputStream());
+		formationManager.upload(csvfile.getInputStream());
 		return ResponseEntity.ok("Le fichier a été uploadé avec succès");
-
 	}
 
 	private boolean isCSVFile(MultipartFile file) {

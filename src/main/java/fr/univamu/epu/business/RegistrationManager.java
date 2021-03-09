@@ -1,21 +1,16 @@
 package fr.univamu.epu.business;
 
+import java.io.InputStream;
 import java.util.Collection;
 
 import fr.univamu.epu.model.registration.Registration;
-import fr.univamu.epu.model.registration.RegistrationId;
-
 
 public interface RegistrationManager {
 
+	void addAll(Collection<Registration> registrations);
+	
 	Collection<Registration> findAll();
 
-	void update(Registration registration);
+	void upload(InputStream inputStream);
 
-	Registration find(RegistrationId registrationId);
-
-	void add(Registration registration);
-
-	void delete(RegistrationId registrationId);
-	
 }
