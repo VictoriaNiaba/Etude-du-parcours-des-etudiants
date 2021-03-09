@@ -27,7 +27,6 @@ public class PathBuilder {
 
 	// TODO: a séparer en plusieurs methodes pour que ça soit + lisible
 	public void buildPaths() {
-		System.out.println("construction DES CHEMINEMENTS");
 
 		List<Registration> regs = new ArrayList<Registration>(registrationDao.findAll(Registration.class));
 		Collections.sort(regs, new Comparator<Registration>() {
@@ -56,8 +55,6 @@ public class PathBuilder {
 			}
 			currentStudentRegs.add(reg);
 		}
-
-		System.out.println("student paths done => gen des paths");
 
 		// gen des paths spécifique dans une map
 		Map<List<String>, List<Integer>> pathmap = new HashMap<List<String>, List<Integer>>();
@@ -98,7 +95,6 @@ public class PathBuilder {
 		}
 		
 		//ajout des paths dans le DAO
-		System.out.println("paths générés, ajout dans le dao");
 		pathDao.addAll(paths);
 
 		//
@@ -109,9 +105,10 @@ public class PathBuilder {
 			}
 		});
 
-		System.out.println("nb de paths : " + paths.size());
+		System.out.println( paths.size() + " paths built by the registration manager init");
+		/*
 		for (Path p : paths.subList(0, 20))
-			System.out.println(p);
+			System.out.println(p);*/
 
 	}
 

@@ -37,7 +37,7 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 			upload(new FileInputStream("files/IA.csv"));
 		}
 		
-//		pb.buildPaths();
+		pb.buildPaths();
 	}
 
 	@Override
