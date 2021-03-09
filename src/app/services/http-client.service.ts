@@ -85,7 +85,7 @@ export class HttpClientService {
     let h = new HttpHeaders();
     h.set('Accept', 'application/json, text/plain, text/csv, application/vnd.ms-excel');
     const formData: FormData = new FormData();
-    formData.append('fichier', fileToUpload, fileToUpload.name);
+    formData.append('csvfile', fileToUpload, fileToUpload.name);
     //#region debug
     console.log(fileToUpload.name);
     console.log(fileToUpload);
