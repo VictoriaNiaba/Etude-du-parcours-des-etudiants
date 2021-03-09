@@ -51,8 +51,8 @@ public class FormationControllerREST implements FormationControllerSpecification
 
 	@Override
 	@GetMapping("/{code}")
-	public ResponseEntity<Formation> find(@PathVariable String formationCode) {
-		return ResponseEntity.ok(formationManager.find(formationCode));
+	public ResponseEntity<Formation> find(@PathVariable String code) {
+		return ResponseEntity.ok(formationManager.find(code));
 	}
 
 	@Override
