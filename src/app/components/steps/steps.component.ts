@@ -10,7 +10,7 @@ import { HttpClientService } from 'src/app/services/http-client.service';
 export class StepsComponent implements OnInit {
   fileToUpload: File = null;
   steps: Array<Step> = [];
-  pageSize = 10;
+  pageSize = 30;
   page: number;
   collectionSize: number;
 
@@ -21,7 +21,7 @@ export class StepsComponent implements OnInit {
       this.steps=res;
       console.log(this.steps)
       this.collectionSize = this.steps.length;
-      this.page = this.collectionSize/25;
+      this.page = this.collectionSize/this.collectionSize;
     });
   }
 

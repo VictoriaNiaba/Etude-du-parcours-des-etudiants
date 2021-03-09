@@ -8,7 +8,7 @@ import { HttpClientService } from 'src/app/services/http-client.service';
 })
 export class FormationsComponent implements OnInit {
   formations: any;
-  pageSize = 10;
+  pageSize = 30;
   page: number;
   collectionSize: number;
   fileToUpload: File = null;
@@ -20,7 +20,7 @@ export class FormationsComponent implements OnInit {
       this.formations=res;
       console.log(this.formations)
       this.collectionSize = this.formations.length;
-      this.page = this.collectionSize/25;
+      this.page = this.collectionSize/this.collectionSize;
     });
   }
 

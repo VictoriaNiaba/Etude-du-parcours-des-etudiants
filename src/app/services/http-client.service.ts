@@ -45,19 +45,19 @@ export class HttpClientService {
   }
 
   getRegistrations() {
-    return this.httpClient.get<any>(`${this.baseUrl}/registrations`);
+    return this.httpClient.get<any>(`http://localhost:3000/registrations`);
   }
 
   getPaths(firstStep: string, lastStep: string) {
-    return this.httpClient.get<any>(`${this.baseUrl}/paths`);
+    return this.httpClient.get<any>(`http://localhost:3000/paths`);
   }
 
   getSteps(){
-    return this.httpClient.get<any>(`${this.baseUrl}/steps`);
+    return this.httpClient.get<any>(`http://localhost:3000/steps`);
   }
 
   getStepByCode(code){
-    return this.httpClient.get<any>(`${this.baseUrl}/steps/${code}`);
+    return this.httpClient.get<any>(`http://localhost:3000/steps/${code}`);
   }
 
   getFormations(){

@@ -60,7 +60,7 @@ export class FormationEditComponent implements OnInit {
       if (!this.isAddMode) {
         //On récupère les infos de la formation
         this.httpClientService.getFormationByCode(this.route.snapshot.paramMap.get('code')).subscribe(res => {
-          this.formation = res[0];
+          this.formation = res;
           this.editForm.setValue({ formation_code: this.formation.formation_code, formation_name: this.formation.formation_name, description: this.formation.description, type: this.formation.type, url: this.formation.url });
           this.formation.steps.forEach(element => {
             //Récupérer l'étape à partir du code
