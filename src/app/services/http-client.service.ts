@@ -18,7 +18,7 @@ import { User } from '../models/User';
 export class HttpClientService {
 
   //ajouter/retirer un / à la ligne suivante pour switch
-  /*
+  //*
   //json_server
   baseUrl = "http://localhost:3000";
   /*/
@@ -45,42 +45,40 @@ export class HttpClientService {
   }
 
   getRegistrations() {
-    //return this.httpClient.get<any>(`${this.baseUrl}/registrations`);
-    return this.httpClient.get<any>(`http://localhost:3000/registrations`);//passage via mock car non codé !
+    return this.httpClient.get<any>(`${this.baseUrl}/registrations`);
   }
 
   getPaths(firstStep: string, lastStep: string) {
-    return this.httpClient.get<any>(`http://localhost:3000/paths`);
+    return this.httpClient.get<any>(`${this.baseUrl}/paths`);
   }
 
   getSteps(){
-    return this.httpClient.get<any>('http://localhost:3000/steps');
+    return this.httpClient.get<any>(`${this.baseUrl}/steps`);
   }
 
   getStepByCode(code){
-    return this.httpClient.get<any>(`http://localhost:3000/steps?step_code=${code}`);
+    return this.httpClient.get<any>(`${this.baseUrl}/steps?step_code=${code}`);
   }
 
   getFormations(){
-    return this.httpClient.get<Array<Formation>>('http://localhost:3000/formations');
+    return this.httpClient.get<Array<Formation>>(`${this.baseUrl}/formations`);
   }
 
   getFormationByCode(code: string){
-    return this.httpClient.get<Formation>(`http://localhost:3000/formations?id=${code}`);
-    //return this.httpClient.get<Formation>(`http://localhost:3000/formations?id=${code}`);
+    return this.httpClient.get<Formation>(`${this.baseUrl}/formations?formation_code=${code}`);
   }
 
   addFormation(data: Formation){
-    return this.httpClient.post<Formation>(`http://localhost:3000/formations/`, JSON.stringify(data), this.httpHeader);
+    return this.httpClient.post<Formation>(`${this.baseUrl}/formations/`, JSON.stringify(data), this.httpHeader);
   }
 
   updateFormation(code, data: Formation){
     console.log(data)
-    return this.httpClient.put<Formation>(`http://localhost:3000/formations/` + code, JSON.stringify(data), this.httpHeader);
+    return this.httpClient.put<Formation>(`${this.baseUrl}/formations/` + code, JSON.stringify(data), this.httpHeader);
   }
 
   deleteFormation(code){
-    return this.httpClient.delete<Formation>(`http://localhost:3000/formations/` + code, this.httpHeader);
+    return this.httpClient.delete<Formation>(`${this.baseUrl}/formations/` + code, this.httpHeader);
   }
 
   postFile(fileToUpload: File, endpoint: string): Observable<boolean> {

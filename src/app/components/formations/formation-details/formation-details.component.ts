@@ -18,7 +18,7 @@ export class FormationDetailsComponent implements OnInit {
   constructor(private route: ActivatedRoute,private authenticationService: AuthentificationService, private httpClientService: HttpClientService, private router: Router) { }
 
   ngOnInit(): void {
-    this.httpClientService.getFormationByCode(this.route.snapshot.paramMap.get('id')).subscribe(res => { 
+    this.httpClientService.getFormationByCode(this.route.snapshot.paramMap.get('code')).subscribe(res => { 
       this.formation=res[0];
     });
     this.canEdit=this.setEdit();
@@ -33,9 +33,9 @@ export class FormationDetailsComponent implements OnInit {
    return true;
   }
 
-  delete(id) {
+  delete(formation_code) {
     if (window.confirm('Voulez-vous vraiment supprimer cette formation ?')){
-      this.httpClientService.deleteFormation(this.formation.id).subscribe(res => {
+      this.httpClientService.deleteFormation(this.formation.formation_code).subscribe(res => {
         this.router.navigate(['/admin']);
       })
     }

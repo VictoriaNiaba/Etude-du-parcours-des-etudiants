@@ -8,11 +8,11 @@
                     <div class="form-col">
                         <div class="form-group">
                             <label>Code</label>
-                            <input type="text" formControlName="id" class="form-control"
-                                [ngClass]="{ 'is-invalid': submitted && formControl.id.errors }" />
-                            <div *ngIf="submitted && formControl.id.errors" class="invalid-feedback">
-                                <div *ngIf="formControl.id.errors.required">Le code est requis</div>
-                                <div *ngIf="formControl.id.errors.uniqueId">Le code doit être unique</div>
+                            <input type="text" formControlName="formation_code" class="form-control"
+                                [ngClass]="{ 'is-invalid': submitted && formControl.formation_code.errors }" />
+                            <div *ngIf="submitted && formControl.formation_code.errors" class="invalid-feedback">
+                                <div *ngIf="formControl.formation_code.errors.required">Le code est requis</div>
+                                <div *ngIf="formControl.formation_code.errors.uniqueId">Le code doit être unique</div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -71,7 +71,7 @@
                         <div class="card-footer text-muted">
                             <div class="d-flex justify-content-between">
                                 <div *ngIf="!isAddMode">
-                                    <button routerLink="/formation/{{formation.id}}"
+                                    <button routerLink="/formation/{{formation.formation_code}}"
                                         class="btn btn-secondary">Retour</button>
                                 </div>
                                 <div *ngIf="isAddMode">

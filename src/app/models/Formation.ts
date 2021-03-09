@@ -1,7 +1,7 @@
 import { Step } from "./Step";
 
 export class Formation {
-    id: string;
+    formation_code: string;
     formation_name: string;
     description: string;
     type: string;
@@ -10,8 +10,8 @@ export class Formation {
     add_date: Date;
     last_modification: Date;
 
-    constructor(id: string, formation_name: string, description: string, type: string, url: string, steps: string[], add_date: Date, last_modification: Date) {
-        this.id = id;
+    constructor(formation_code: string, formation_name: string, description: string, type: string, url: string, steps: string[], add_date: Date, last_modification: Date) {
+        this.formation_code = formation_code;
         this.formation_name = formation_name;
         this.description = description;
         this.type = type;

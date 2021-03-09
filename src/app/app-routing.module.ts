@@ -20,10 +20,10 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'formation/:id', component: FormationDetailsComponent,
+    path: 'formation/:code', component: FormationDetailsComponent,
   },
   {
-    path: 'formation/:id/edit', component: FormationEditComponent,
+    path: 'formation/:code/edit', component: FormationEditComponent,
     canActivate: [AuthGuard]
   },
   {

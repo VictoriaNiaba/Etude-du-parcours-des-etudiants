@@ -19,24 +19,24 @@ export class FormationEditComponent implements OnInit {
   submitted = false;
   steps: Array<Step> = [];
   stepsOfFormation: Array<Step> = [];
-  id: string = null;
+  code: string = null;
 
   constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private httpClientService: HttpClientService) { }
 
   ngOnInit(): void {
     //-------------Initialisation----------------
-    this.id = this.route.snapshot.paramMap.get('id');
-    if (this.id === null) { this.isAddMode = true; }
+    this.code = this.route.snapshot.paramMap.get('code');
+    if (this.code === null) { this.isAddMode = true; }
     else { this.isAddMode = false; }
 
-    //Custom Validator pour savoir si l'ID utilisé n'est pas déjà pris
+    //Custom Validator pour savoir si le code utilisé n'est pas déjà pris
     const uniqueIdValidator = (control: AbstractControl): { [key: string]: boolean } | null => {
       let formationTmp: Formation [] = [];
       this.httpClientService.getFormations().subscribe(res => {
         formationTmp = res;
         formationTmp.forEach(f =>{
-          if(control.value === f.id && control.value !== undefined && control.value != this.id){
-            console.log(f.id, control.value)
+          if(control.value === f.formation_code && control.value !== undefined && control.value != this.code){
+            console.log(f.formation_code, control.value)
             return { uniqueId: true };
           }
         });
@@ -45,7 +45,7 @@ export class FormationEditComponent implements OnInit {
     }
 
     this.editForm = this.formBuilder.group({
-      id: ['', [Validators.required, uniqueIdValidator]],
+      formation_code: ['', [Validators.required, uniqueIdValidator]],
       formation_name: ['', [Validators.required]],
       description: ['', Validators.required],
       type: ['', [Validators.required]],
@@ -59,9 +59,9 @@ export class FormationEditComponent implements OnInit {
       this.steps = res;
       if (!this.isAddMode) {
         //On récupère les infos de la formation
-        this.httpClientService.getFormationByCode(this.route.snapshot.paramMap.get('id')).subscribe(res => {
+        this.httpClientService.getFormationByCode(this.route.snapshot.paramMap.get('code')).subscribe(res => {
           this.formation = res[0];
-          this.editForm.setValue({ id: this.formation.id, formation_name: this.formation.formation_name, description: this.formation.description, type: this.formation.type, url: this.formation.url });
+          this.editForm.setValue({ formation_code: this.formation.formation_code, formation_name: this.formation.formation_name, description: this.formation.description, type: this.formation.type, url: this.formation.url });
           this.formation.steps.forEach(element => {
             //Récupérer l'étape à partir du code
             this.httpClientService.getStepByCode(element).subscribe(res => {
@@ -101,12 +101,12 @@ export class FormationEditComponent implements OnInit {
       this.stepsOfFormation.forEach(element => tmpList.push(element.step_code));
 
       //On crée une nouvelle formation
-      this.formation = new Formation(this.editForm.value.id, this.editForm.value.formation_name, this.editForm.value.description, this.editForm.value.type, this.editForm.value.url, tmpList, new Date, new Date);
+      this.formation = new Formation(this.editForm.value.formation_code, this.editForm.value.formation_name, this.editForm.value.description, this.editForm.value.type, this.editForm.value.url, tmpList, new Date, new Date);
       this.create(this.formation);
       console.log(this.formation);
     } else {
       //On met à jour les valeurs en mode édition
-      this.formation.id = this.editForm.value.id;
+      this.formation.formation_code = this.editForm.value.formation_code;
       this.formation.formation_name = this.editForm.value.formation_name;
       this.formation.description = this.editForm.value.description;
       this.formation.type = this.editForm.value.type;
@@ -123,13 +123,13 @@ export class FormationEditComponent implements OnInit {
 
   create(data: Formation) {
     this.httpClientService.addFormation(data).subscribe((data: {}) => {
-      this.router.navigate(['/formation', this.formation.id]);
+      this.router.navigate(['/formation', this.formation.formation_code]);
     })
   }
 
   update(data) {
-    this.httpClientService.updateFormation(this.id, data).subscribe(res => {
-      this.router.navigate(['/formation', this.editForm.value.id]);
+    this.httpClientService.updateFormation(this.code, data).subscribe(res => {
+      this.router.navigate(['/formation', this.editForm.value.formation_code]);
     })
   }
 

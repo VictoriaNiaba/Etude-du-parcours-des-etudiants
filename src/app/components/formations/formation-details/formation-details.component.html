@@ -1,9 +1,9 @@
 <div class="container">
     <div *ngIf="formation" class="card mb-3">
-        <h3 class="card-header">{{ formation.id }}</h3>
+        <h3 class="card-header">{{ formation.formation_code }}</h3>
         <div class="card-body">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">Code : {{ formation.id }}</li>
+                <li class="list-group-item">Code : {{ formation.formation_code }}</li>
                 <li class="list-group-item">Intitulé : {{ formation.formation_name }}</li>
                 <li class="list-group-item">Type : {{ formation.type }}</li>
                 <li class="list-group-item">Description : {{ formation.description }}</li>
@@ -23,9 +23,9 @@
         <div class="card-footer text-muted">
             <div class="d-flex justify-content-between">
                 <a routerLink="/admin" class="btn btn-secondary">Retour</a>
-                <a *ngIf="canEdit === true" routerLink="/formation/{{formation.id}}/edit"
+                <a *ngIf="canEdit === true" routerLink="/formation/{{formation.formation_code}}/edit"
                     class="btn btn-info" role="button">Modifier</a>
-                <a *ngIf="canEdit === true" (click)="delete(formation.id)"
+                <a *ngIf="canEdit === true" (click)="delete(formation.formation_code)"
                     class="btn btn-danger" role="button">Supprimer</a>
             </div>
         </div>

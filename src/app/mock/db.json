@@ -1,22 +1,22 @@
 {
   "formations": [
     {
-      "id": "MESSIN-PRSIN5AA",
+      "formation_code": "MESSIN-PRSIN5A",
       "formation_name": "MASTER INFORMATIQUE A",
-      "description": "AAAAAAAZ La formation permet d’acquérir les principes et techniques AAAAAAA.",
+      "description": "AAAAAAAZ La formation permet d’acquérir les principes et techniques AAAAAAAA.",
       "type": "MASTER",
       "url": "www.google.com",
       "steps": [
         "SIN4T1",
         "SIN4T2",
-        "SIN4T6",
+        "SIN4T5",
         "SIN4T0"
       ],
       "add_date": "01/01/2000",
-      "last_modification": "2021-03-08T16:38:37.937Z"
+      "last_modification": "2021-03-09T13:50:25.339Z"
     },
     {
-      "id": "MESSIN-PRSIN5AB",
+      "formation_code": "MESSIN-PRSIN5AB",
       "formation_name": "MASTER INFORMATIQUE B",
       "description": "BBBBBBB La formation permet d’acquérir les principes et techniques BBBBBBB.",
       "type": "MASTER",
@@ -30,7 +30,7 @@
       "last_modification": "2021-03-08T15:59:52.815Z"
     },
     {
-      "id": "MESSIN-PRSIN5AC",
+      "formation_code": "MESSIN-PRSIN5AC",
       "formation_name": "MASTER INFORMATIQUE C",
       "description": "CCCCCCC La formation permet d’acquérir les principes et techniques CCCCCCC.",
       "type": "MASTER",
@@ -44,7 +44,7 @@
       "last_modification": "2021-03-08T16:16:40.030Z"
     },
     {
-      "id": "MESSIN-PRSIN5AD",
+      "formation_code": "MESSIN-PRSIN5AD",
       "formation_name": "MASTER INFORMATIQUE D",
       "description": "DDDDDDD La formation permet d’acquérir les principes et techniques DDDDDDD.",
       "type": "MASTER",
@@ -58,7 +58,7 @@
       "last_modification": "01/01/2001"
     },
     {
-      "id": "MESSIN-PRSIN5AE",
+      "formation_code": "MESSIN-PRSIN5AE",
       "formation_name": "MASTER INFORMATIQUE E",
       "description": "EEEEEEE La formation permet d’acquérir les principes et techniques EEEEEEE.",
       "type": "MASTER",
@@ -72,7 +72,7 @@
       "last_modification": "01/01/2001"
     },
     {
-      "id": "MESSIN-PRSIN5AF",
+      "formation_code": "MESSIN-PRSIN5AF",
       "formation_name": "MASTER INFORMATIQUE F",
       "description": "FFFFFFF La formation permet d’acquérir les principes et techniques FFFFFFF.",
       "type": "MASTER",
@@ -85,7 +85,7 @@
       "last_modification": "01/01/2001"
     },
     {
-      "id": "MESSIN-PRSIN5AG",
+      "formation_code": "MESSIN-PRSIN5AG",
       "formation_name": "MASTER INFORMATIQUE G",
       "description": "GGGGGGG La formation permet d’acquérir les principes et techniques GGGGGGG.",
       "type": "MASTER",
@@ -97,7 +97,7 @@
       "last_modification": "01/01/2001"
     },
     {
-      "id": "MESSIN-PRSIN5AH",
+      "formation_code": "MESSIN-PRSIN5AH",
       "formation_name": "MASTER INFORMATIQUE H",
       "description": "HHHHHHH La formation permet d’acquérir les principes et techniques HHHHHHH.",
       "type": "MASTER",
@@ -110,7 +110,7 @@
       "last_modification": "01/01/2001"
     },
     {
-      "id": "MESSIN-PRSIN5AI",
+      "formation_code": "MESSIN-PRSIN5AI",
       "formation_name": "MASTER INFORMATIQUE I",
       "description": "IIIIIII La formation permet d’acquérir les principes et techniques IIIIIII.",
       "type": "MASTER",
@@ -123,7 +123,7 @@
       "last_modification": "01/01/2001"
     },
     {
-      "id": "MESSIN-PRSIN5AJ",
+      "formation_code": "MESSIN-PRSIN5AJ",
       "formation_name": "MASTER INFORMATIQUE J",
       "description": "JJJJJJJ La formation permet d’acquérir les principes et techniques JJJJJJJ.",
       "type": "MASTER",
@@ -136,7 +136,7 @@
       "last_modification": "01/01/2001"
     },
     {
-      "id": "ME3SIN",
+      "formation_code": "ME3SIN",
       "formation_name": "LICENCE INFORMATIQUE",
       "description": "AZZZZZZZZZZZZZ",
       "type": "LICENCE",
