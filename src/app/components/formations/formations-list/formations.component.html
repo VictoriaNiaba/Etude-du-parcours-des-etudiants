@@ -19,6 +19,7 @@
               class="form-control"
               id="inlineFormInputGroup"
               placeholder="Rechercher"
+              #myInput [(ngModel)]="searchWord" (input)="search()"
             />
             <div class="input-group-prepend">
               <div class="input-group-text"><i class="fas fa-search"></i></div>

@@ -9,7 +9,7 @@
       <li class="nav-item ml-auto searchInput">
         <div class="col-auto">
           <div class="input-group">
-            <input type="text" class="form-control" id="inlineFormInputGroupStep" placeholder="Rechercher">
+            <input type="text" class="form-control" id="inlineFormInputGroupStep" placeholder="Rechercher" #myInputSteps [(ngModel)]="searchWord" (input)="search()">
             <div class="input-group-prepend">
               <div class="input-group-text"><i class="fas fa-search"></i></div>
             </div>
@@ -23,9 +23,9 @@
     <div class="left col col-lg-9">
       <div style="width: 100%;">
         <div class="box">
-          <div class="box-item" *ngFor="let step of steps | slice: (page - 1) * pageSize:(page - 1) * pageSize + pageSize">
+          <div class="box-item"
+            *ngFor="let step of steps | slice: (page - 1) * pageSize:(page - 1) * pageSize + pageSize">
             <a class="btn btn-primary disabled">
-             
               <div class="formation-code">
                 {{ step.step_code }}
               </div>
@@ -36,11 +36,7 @@
           </div>
         </div>
         <div class="pagination-numbers">
-          <ngb-pagination
-            [pageSize]="pageSize"
-            [collectionSize]="collectionSize"
-            [(page)]="page"
-          ></ngb-pagination>
+          <ngb-pagination [pageSize]="pageSize" [collectionSize]="collectionSize" [(page)]="page"></ngb-pagination>
         </div>
       </div>
     </div>
@@ -54,20 +50,11 @@
           <label class="btn btn-info">
             Charger un CSV d'étapes.
             <br />
-            <input
-              type="file"
-              accept=".csv, text/csv"
-              id="file"
-              (change)="handleFileInput($event.target.files)"
-              style="display: none;"
-              onchange="$('#upload_file_info_Step').text(this.files[0].name)"
-            />
+            <input type="file" accept=".csv, text/csv" id="file" (change)="handleFileInput($event.target.files)"
+              style="display: none;" onchange="$('#upload_file_info_Step').text(this.files[0].name)" />
             <i class="fas fa-upload"></i>
           </label>
-          <span
-            class="label label-info text-muted text-medium"
-            id="upload_file_info_Step"
-          >
+          <span class="label label-info text-muted text-medium" id="upload_file_info_Step">
             ---
           </span>
           <a class="btn btn-success" (click)="uploadFileToService()">
