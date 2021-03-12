@@ -31,13 +31,30 @@ export class EpuGrapheComponent implements OnInit {
   lastStep: string = "PRSIN5AI";
   getFirstStep(): Step {
     //Temporaire
-    return this.firstStep ? this.firstStep : new Step("POST-BAC", "POST-BAC");
+    //return this.firstStep ? this.firstStep : new Step("POST-BAC", "POST-BAC");
+    return this.firstStep;
+  }
+
+  setFirstStep(code: string){
+    if(code != ""){
+      this.httpClient.getStepByCode(code).subscribe(res => {
+        this.firstStep = res;
+      });
+    }
+    else this.firstStep = new Step("POST-BAC", "POST-BAC");
   }
 
   //renseigne "paths" un tableau de path... suivant la base de données
   getPaths(stepsStart: string, stepsEnd: string) {
-    //TODO: relier la recherche et le graphe avec les arguments ci-dessus qui sont des strings de codes séparés par des virgules
-    this.httpClient.getPaths(this.firstStep.step_code, this.lastStep).subscribe(res => {
+    console.log(stepsStart, stepsEnd)
+    //permet d'obtenir seulement le premier code
+    this.setFirstStep(stepsStart.slice(0, 6));
+
+    //Pour bien former la requête attendu au près du backend
+    if(stepsStart === "") stepsStart = null;
+    if(stepsEnd === "") stepsEnd = null;
+    
+    this.httpClient.getPaths(stepsStart, stepsEnd).subscribe(res => {
 
       this.getFirstStep();
 
