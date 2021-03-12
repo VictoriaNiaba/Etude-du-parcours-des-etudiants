@@ -24,7 +24,7 @@ public class PathMerger {
 
 	public Collection<MergedPath> getMergedPath(String firststep, String laststep) {
 		
-		System.out.println("firststep="+firststep+"|laststep="+laststep);
+		//System.out.println("firststep="+firststep+"|laststep="+laststep);
 		
 		Collection<Path> allPaths = pathDao.findAll(Path.class);
 		

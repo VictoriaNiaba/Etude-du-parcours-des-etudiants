@@ -101,7 +101,7 @@ public class PathBuilder {
 		for (Entry<List<String>, List<Integer>> pathEntry : pathmap.entrySet()) {
 			// if (pathEntry.getKey().size() > 2)
 			paths.add(new Path(pathEntry.getKey(),
-					(double) pathEntry.getValue().get(0) / (double) (pathEntry.getValue().size() - 1))); // div
+					(double) ( pathEntry.getValue().get(0) / (pathEntry.getValue().size() - 1)))); // div
 		}
 
 		// ajout des paths dans le DAO
