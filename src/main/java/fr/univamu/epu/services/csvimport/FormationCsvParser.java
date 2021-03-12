@@ -32,6 +32,8 @@ public class FormationCsvParser implements CsvParser<Formation> {
 			if (rowScanner.hasNext())
 				f.setFormation_code(rowScanner.next());
 			if (rowScanner.hasNext())
+				f.setType(rowScanner.next());
+			if (rowScanner.hasNext())
 				f.setFormation_name(rowScanner.next());
 			if (rowScanner.hasNext())
 				f.setUrl(rowScanner.next());
