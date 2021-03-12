@@ -21,7 +21,7 @@ export class EpuGrapheComponent implements OnInit {
   constructor(private httpClient: HttpClientService, private router: Router) { }
 
   ngOnInit(): void {
-    this.getPaths();
+    this.getPaths("", "");
     this.searchInit();
   }
 
@@ -35,8 +35,9 @@ export class EpuGrapheComponent implements OnInit {
   }
 
   //renseigne "paths" un tableau de path... suivant la base de données
-  getPaths() {
-    this.httpClient.getPaths(this.firstStep.step_name, this.lastStep).subscribe(res => {
+  getPaths(stepsStart: string, stepsEnd: string) {
+    //TODO: relier la recherche et le graphe avec les arguments ci-dessus qui sont des strings de codes séparés par des virgules
+    this.httpClient.getPaths(this.firstStep.step_code, this.lastStep).subscribe(res => {
 
       this.getFirstStep();
 
@@ -267,9 +268,9 @@ export class EpuGrapheComponent implements OnInit {
     console.info("START", nodesCodeStart);
     console.info("END", nodesCodeEnd);
 
-    //Listes finales pour get les cheminements
-    let stepsStart = [];
-    let stepsEnd = [];
+    //Strings finales pour obtenir les codes des étapes pour générer les cheminements
+    let stepsStart = "";
+    let stepsEnd = "";
 
     //On récupère les codes des étapes de la formation sinon le code de l'étape directement
     nodesCodeStart.forEach(element => {
@@ -277,12 +278,12 @@ export class EpuGrapheComponent implements OnInit {
         this.httpClient.getFormationByCode(element.code).subscribe(res => {
           res.steps.forEach(step => {
             this.httpClient.getStepByCode(step).subscribe(res => {
-              stepsStart.push(res.step_code);
+              stepsStart.concat(res.step_code+',');
             })
           });
         });
       }
-      else stepsStart.push(element.code);
+      else stepsStart = stepsStart.concat(element.code+',');
     });
     //De même pour la recherche d'arrivée
     nodesCodeEnd.forEach(element => {
@@ -290,19 +291,22 @@ export class EpuGrapheComponent implements OnInit {
         this.httpClient.getFormationByCode(element.code).subscribe(res => {
           res.steps.forEach(step => {
             this.httpClient.getStepByCode(step).subscribe(res => {
-              stepsStart.push(res.step_code);
+              stepsStart.concat(res.step_code+',');
             })
           });
         });
       }
-      else stepsEnd.push(element.code);
+      else stepsEnd = stepsEnd.concat(element.code+',');
     });
+
+    //Pour enlever la dernière virgule
+    stepsStart = stepsStart.slice(0, stepsStart.length-1);
+    stepsEnd = stepsEnd.slice(0, stepsEnd.length-1);
     console.log("Steps Start", stepsStart);
     console.log("Steps End", stepsEnd);
 
-    /*
-    this.httpClient.getPaths(stepsStart, stepsEnd).subscribe( ... ); //pour la mise en place de la recherche multiple
-    */
+    //On appelle la génération du graphe
+    this.getPaths(stepsStart,stepsEnd);
   }
 
   removeFromArray(array: any[], item: any) {
@@ -324,7 +328,7 @@ export class EpuGrapheComponent implements OnInit {
   @ViewChild('searchStart') searchStart;
   selectEventStart(event) {
     if(this.nodesStart.find(node => node.code == event.code)) {
-      alert("Node déjà ajoutée.")
+      alert("Node déjà ajouté.")
       return;
     }
     this.nodesStart.push(
@@ -341,7 +345,7 @@ export class EpuGrapheComponent implements OnInit {
   @ViewChild('searchEnd') searchEnd;
   selectEventEnd(event) {
     if(this.nodesEnd.find(node => node.code == event.code)) {
-      alert("Formation déjà ajoutée.")
+      alert("Node déjà ajouté.")
       return;
     }
     this.nodesEnd.push(
