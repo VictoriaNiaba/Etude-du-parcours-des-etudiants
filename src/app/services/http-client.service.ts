@@ -49,7 +49,7 @@ export class HttpClientService {
   }
 
   getPaths(firstStep: string, lastStep: string) {
-    return this.httpClient.get<any>(`http://localhost:3000/paths`);
+    return this.httpClient.get<any>(`${this.baseUrl}/paths`);
   }
 
   getSteps(){

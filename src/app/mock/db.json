@@ -236,7 +236,6 @@
       "password": "psw"
     }
   ],
-  "POST-CSV": {},
   "salutations": {
     "message": "salutations le monde (mock)"
   },

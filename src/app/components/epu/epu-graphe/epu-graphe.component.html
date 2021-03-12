@@ -19,7 +19,7 @@
             <div class="ng-autocomplete">
               <ng-autocomplete
                 #searchStart
-                [data]="formationSearch"
+                [data]="dataSearch"
                 [searchKeyword]="keyword"
                 placeholder="Je suis en ..."
                 (selected)="selectEventStart($event)"
@@ -30,8 +30,8 @@
 
               <ng-template #itemTemplate let-item>
                 <div class="d-flex flex-column text-left flex-sm-wrap inside">
-                  <a [innerHTML]="item.id" class="top text-secondary"></a>
-                  <a [innerHTML]="item.formation_name" class="bottom"></a>
+                  <a [innerHTML]="item.code" class="top text-secondary"></a>
+                  <a [innerHTML]="item.name" class="bottom"></a>
                 </div>
               </ng-template>
 
@@ -39,8 +39,8 @@
                 <div [innerHTML]="notFound"></div>
               </ng-template>
 
-              <div *ngFor="let formation of formationsStart" class="searchItems">
-                <div class="badge badge-success" (click)="removeFromFormationStart(formation)">{{formation.formation_name}}</div>
+              <div *ngFor="let node of nodesStart" class="searchItems">
+                <div class="badge badge-success" (click)="removeFromNodeStart(node)">{{node.name}}</div>
               </div>
             </div>
             <!---->
@@ -62,7 +62,7 @@
             <div class="ng-autocomplete">
               <ng-autocomplete
                 #searchEnd
-                [data]="formationSearch"
+                [data]="dataSearch"
                 [searchKeyword]="keyword"
                 placeholder="Je vais en ..."
                 (selected)="selectEventEnd($event)"
@@ -73,8 +73,8 @@
                 (inputChanged)="onChangeSearchEnd($event)" -->
               <ng-template #itemTemplate2 let-item>
                 <div class="d-flex flex-column text-left flex-sm-wrap inside">
-                  <a [innerHTML]="item.id" class="top text-secondary"></a>
-                  <a [innerHTML]="item.formation_name" class="bottom"></a>
+                  <a [innerHTML]="item.code" class="top text-secondary"></a>
+                  <a [innerHTML]="item.name" class="bottom"></a>
                 </div>
               </ng-template>
 
@@ -82,8 +82,8 @@
                 <div [innerHTML]="notFound"></div>
               </ng-template>
 
-              <div *ngFor="let formation of formationsEnd" class="searchItems">
-                <div class="badge badge-danger" (click)="removeFromFormationEnd(formation)">{{formation.formation_name}}</div>
+              <div *ngFor="let node of nodesEnd" class="searchItems">
+                <div class="badge badge-danger" (click)="removeFromNodeEnd(node)">{{node.name}}</div>
               </div>
             </div>
             <!---->
