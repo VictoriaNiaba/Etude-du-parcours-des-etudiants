@@ -50,6 +50,13 @@
                     </div>
                     <div class="example-container">
                         <h4>Liste des étapes</h4>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Rechercher"
+                                #myInput [(ngModel)]="searchWord" [ngModelOptions]="{standalone: true}" (input)="search()" />
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="fas fa-search"></i></div>
+                            </div>
+                        </div>
                         <div cdkDropList #stepsList="cdkDropList" [cdkDropListData]="steps"
                             [cdkDropListConnectedTo]="[stepsFormationList]" class="example-list"
                             (cdkDropListDropped)="drop($event)">

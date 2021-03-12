@@ -31,8 +31,9 @@ export class FormationsComponent implements OnInit {
 
   uploadFileToService() {
     this.httpClientService.postFile(this.fileToUpload, "/formations/_upload").subscribe(data => {
-
+        this.ngOnInit();
       }, error => {
+        this.ngOnInit();
         console.log(error);
       });
   }

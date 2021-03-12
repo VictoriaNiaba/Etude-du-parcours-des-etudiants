@@ -20,6 +20,7 @@ export class FormationEditComponent implements OnInit {
   steps: Array<Step> = [];
   stepsOfFormation: Array<Step> = [];
   code: string = null;
+  searchWord: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private httpClientService: HttpClientService) { }
 
@@ -142,6 +143,16 @@ export class FormationEditComponent implements OnInit {
         event.container.data,
         event.previousIndex,
         event.currentIndex);
+    }
+  }
+
+  search(){
+    if(this.searchWord != ""){
+      this.steps = this.steps.filter(res => {
+        return res.step_code.toLocaleLowerCase().match(this.searchWord.toLocaleLowerCase());
+      });
+    }else if(this.searchWord == ""){
+      this.ngOnInit();
     }
   }
 }

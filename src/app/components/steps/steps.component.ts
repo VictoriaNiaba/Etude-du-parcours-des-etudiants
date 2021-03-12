@@ -32,9 +32,10 @@ export class StepsComponent implements OnInit {
 
   uploadFileToService() {
     this.httpClientService.postFile(this.fileToUpload, "/steps/_upload").subscribe(data => {
-
+      this.ngOnInit();
       }, error => {
         console.log(error);
+        this.ngOnInit();
       });
   }
 
