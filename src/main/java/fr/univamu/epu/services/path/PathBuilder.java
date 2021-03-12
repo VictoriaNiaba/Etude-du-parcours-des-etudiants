@@ -1,6 +1,7 @@
 package fr.univamu.epu.services.path;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.univamu.epu.dao.Dao;
+import fr.univamu.epu.model.path.MergedPath;
 import fr.univamu.epu.model.path.Path;
 import fr.univamu.epu.model.registration.Registration;
 
@@ -40,7 +42,7 @@ public class PathBuilder {
 
 		// FILTRE DES ETAPES A ENLEVER
 		List<String> badSteps = new ArrayList<>();
-		// badSteps.add("SC2IN1");
+		badSteps.add("SC2IN1");
 
 		// gen des students paths
 		String currentStudentCode = "";
@@ -91,7 +93,7 @@ public class PathBuilder {
 		List<Path> paths = new ArrayList<Path>();
 		for (Entry<List<String>, List<Integer>> pathEntry : pathmap.entrySet()) {
 			//if (pathEntry.getKey().size() > 2)
-			paths.add(new Path(pathEntry.getKey(), pathEntry.getValue().get(0) / (pathEntry.getValue().size() - 1)));
+			paths.add(new Path(pathEntry.getKey(), (double) pathEntry.getValue().get(0) / (double) (pathEntry.getValue().size() - 1)));
 		}
 		
 		//ajout des paths dans le DAO
@@ -106,8 +108,7 @@ public class PathBuilder {
 		});
 
 		System.out.println( paths.size() + " paths built by the registration manager init");
-		/*
-		for (Path p : paths.subList(0, 20))
+		/*for (Path p : paths.subList(0, 20))
 			System.out.println(p);*/
 
 	}

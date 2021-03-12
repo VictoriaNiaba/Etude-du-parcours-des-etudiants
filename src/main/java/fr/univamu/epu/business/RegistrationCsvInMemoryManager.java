@@ -18,6 +18,7 @@ import fr.univamu.epu.errorhandler.UploadException;
 import fr.univamu.epu.model.registration.Registration;
 import fr.univamu.epu.services.csvimport.RegistrationCsvParser;
 import fr.univamu.epu.services.path.PathBuilder;
+import fr.univamu.epu.services.path.PathMerger;
 
 @Service("registrationManager")
 public class RegistrationCsvInMemoryManager implements RegistrationManager {
@@ -31,6 +32,9 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 	@Autowired
 	PathBuilder pb;
 	
+	@Autowired
+	PathMerger pm;
+	
 	@PostConstruct
 	public void init() throws FileNotFoundException {
 		if (dao.findAll(Registration.class).isEmpty()) {
@@ -38,6 +42,8 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 		}
 		
 		pb.buildPaths();
+		
+		//System.out.println(pm.getMergedPath(null, null));
 	}
 
 	@Override
