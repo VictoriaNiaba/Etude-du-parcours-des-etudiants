@@ -1,6 +1,7 @@
 package fr.univamu.epu.services.path;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -32,8 +33,8 @@ public class PathMerger {
 		for (Path p : allPaths) {
 			pathmap.put(new ArrayList<String>(p.getStepCodes()), p.getAvgStudentCountPerYear());
 			// filters
-			if(firststep != null && !p.getStepCodes().get(0).equals(firststep)) continue;
-			if(laststep != null && !p.getStepCodes().get(p.getStepCodes().size()-1).equals(laststep)) continue;
+			if(firststep != null && !Arrays.asList(firststep.split(",")).contains(p.getStepCodes().get(0))) continue;
+			if(laststep != null && !Arrays.asList(laststep.split(",")).contains(p.getStepCodes().get(p.getStepCodes().size()-1))) continue;
 			paths.add(p);
 		}
 		
