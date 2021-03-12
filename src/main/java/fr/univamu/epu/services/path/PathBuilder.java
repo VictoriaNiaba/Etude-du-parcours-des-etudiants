@@ -16,6 +16,8 @@ import fr.univamu.epu.dao.Dao;
 import fr.univamu.epu.model.path.MergedPath;
 import fr.univamu.epu.model.path.Path;
 import fr.univamu.epu.model.registration.Registration;
+import fr.univamu.epu.model.step.Step;
+import fr.univamu.epu.model.step.StepStat;
 
 @Service("pathBuilder")
 public class PathBuilder {
@@ -24,7 +26,12 @@ public class PathBuilder {
 	Dao<Registration> registrationDao;
 	@Autowired
 	Dao<Path> pathDao;
+	@Autowired
+	Dao<Step> stepDao;
+	@Autowired
+	Dao<StepStat> stepStatDao;
 
+	private List<List<Registration>> studentPaths = new ArrayList<List<Registration>>();
 	private Map<String, Integer> stepCount = new HashMap<String, Integer>();
 
 	// TODO: a séparer en plusieurs methodes pour que ça soit + lisible
@@ -36,9 +43,6 @@ public class PathBuilder {
 				return o1.getStudentCode().compareTo(o2.getStudentCode());
 			}
 		});
-
-		// StudentPath
-		List<List<Registration>> studentPaths = new ArrayList<List<Registration>>();
 
 		// FILTRE DES ETAPES A ENLEVER
 		List<String> badSteps = new ArrayList<>();
@@ -58,6 +62,8 @@ public class PathBuilder {
 			currentStudentRegs.add(reg);
 		}
 
+		generateStepStats();
+
 		// gen des paths spécifique dans une map
 		Map<List<String>, List<Integer>> pathmap = new HashMap<List<String>, List<Integer>>();
 
@@ -74,7 +80,8 @@ public class PathBuilder {
 				continue;
 			if (!pathmap.containsKey(stepCodes)) {
 				countAndYears.add(1);
-				countAndYears.add(sp.get(0).getYear()); // on met l'année du début du chemin pour compter le nombre d'année differentes
+				countAndYears.add(sp.get(0).getYear()); // on met l'année du début du chemin pour compter le nombre
+														// d'année differentes
 			} else {
 				countAndYears = pathmap.get(stepCodes);
 				countAndYears.set(0, countAndYears.get(0).intValue() + 1);
@@ -92,11 +99,12 @@ public class PathBuilder {
 		// creations des paths a partir de la map
 		List<Path> paths = new ArrayList<Path>();
 		for (Entry<List<String>, List<Integer>> pathEntry : pathmap.entrySet()) {
-			//if (pathEntry.getKey().size() > 2)
-			paths.add(new Path(pathEntry.getKey(), (double) pathEntry.getValue().get(0) / (double) (pathEntry.getValue().size() - 1)));
+			// if (pathEntry.getKey().size() > 2)
+			paths.add(new Path(pathEntry.getKey(),
+					(double) pathEntry.getValue().get(0) / (double) (pathEntry.getValue().size() - 1))); // div
 		}
-		
-		//ajout des paths dans le DAO
+
+		// ajout des paths dans le DAO
 		pathDao.addAll(paths);
 
 		//
@@ -107,9 +115,10 @@ public class PathBuilder {
 			}
 		});
 
-		System.out.println( paths.size() + " paths built by the registration manager init");
-		/*for (Path p : paths.subList(0, 20))
-			System.out.println(p);*/
+		System.out.println(paths.size() + " paths built by the registration manager init");
+		/*
+		 * for (Path p : paths.subList(0, 20)) System.out.println(p);
+		 */
 
 	}
 
@@ -133,4 +142,80 @@ public class PathBuilder {
 		return regs;
 	}
 
+	public void generateStepStats() {
+		Collection<Step> steps = stepDao.findAll(Step.class);
+		for (Step s : steps) {
+			Map<String, List<Integer>> mapStepsIn = new HashMap<String, List<Integer>>();
+			Map<String, List<Integer>> mapStepsOut = new HashMap<String, List<Integer>>();
+
+			for (List<Registration> regs : studentPaths) {
+				for (int i = 0; i < regs.size(); i++) {
+					if (!regs.get(i).getStepCode().equals(s.getStep_code()))
+						continue;
+					else {// on a la step dans le cheminement etudiant actuel!!
+
+						// stepsIn
+						if (i != 0) {
+							List<Integer> l = new ArrayList<Integer>();
+							if (mapStepsIn.containsKey(regs.get(i - 1).getStepCode())) {
+								l = mapStepsIn.get(regs.get(i - 1).getStepCode());
+								l.set(0, l.get(0) + 1);
+								if (!l.contains(regs.get(i).getYear())) {
+									l.add(regs.get(i).getYear());
+								}
+							} else {
+								l = new ArrayList<Integer>();
+								l.add(1);
+								l.add(regs.get(i).getYear());
+							}
+							mapStepsIn.put(regs.get(i - 1).getStepCode(), l);
+						}
+
+						// stepsOut
+						if (i != regs.size() - 1) {
+							List<Integer> l = new ArrayList<Integer>();
+							if (mapStepsOut.containsKey(regs.get(i + 1).getStepCode())) {
+								l = mapStepsOut.get(regs.get(i + 1).getStepCode());
+								l.set(0, l.get(0) + 1);
+								if (!l.contains(regs.get(i).getYear())) {
+									l.add(regs.get(i).getYear());
+								}
+							} else {
+								l = new ArrayList<Integer>();
+								l.add(1);
+								l.add(regs.get(i).getYear());
+							}
+							mapStepsOut.put(regs.get(i + 1).getStepCode(), l);
+						}
+						break;
+					}
+				}
+			}
+			List<StepStat> stepsIn = new ArrayList<StepStat>();
+			for (Entry<String, List<Integer>> entryIn : mapStepsIn.entrySet()) {
+				stepsIn.add(new StepStat(entryIn.getKey(),
+						(double) (entryIn.getValue().get(0) / (entryIn.getValue().size() - 1)))); // div
+			}
+			List<StepStat> stepsOut = new ArrayList<StepStat>();
+			for (Entry<String, List<Integer>> entryOut : mapStepsOut.entrySet()) {
+				if(entryOut.getKey().equals(s.getStep_code())) {
+					s.setAverage_repeat((double) (entryOut.getValue().get(0) / (entryOut.getValue().size() - 1)));
+				} else {
+				stepsOut.add(new StepStat(entryOut.getKey(),
+						(double) (entryOut.getValue().get(0) / (entryOut.getValue().size() - 1)))); // div
+				}
+			}
+			
+			for(StepStat ss : stepsIn)
+				ss.setStepInOf(s);
+			for(StepStat ss : stepsOut)
+				ss.setStepOutOf(s);
+			
+			s.setSteps_in(stepsIn);
+			stepStatDao.addAll(stepsIn);
+			s.setSteps_out(stepsOut);
+			stepStatDao.addAll(stepsOut);
+			stepDao.update(s);
+		}
+	}
 }

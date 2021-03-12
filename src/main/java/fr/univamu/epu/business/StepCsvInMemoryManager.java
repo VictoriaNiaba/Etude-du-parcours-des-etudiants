@@ -19,7 +19,7 @@ import fr.univamu.epu.errorhandler.NotFoundException;
 import fr.univamu.epu.model.step.Step;
 import fr.univamu.epu.services.csvimport.CsvParser;
 
-@Service
+@Service("stepManager")
 public class StepCsvInMemoryManager implements StepManager {
 
 	@Autowired

@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +19,9 @@ import fr.univamu.epu.errorhandler.UploadException;
 import fr.univamu.epu.model.registration.Registration;
 import fr.univamu.epu.services.csvimport.RegistrationCsvParser;
 import fr.univamu.epu.services.path.PathBuilder;
-import fr.univamu.epu.services.path.PathMerger;
 
 @Service("registrationManager")
+@DependsOn("stepManager")
 public class RegistrationCsvInMemoryManager implements RegistrationManager {
 
 	@Autowired
@@ -32,17 +33,13 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 	@Autowired
 	PathBuilder pb;
 	
-	@Autowired
-	PathMerger pm;
-	
 	@PostConstruct
 	public void init() throws FileNotFoundException {
 		if (dao.findAll(Registration.class).isEmpty()) {
 			upload(new FileInputStream("files/IA.csv"));
 		}
 		
-		pb.buildPaths();
-		
+		pb.buildPaths();//depends on step
 		//System.out.println(pm.getMergedPath(null, null));
 	}
 

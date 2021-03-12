@@ -37,9 +37,9 @@ public class StepCsvParser implements CsvParser<Step> {
 				String s = rowScanner.next();
 				if (s.codePointAt(0) == 0xfeff)
 					s = s.substring(1, s.length()); // BOM présent dans le fichier IA.csv
-				step.setStepCode(s.replace(',', ' ').replace('"', ' ').strip());
+				step.setStep_code(s.replace(',', ' ').replace('"', ' ').strip());
 				if (rowScanner.hasNext())
-					step.setName(rowScanner.next().replace(',', ' ').replace('"', ' ').strip());
+					step.setStep_name(rowScanner.next().replace(',', ' ').replace('"', ' ').strip());
 			}
 		}
 		// BOM check System.out.println("SYSTEM POINT OUT PRINT :"+step.getStepCode() +
