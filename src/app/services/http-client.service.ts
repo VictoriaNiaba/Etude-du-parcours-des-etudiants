@@ -49,7 +49,18 @@ export class HttpClientService {
   }
 
   getPaths(firstStep: string, lastStep: string) {
-    return this.httpClient.get<any>(`${this.baseUrl}/paths`);
+    let request = `${this.baseUrl}/paths`;
+    if(firstStep || lastStep) {
+      request += "?"
+      if(firstStep && lastStep)
+        request += `firststep=${firstStep}&laststep=${lastStep}`
+      if(firstStep && !lastStep)
+        request += `firststep=${firstStep}`
+      if(!firstStep && lastStep)
+        request += `laststep=${lastStep}`
+    }
+    console.warn(request)
+    return this.httpClient.get<any>(request);
   }
 
   getSteps(){

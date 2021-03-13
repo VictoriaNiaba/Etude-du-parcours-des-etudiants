@@ -68,12 +68,14 @@ export class EpuStatsComponent implements OnInit {
       });
     }
 
-    this.options = {
-      legend: {
+    /*
+    legend: {
         orient: "horizontal",
         left: "center",
         data: temp
       },
+    */
+    this.options = {
       tooltip: {
         trigger: 'item'
       },

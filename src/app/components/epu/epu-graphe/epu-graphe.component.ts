@@ -18,7 +18,7 @@ export class EpuGrapheComponent implements OnInit {
   constructor(private httpClient: HttpClientService, private router: Router) { }
 
   ngOnInit(): void {
-    this.getPaths();
+    this.getPaths("", "");
     this.searchInit();
   }
 
@@ -27,15 +27,32 @@ export class EpuGrapheComponent implements OnInit {
   firstStep: StepPath = new StepPath("POST-BAC", "POST-BAC");
   lastStep: string = "PRSIN5AI";
   getFirstStep(): StepPath {
-    //Temporaire
-    return this.firstStep ? this.firstStep : new StepPath("POST-BAC", "POST-BAC");
+    //return this.firstStep ? this.firstStep : new StepPath("POST-BAC", "POST-BAC");
+    return this.firstStep;
+  }
+
+  setFirstStep(code: string){
+    if(code != ""){
+      this.httpClient.getStepByCode(code).subscribe(res => {
+        this.firstStep = res;
+      });
+    }
+    else this.firstStep = new StepPath("POST-BAC", "POST-BAC");
   }
 
   //renseigne "paths" un tableau de path... suivant la base de données
-  async getPaths() {
-    let httpDone = false;
-    this.httpClient.getPaths(this.firstStep.step_name, this.lastStep).subscribe(res => {
+  getPaths(stepsStart: string, stepsEnd: string) {
+    //console.log(stepsStart, stepsEnd)
+    //permet d'obtenir seulement le premier code
+    this.setFirstStep(stepsStart.slice(0, 6));
 
+    //Pour bien former la requête attendu au près du backend
+    if(stepsStart === "") stepsStart = null;
+    if(stepsEnd === "") stepsEnd = null;
+    
+    this.paths = new Array<Path>();
+
+    this.httpClient.getPaths(stepsStart, stepsEnd).subscribe(res => {
       this.getFirstStep();
 
       res.forEach(path => {
@@ -49,17 +66,13 @@ export class EpuGrapheComponent implements OnInit {
           pathTemp.addSteps(step);
         }
         this.paths.push(pathTemp);
-        console.info("path", pathTemp);
       });
       this.totalStudentPaths = 0;
       this.paths.forEach(path => {
         this.totalStudentPaths += path.getNbStudent();
       });
       this.changeOptions();
-      httpDone = true;
     });
-    while(!httpDone)
-      await new Promise( resolve => setTimeout(resolve, 300) );
   }
 
   //change les options du graphique
@@ -224,27 +237,88 @@ export class EpuGrapheComponent implements OnInit {
     return console.error('Click failed');
   }
 
-  /*Recherche*/
-  keyword = 'formation_name';
-  formationSearch: any[];
-  formationsStart = new Array<any>();
-  formationsEnd = new Array<any>();
+
+
+  /*-----------------------------Recherche------------------------------------*/
+  keyword = 'key';
+  dataSearch: any[] =[];
+  nodesStart = new Array<any>();
+  nodesEnd = new Array<any>();
 
   searchInit() {
     this.httpClient.getFormations().subscribe(res => {
-      this.formationSearch = res; //peut être limité à id + formation_name sauf si on doit utiliser toutes les données de formation dans le component !
+      for(let i=0; i<res.length; i++){
+        let tmpData = {
+          code: res[i].formation_code,
+          name: res[i].formation_name,
+          type: "formation",
+          //permet la recherche multiple
+          key: res[i].formation_code + res[i].formation_name
+        }
+        this.dataSearch.push(tmpData);
+      }
     });
+
+    this.httpClient.getSteps().subscribe(res => {
+      for(let i=0; i<res.length; i++){
+        let tmpData = {
+          code: res[i].step_code,
+          name: res[i].step_name,
+          type: "step",
+          //permet la recherche multiple
+          key: res[i].step_code + res[i].step_name
+        }
+        this.dataSearch.push(tmpData);
+      }
+    })
   }
 
   search() {
-    let formationsNameStart = this.formationsStart.map(formation => formation.id);
-    let formationsNameEnd = this.formationsEnd.map(formation => formation.id);
+    let nodesCodeStart = this.nodesStart.map(node => node);
+    let nodesCodeEnd = this.nodesEnd.map(node => node);
     console.info("Recherche :");
-    console.info("START", formationsNameStart);
-    console.info("END", formationsNameEnd);
-    /*
-    this.httpClient.getPaths(formationsNameStart, formationsNameEnd).subscribe( ... ); //pour la mise en place de la recherche multiple
-    */
+    console.info("START", nodesCodeStart);
+    console.info("END", nodesCodeEnd);
+
+    //Strings finales pour obtenir les codes des étapes pour générer les cheminements
+    let stepsStart = "";
+    let stepsEnd = "";
+
+    //On récupère les codes des étapes de la formation sinon le code de l'étape directement
+    nodesCodeStart.forEach(element => {
+      if(element.type === "formation"){
+        this.httpClient.getFormationByCode(element.code).subscribe(res => {
+          res.steps.forEach(step => {
+            this.httpClient.getStepByCode(step).subscribe(res => {
+              stepsStart.concat(res.step_code+',');
+            })
+          });
+        });
+      }
+      else stepsStart = stepsStart.concat(element.code+',');
+    });
+    //De même pour la recherche d'arrivée
+    nodesCodeEnd.forEach(element => {
+      if(element.type === "formation"){
+        this.httpClient.getFormationByCode(element.code).subscribe(res => {
+          res.steps.forEach(step => {
+            this.httpClient.getStepByCode(step).subscribe(res => {
+              stepsStart.concat(res.step_code+',');
+            })
+          });
+        });
+      }
+      else stepsEnd = stepsEnd.concat(element.code+',');
+    });
+
+    //Pour enlever la dernière virgule
+    stepsStart = stepsStart.slice(0, stepsStart.length-1);
+    stepsEnd = stepsEnd.slice(0, stepsEnd.length-1);
+    console.log("Steps Start", stepsStart);
+    console.log("Steps End", stepsEnd);
+
+    //On appelle la génération du graphe
+    this.getPaths(stepsStart,stepsEnd);
   }
 
   removeFromArray(array: any[], item: any) {
@@ -252,29 +326,29 @@ export class EpuGrapheComponent implements OnInit {
       if(item==element) array.splice(index,1);
     });
   }
-  removeFromFormationStart(item: any) {
-    this.removeFromArray(this.formationsStart, item);
-    this.formationSearch.push(item);
+  removeFromNodeStart(item: any) {
+    this.removeFromArray(this.nodesStart, item);
+    this.dataSearch.push(item);
     this.search();
   }
-  removeFromFormationEnd(item: any) {
-    this.removeFromArray(this.formationsEnd, item);
-    this.formationSearch.push(item);
+  removeFromNodeEnd(item: any) {
+    this.removeFromArray(this.nodesEnd, item);
+    this.dataSearch.push(item);
     this.search();
   }
 
   @ViewChild('searchStart') searchStart;
   selectEventStart(event) {
-    if(this.formationsStart.find(formation => formation.id == event.id)) {
-      alert("Formation déjà ajoutée.")
+    if(this.nodesStart.find(node => node.code == event.code)) {
+      alert("Node déjà ajouté.")
       return;
     }
-    this.formationsStart.push(
-      this.formationSearch.find(formation => formation.id == event.id)
+    this.nodesStart.push(
+      this.dataSearch.find(node => node.code == event.code)
     );
     this.removeFromArray(
-      this.formationSearch,
-      this.formationSearch.find(formation => formation.id == event.id)
+      this.dataSearch,
+      this.dataSearch.find(node => node.code == event.code)
     );
     this.searchStart.clear();
     this.search();
@@ -282,16 +356,16 @@ export class EpuGrapheComponent implements OnInit {
 
   @ViewChild('searchEnd') searchEnd;
   selectEventEnd(event) {
-    if(this.formationsEnd.find(formation => formation.id == event.id)) {
-      alert("Formation déjà ajoutée.")
+    if(this.nodesEnd.find(node => node.code == event.code)) {
+      alert("Node déjà ajouté.")
       return;
     }
-    this.formationsEnd.push(
-      this.formationSearch.find(formation => formation.id == event.id)
+    this.nodesEnd.push(
+      this.dataSearch.find(node => node.code == event.code)
     );
     this.removeFromArray(
-      this.formationSearch,
-      this.formationSearch.find(formation => formation.id == event.id)
+      this.dataSearch,
+      this.dataSearch.find(node => node.code == event.code)
     );
     this.searchEnd.clear();
     this.search();
