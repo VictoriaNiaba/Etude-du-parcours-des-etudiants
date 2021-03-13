@@ -2,12 +2,10 @@ package fr.univamu.epu.model.step;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -15,28 +13,26 @@ import javax.persistence.OneToMany;
 
 import fr.univamu.epu.model.formation.Formation;
 
-
-
 @Entity(name = "Step")
 public class Step implements Serializable {
 
 	@Id
 	@Column(name = "step_code", length = 10, nullable = false, unique = false)
 	private String step_code;
-	
+
 	@Basic(optional = true)
 	@Column(name = "name", length = 100, nullable = true)
 	private String step_name;
-	
+
 	@ManyToMany(mappedBy = "steps")
 	private Set<Formation> formations;
 
-	@OneToMany(mappedBy="step_in_of")
+	@OneToMany(mappedBy = "step_in_of")
 	private List<StepStat> steps_in;
-	
-	@OneToMany(mappedBy="step_out_of")
+
+	@OneToMany(mappedBy = "step_out_of")
 	private List<StepStat> steps_out;
-	
+
 	@Column(name = "average_repeat")
 	private Double average_repeat;
 
@@ -53,6 +49,31 @@ public class Step implements Serializable {
 	@Override
 	public String toString() {
 		return "Step [stepCode=" + step_code + ", name=" + step_name + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((step_code == null) ? 0 : step_code.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Step other = (Step) obj;
+		if (step_code == null) {
+			if (other.step_code != null)
+				return false;
+		} else if (!step_code.equals(other.step_code))
+			return false;
+		return true;
 	}
 
 	public String getStep_code() {
