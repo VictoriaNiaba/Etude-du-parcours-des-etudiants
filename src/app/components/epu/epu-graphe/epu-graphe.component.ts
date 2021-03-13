@@ -1,11 +1,8 @@
 import { Input, ViewChild } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormControlName } from '@angular/forms';
 import { Router } from '@angular/router';
-import { element } from 'protractor';
-import { Formation } from 'src/app/models/formation';
 import { Path } from 'src/app/models/Path';
-import { Step } from 'src/app/models/Step';
+import { StepPath } from 'src/app/models/Step';
 import { HttpClientService } from 'src/app/services/http-client.service';
 import { EpuStatsComponent } from '../epu-stats/epu-stats.component';
 
@@ -27,15 +24,16 @@ export class EpuGrapheComponent implements OnInit {
 
   paths: Path[] = new Array<Path>();
   totalStudentPaths: number;
-  firstStep: Step = new Step("POST-BAC", "POST-BAC");
+  firstStep: StepPath = new StepPath("POST-BAC", "POST-BAC");
   lastStep: string = "PRSIN5AI";
-  getFirstStep(): Step {
+  getFirstStep(): StepPath {
     //Temporaire
-    return this.firstStep ? this.firstStep : new Step("POST-BAC", "POST-BAC");
+    return this.firstStep ? this.firstStep : new StepPath("POST-BAC", "POST-BAC");
   }
 
   //renseigne "paths" un tableau de path... suivant la base de données
-  getPaths() {
+  async getPaths() {
+    let httpDone = false;
     this.httpClient.getPaths(this.firstStep.step_name, this.lastStep).subscribe(res => {
 
       this.getFirstStep();
@@ -43,23 +41,25 @@ export class EpuGrapheComponent implements OnInit {
       res.forEach(path => {
         let pathTemp = new Path();
         for (let i = 0; i < path['steps'].length; i++) {
-          let step = new Step( //init
+          let step = new StepPath( //init
             path['steps'][i],
             //TODO: récupérer le nom des steps
             path['steps'][i],
-            path['registered'][i],
-            0, //other
-            0); //redoublement
+            path['registered'][i]);
           pathTemp.addSteps(step);
         }
         this.paths.push(pathTemp);
+        console.info("path", pathTemp);
       });
       this.totalStudentPaths = 0;
       this.paths.forEach(path => {
         this.totalStudentPaths += path.getNbStudent();
       });
-      this.changeOptions()
-    })
+      this.changeOptions();
+      httpDone = true;
+    });
+    while(!httpDone)
+      await new Promise( resolve => setTimeout(resolve, 300) );
   }
 
   //change les options du graphique
@@ -104,7 +104,7 @@ export class EpuGrapheComponent implements OnInit {
         let tmpLink = {
           source: currentSourceStepCode,
           target: pathSteps[index].step_code,
-          value: pathSteps[index].getStatsTotal(),
+          value: pathSteps[index].step_number,
           label: {
             show: true,
             formatter: function (params) {
@@ -209,7 +209,7 @@ export class EpuGrapheComponent implements OnInit {
   }
   stepClick(name: string) {
     //trouver le step cliqué dans paths puis récupérer les statistiques et envoyer à la place de name puis modifier setFormation + affichage
-    let res: Step;
+    let res: StepPath;
     this.paths.forEach(path => {
       path.path_steps.filter(x => {
         if (x.step_name === name) {
@@ -220,7 +220,7 @@ export class EpuGrapheComponent implements OnInit {
       if (res) return;
     });
     if (res)
-      return this.statsComponent.setFormation(res);
+      return this.statsComponent.setFormation(res.step_code);
     return console.error('Click failed');
   }
 

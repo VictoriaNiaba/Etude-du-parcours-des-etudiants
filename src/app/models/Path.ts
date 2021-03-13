@@ -1,29 +1,26 @@
-import { Step } from "./Step";
+import { StepPath } from "./Step";
 
 export class Path {
-    path_steps:Step[];
+    path_steps:StepPath[]; 
 
     constructor() {
-        this.path_steps = new Array<Step>();
+        this.path_steps = new Array<StepPath>();
     }
     getMeanStudents():number{
-        let tmp_nb = 0;
-        this.path_steps.forEach(step => {
-            tmp_nb += step.step_stats_in + step.step_stats_other; //pas les redoublants car ils seront comptés 2x sinon
-        });
-        return tmp_nb/this.path_steps.length;
+        if(this.path_steps.length == 0) return null;
+        return this.getNbStudent()/this.path_steps.length;
     }
-    getNbStudent(): number{ //pour le moment on fait ça mais il faudrait que paths contienne l'info suivante : nombre d'étudiants INDEPENDANTS
+    getNbStudent(): number{
         let tmp = 0;
         this.path_steps.forEach(step => {
-            tmp += step.getStatsTotal();
+            tmp += step.step_number;
         });
         return tmp;
     }
-    addSteps(step: Step){
+    addSteps(step: StepPath){
         this.path_steps.push(step);
     }
-    setSteps(path_steps: Step[]) {
+    setSteps(path_steps: StepPath[]) {
         this.path_steps = path_steps;
     }
     getSteps(index:number) {

@@ -40,7 +40,11 @@
               </ng-template>
 
               <div *ngFor="let formation of formationsStart" class="searchItems">
-                <div class="badge badge-success" (click)="removeFromFormationStart(formation)">{{formation.formation_name}}</div>
+                <div class="badge badge-success" (click)="removeFromFormationStart(formation)">
+                  {{formation.formation_name}}
+                  &nbsp;
+                  <i class="fas fa-times-circle"></i>
+                </div>
               </div>
             </div>
             <!---->
@@ -83,7 +87,10 @@
               </ng-template>
 
               <div *ngFor="let formation of formationsEnd" class="searchItems">
-                <div class="badge badge-danger" (click)="removeFromFormationEnd(formation)">{{formation.formation_name}}</div>
+                <div class="badge badge-danger" (click)="removeFromFormationEnd(formation)">
+                  {{formation.formation_name}}
+                  <i class="fas fa-times-circle"></i>
+                </div>
               </div>
             </div>
             <!---->
@@ -113,7 +120,7 @@
         <div *ngFor="let step of path.path_steps; let index = index"> <!-- pour chaque step -->
           <div class="text-primary" style="margin: 0px 10px; font-size: 10px;">
             <i class="fas fa-minus" style="align-self: center;"></i>
-            <div style="align-self: center;">{{path.getSteps(index).getStatsTotal()}}</div>
+            <div style="align-self: center;">{{path.getSteps(index).step_number}}</div>
             <i class="fas fa-arrow-right" style="align-self: center;"></i>
           </div>
           <a class="badge badge-info" style="align-self: center;" (click)="stepClick(path.getSteps(index).step_code)">{{path.getSteps(index).step_code}}</a>

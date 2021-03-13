@@ -13,14 +13,24 @@ export class EpuStatsComponent implements OnInit {
   constructor(private httpClient: HttpClientService) { }
 
   /**/
-  step: Step;
-  setFormation(step: Step) {
-    this.step = step;
-    this.changeOptions();
+  step: Step = null;
+  stepsInAvailable: boolean = false;
+  stepsOutAvailable: boolean = false;
+  setFormation(stepCode: string) {
+    this.httpClient.getStepByCode(stepCode).subscribe(res => {
+      this.step = new Step(
+        res.step_code,
+        res.step_name,
+        res.steps_in,
+        res.steps_out,
+        res.average_repeat
+      );
+      console.log("step found : ", res)
+      this.changeOptions();
+    });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   /* ça init une fois que les chats sont affichés, c'est call dans le html par (chartInit) */
   chartStats1: any;
@@ -37,41 +47,26 @@ export class EpuStatsComponent implements OnInit {
   //faire changeOptions2() pour le out ??? à gerer avec la même logique
   options: any;
   changeOptions() {
-
     //on peut ajouter des infos dans data autant qu'on veut.
     //il faudra peut être faire évoluer step ou donner plus d'info à epu-stats par "setFormation(...)"
     let data = [];
-    if(this.step.step_stats_in > 0) {
-      data.push(
-        {
-          value: this.step.step_stats_in,
-          name: /*this.step.step_name*/"Entrants"
-        }
-      );
-    }
-    if(this.step.step_stats_repeating > 0) {
-      data.push(
-        {
-          value: this.step.step_stats_repeating,
-          name: "Redoublants"
-        }
-      );
-    }
-    if(this.step.step_stats_other > 0) {
-      data.push(
-        {
-          value: this.step.step_stats_other,
-          name: "Autre"
-        }
-      );
-    }
-    /**/
-
-    // sert à avoir la liste de "string" pour les ajouter dans la légende.
     let temp = [];
-    data.forEach(element => {
-      temp.push(element.name);
-    });
+    if(this.step.steps_in) {
+      this.step.steps_in.forEach(step => {
+        data.push(
+          {
+            value: step.number,
+            name: step.step_code //get le nom ?
+          }
+        );
+      });
+      /**/
+
+      // sert à avoir la liste de "string" pour les ajouter dans la légende.
+      data.forEach(element => {
+        temp.push(element.name);
+      });
+    }
 
     this.options = {
       legend: {
@@ -103,11 +98,3 @@ export class EpuStatsComponent implements OnInit {
   }
 }
 /* https://echarts.apache.org/en/option.html#title */
-/*
-  La logique de stats est la même que celle de l'affichage par graphe (echart les 2).
-  les stats prennent des options; il faut lui donner la variable options et pas une fonction retournant options (sinon y a des lags)
-  du coup options dont être déclarée puis modifiée par une fonction changeOptions() modifie this.options.
-
-  J'ai créé dans changeOptions() une variable data contenant name et value que j'intègre directement dans options.
-  Le graphe devrait être géré de la même manière normalement.
-*/
