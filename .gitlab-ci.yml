@@ -1,1 +1,17 @@
+image: openjdk:15.0.2
 
+stages:
+  - tests
+
+tests:
+  stage: tests
+  script:
+    - ./mvnw clean test
+  expire_in: 5min
+
+coverage:
+  stage: tests
+  script:
+    - ./mvnw clean verify
+    - cat target/site/jacoco/index.html | grep -o 'Total[^%]*%' | sed -e 's/Total.*"ctr2">/Jacoco-Test-Coverage: /g'
+  expire_in: 5min
