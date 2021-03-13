@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Path } from 'src/app/models/Path';
 import { StepPath } from 'src/app/models/Step';
 import { HttpClientService } from 'src/app/services/http-client.service';
+import { StepsService } from 'src/app/services/steps.service';
 import { EpuStatsComponent } from '../epu-stats/epu-stats.component';
 
 @Component({
@@ -15,7 +16,7 @@ export class EpuGrapheComponent implements OnInit {
 
   chartOptions: any;
 
-  constructor(private httpClient: HttpClientService, private router: Router) { }
+  constructor(private httpClient: HttpClientService, private stepsService: StepsService, private router: Router) { }
 
   ngOnInit(): void {
     this.getPaths("", "");
@@ -58,10 +59,11 @@ export class EpuGrapheComponent implements OnInit {
       res.forEach(path => {
         let pathTemp = new Path();
         for (let i = 0; i < path['steps'].length; i++) {
+          let stepName = this.stepsService.getByCode(path['steps'][i]);
           let step = new StepPath( //init
             path['steps'][i],
             //TODO: récupérer le nom des steps
-            path['steps'][i],
+            stepName,
             path['registered'][i]);
           pathTemp.addSteps(step);
         }
@@ -220,12 +222,12 @@ export class EpuGrapheComponent implements OnInit {
     if (e.dataType === 'node')
       this.stepClick(e.name);
   }
-  stepClick(name: string) {
+  stepClick(code: string) {
     //trouver le step cliqué dans paths puis récupérer les statistiques et envoyer à la place de name puis modifier setFormation + affichage
     let res: StepPath;
     this.paths.forEach(path => {
       path.path_steps.filter(x => {
-        if (x.step_name === name) {
+        if (x.step_code === code) {
           res = x;
           return;
         }
