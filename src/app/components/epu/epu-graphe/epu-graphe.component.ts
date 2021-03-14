@@ -80,7 +80,7 @@ export class EpuGrapheComponent implements OnInit {
     let pathTmp = this.paths[1];
     this.paths[1] = this.paths[0];
     this.paths[0] = pathTmp;
-    
+
     this.changeOptions();
   }
 
@@ -252,7 +252,7 @@ export class EpuGrapheComponent implements OnInit {
     });
     if (res)
       return this.statsComponent.setFormation(res.step_code);
-    return console.error('Click failed');
+    return this.statsComponent.setFormation("");
   }
 
 

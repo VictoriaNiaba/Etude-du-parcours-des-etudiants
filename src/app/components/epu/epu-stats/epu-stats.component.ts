@@ -11,12 +11,16 @@ import { Step } from 'src/app/models/Step';
 export class EpuStatsComponent implements OnInit {
 
   constructor(private httpClient: HttpClientService) {
-    //this.setFormation("SSV2AT") //temporairePourTest
+    this.setFormation("SSV2AT") //temporairePourTest
   }
 
   /**/
   step: Step;
   setFormation(stepCode: string) {
+    if(stepCode == "") {
+      this.step = null;
+      return;
+    }
     this.httpClient.getStepByCode(stepCode).subscribe(res => {
       let steps_in_sorted = res.steps_in.sort((a,b) => {
         if (a.number > b.number)
