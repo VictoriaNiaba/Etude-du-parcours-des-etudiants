@@ -10,13 +10,11 @@ export class Step {
         this.step_name = step_name;
         if(steps_in) {
             this.steps_in = steps_in;
-            console.log("steps_in", this.steps_in);
         } else {
             this.steps_in = [];
         }
         if(steps_out) {
             this.steps_out = steps_out;
-            console.log("steps_out", this.steps_out);
         } else {
             this.steps_out = [];
         }

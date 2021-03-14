@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClientService } from 'src/app/services/http-client.service';
 import * as echarts from 'echarts';
 import { Step } from 'src/app/models/Step';
+import { StepsService } from 'src/app/services/steps.service';
 
 @Component({
   selector: 'app-epu-stats',
@@ -10,7 +11,7 @@ import { Step } from 'src/app/models/Step';
 })
 export class EpuStatsComponent implements OnInit {
 
-  constructor(private httpClient: HttpClientService) {
+  constructor(private httpClient: HttpClientService, private stepsService: StepsService) {
     this.setFormation("SSV2AT") //temporairePourTest
   }
 
@@ -43,7 +44,7 @@ export class EpuStatsComponent implements OnInit {
         steps_out_sorted,
         res.average_repeat
       );
-      console.log("step found : ", res)
+
       this.changeOptions1();
       this.changeOptions2();
     });
@@ -75,13 +76,13 @@ export class EpuStatsComponent implements OnInit {
           this.dataIn.push(
             {
               value: step.number,
-              name: step.step_code //get le nom ?
+              name: this.stepsService.getByCode(step.step_code)
             });
         } else {
           this.otherIn.push(
             {
               value: step.number,
-              name: step.step_code //get le nom ?
+              name: this.stepsService.getByCode(step.step_code)
             });
         }
       });
@@ -141,14 +142,14 @@ export class EpuStatsComponent implements OnInit {
           this.dataOut.push(
             {
               value: step.number,
-              name: step.step_code //get le nom ?
+              name: this.stepsService.getByCode(step.step_code)
             }
           );
         } else {
           this.otherOut.push(
             {
               value: step.number,
-              name: step.step_code //get le nom ?
+              name: this.stepsService.getByCode(step.step_code)
             });
         }
       });

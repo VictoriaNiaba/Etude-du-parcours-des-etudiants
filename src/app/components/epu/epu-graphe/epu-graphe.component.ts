@@ -228,7 +228,7 @@ export class EpuGrapheComponent implements OnInit {
               if (labelText.length < nb2show)
                 return labelText;
               else
-                return labelText.slice(4, nb2show) + "...";
+                return labelText.slice(0, nb2show) + "...";
             }
           },
           edgeSymbol: ['circle', 'arrow'],

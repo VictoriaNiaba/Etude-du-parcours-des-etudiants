@@ -15,7 +15,6 @@ export class StepsService {
     return new Promise<void>((resolve, reject) => {
       this.httpClient.getSteps().subscribe(res => {
         this.steps = res;
-        console.info("Steps service", this.steps)
         resolve();
       });
     });
@@ -25,10 +24,10 @@ export class StepsService {
     if(this.steps.length != 0) {
       let step = this.steps.find(step => step.step_code == code);
       if(!step) {
-        console.error("not step found")
+        console.error(`No step ${code} found`)
         return;
       }
-      return step.step_name;
+      return step.step_name.replace("AMU.","");
     }
   }
 }
