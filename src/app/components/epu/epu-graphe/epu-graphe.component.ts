@@ -19,14 +19,19 @@ export class EpuGrapheComponent implements OnInit {
   constructor(private httpClient: HttpClientService, private stepsService: StepsService, private router: Router) { }
 
   ngOnInit(): void {
-    this.getPaths("", "");
+    this.getPaths("SIN1T0", "SIN5AB");
     this.searchInit();
   }
 
   paths: Path[] = new Array<Path>();
   totalStudentPaths: number;
   firstStep: StepPath = new StepPath("POST-BAC", "POST-BAC");
-  lastStep: string = "PRSIN5AI";
+
+  //Pour la sélection du cheminement à mettre en surbrillance
+  uniquePaths = [];
+  pathSelectedIndex: number = 0;
+  slideValue: number =  1;
+
   getFirstStep(): StepPath {
     return this.firstStep;
   }
@@ -42,7 +47,6 @@ export class EpuGrapheComponent implements OnInit {
 
   //renseigne "paths" un tableau de path... suivant la base de données
   getPaths(stepsStart: string, stepsEnd: string) {
-    //console.log(stepsStart, stepsEnd)
     //permet d'obtenir seulement le premier code
     this.setFirstStep(stepsStart.slice(0, 6));
 
@@ -71,16 +75,31 @@ export class EpuGrapheComponent implements OnInit {
       this.paths.forEach(path => {
         this.totalStudentPaths += path.getNbStudent();
       });
+      this.uniquePaths = [];
+      this.displayUniquePaths();
       this.changeOptions();
+      this.pathSelectedIndex = 0;
     });
   }
 
-  example() {
-    //swap
-    let pathTmp = this.paths[1];
-    this.paths[1] = this.paths[0];
+  //Permet d'éviter les cheminements avec des redoublements et ceux qui ont la même suite d'étapes
+  displayUniquePaths(){
+    let tmpPaths = [];
+    this.paths.forEach(element => {
+      tmpPaths.push(element.path_steps.map(item => item.step_code));
+    });
+
+    for(let i=1; i<this.paths.length-1; i++){
+      let tmpPath = this.paths[i].path_steps.map(item => item.step_code);
+      if(!tmpPaths.includes(tmpPath) && new Set(tmpPath).size == tmpPath.length) this.uniquePaths.push(this.paths[i]);
+    }
+  }
+
+  switchPath(index: number){
+    let pathTmp = this.uniquePaths[index];
+    this.uniquePaths[index] = this.paths[0];
     this.paths[0] = pathTmp;
-    
+    this.pathSelectedIndex = index;
     this.changeOptions();
   }
 
@@ -208,7 +227,7 @@ export class EpuGrapheComponent implements OnInit {
               if (labelText.length < nb2show)
                 return labelText;
               else
-                return labelText.slice(0, nb2show) + "...";
+                return labelText.slice(4, nb2show) + "...";
             }
           },
           edgeSymbol: ['circle', 'arrow'],
@@ -294,9 +313,6 @@ export class EpuGrapheComponent implements OnInit {
   search() {
     let nodesCodeStart = this.nodesStart.map(node => node);
     let nodesCodeEnd = this.nodesEnd.map(node => node);
-    console.info("Recherche :");
-    console.info("START", nodesCodeStart);
-    console.info("END", nodesCodeEnd);
 
     //Strings finales pour obtenir les codes des étapes pour générer les cheminements
     let stepsStart = "";
@@ -307,9 +323,7 @@ export class EpuGrapheComponent implements OnInit {
       if(element.type === "formation"){
         this.httpClient.getFormationByCode(element.code).subscribe(res => {
           res.steps.forEach(step => {
-            this.httpClient.getStepByCode(step).subscribe(res => {
-              stepsStart.concat(res.step_code+',');
-            })
+            stepsStart.concat(step+',');
           });
         });
       }
@@ -320,9 +334,7 @@ export class EpuGrapheComponent implements OnInit {
       if(element.type === "formation"){
         this.httpClient.getFormationByCode(element.code).subscribe(res => {
           res.steps.forEach(step => {
-            this.httpClient.getStepByCode(step).subscribe(res => {
-              stepsStart.concat(res.step_code+',');
-            })
+            stepsStart.concat(step+',');
           });
         });
       }

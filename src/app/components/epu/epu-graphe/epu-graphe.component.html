@@ -99,7 +99,22 @@
         (chartClick)="chartClicked($event)"
       ></div>
     </div>
-    <div class="btn btn-warning" style="position: absolute; transform:translate(-100%);" (click)="example()">Swap formation</div>
+
+    <div *ngIf="uniquePaths != []">
+      <h5>Liste des Cheminements</h5>
+      <div class="d-flex flex-wrap">
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let path of uniquePaths; let index = index;">
+            <a *ngIf="index == pathSelectedIndex" class="btn btn-outline-primary" style="margin: 1px;" (click)="switchPath(index)">
+              Cheminement {{ index + 1 }}
+            </a>
+            <a *ngIf="index != pathSelectedIndex" class="btn btn-outline-secondary" style="margin: 1px;" (click)="switchPath(index)">
+              Cheminement {{ index + 1 }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
 
     <!-- Affichage simple -->
     <!--
@@ -126,12 +141,12 @@
     
     <div class="card-footer">
       <div class="slidecontainer">
-        Nombre de parcours à afficher : {{ 0 }}
+        Nombre de chemins à afficher : {{ slideValue }}
         <input
           type="range"
           min="1"
-          max="20"
-          [value]="10"
+          max= "uniquePaths.length"
+          [value]= slideValue
           class="slider form-control-range"
           id="myRange"
         />
