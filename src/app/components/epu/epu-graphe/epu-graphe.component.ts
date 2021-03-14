@@ -90,7 +90,7 @@ export class EpuGrapheComponent implements OnInit {
       tmpPaths.push(element.path_steps.map(item => item.step_code));
     });
 
-    for(let i=1; i<this.paths.length-1; i++){
+    for(let i=0; i<this.paths.length; i++){
       let tmpPath = this.paths[i].path_steps.map(item => item.step_code);
       if(!tmpPaths.includes(tmpPath) && new Set(tmpPath).size == tmpPath.length) this.uniquePaths.push(this.paths[i]);
     }
