@@ -45,7 +45,7 @@ export class HttpClientService {
   }
 
   getRegistrations() {
-    return this.httpClient.get<any>(`${this.baseUrl}/registrations`);
+    return this.httpClient.get<any>(`http://localhost:3000/registrations`);
   }
 
   getPaths(firstStep: string, lastStep: string) {
