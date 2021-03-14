@@ -12,36 +12,28 @@
   </div>
   <div *ngIf="step" class="stats">
     <div class="stats-line">
-      <div class="stats-item">
-        <!-- Blabla sur la formation ??? à voir -->
-        Anim nisi fugiat reprehenderit laborum eu exercitation tempor voluptate
-        sit elit et labore laboris elit. Ullamco in irure non aute consectetur
-        deserunt occaecat non do cupidatat anim proident sint cillum. Voluptate
-        elit commodo pariatur excepteur irure deserunt deserunt dolor aute.
-      </div>
+      <ul class="stats-item">
+        <li *ngFor="let stepIn of step.steps_in">{{stepIn.step_code}} : {{stepIn.number}}</li>
+      </ul>
       <div class="stats-item">
         <div
           echarts
           (chartInit)="onChartInit1($event)"
-          [options]="options"
+          [options]="options1"
           class="chart-stats-1"
           id="chartStats1"
         ></div>
       </div>
     </div>
     <div class="stats-line">
-      <div class="stats-item">
-        <!-- Blabla sur la formation ??? à voir -->
-        Anim nisi fugiat reprehenderit laborum eu exercitation tempor voluptate
-        sit elit et labore laboris elit. Ullamco in irure non aute consectetur
-        deserunt occaecat non do cupidatat anim proident sint cillum. Voluptate
-        elit commodo pariatur excepteur irure deserunt deserunt dolor aute.
-      </div>
+      <ul class="stats-item">
+        <li *ngFor="let stepOut of step.steps_out">{{stepOut.step_code}} : {{stepOut.number}}</li>
+      </ul>
       <div class="stats-item">
         <div
           echarts
           (chartInit)="onChartInit2($event)"
-          [options]="options"
+          [options]="options2"
           class="chart-stats-1"
           id="chartStats2"
         ></div>
