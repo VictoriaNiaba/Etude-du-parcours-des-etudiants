@@ -62,6 +62,7 @@ export class EpuGrapheComponent implements OnInit {
       res.forEach(path => {
         let pathTemp = new Path();
         for (let i = 0; i < path['steps'].length; i++) {
+          //console.warn("epu-graphe component",path['steps'][i]);
           let stepName = this.stepsService.getByCode(path['steps'][i]);
           let step = new StepPath( //init
             path['steps'][i],

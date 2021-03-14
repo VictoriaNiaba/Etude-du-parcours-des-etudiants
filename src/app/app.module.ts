@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,6 +22,13 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { EpuGrapheComponent } from './components/epu/epu-graphe/epu-graphe.component';
 import { EpuStatsComponent } from './components/epu/epu-stats/epu-stats.component';
 import { EpuPageComponent } from './components/epu/epu-page/epu-page.component';
+import { StepsService } from './services/steps.service';
+
+export function initializeApp1(stepsService: StepsService) {
+  return (): Promise<any> => { 
+    return stepsService.init();
+  }
+}
 
 @NgModule({
   declarations: [
@@ -53,7 +60,10 @@ import { EpuPageComponent } from './components/epu/epu-page/epu-page.component';
     AutocompleteLibModule,
     DragDropModule
   ],
-  providers: [],
+  providers: [
+    StepsService,
+    { provide: APP_INITIALIZER, useFactory: initializeApp1, deps: [StepsService], multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

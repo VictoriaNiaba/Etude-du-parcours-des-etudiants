@@ -64,34 +64,34 @@ export class EpuStatsComponent implements OnInit {
   }
 
   options1: any;
+  dataIn = [];
+  otherIn = [];
   changeOptions1() {
-    let data = [];
-    let otherIn = [];
     let totalStepIn = this.step.getNumberIncoming();
     let percentageShow = 1;
     if(this.step.steps_in) {
       this.step.steps_in.forEach(step => {
         if(step.number > percentageShow*totalStepIn/100) {
-          data.push(
+          this.dataIn.push(
             {
               value: step.number,
               name: step.step_code //get le nom ?
             });
         } else {
-          otherIn.push(
+          this.otherIn.push(
             {
               value: step.number,
               name: step.step_code //get le nom ?
             });
         }
       });
-      if(otherIn.length > 0) {
+      if(this.otherIn.length > 0) {
         let other = {value:0, name: "Autre"};
-        otherIn.forEach(step => {
+        this.otherIn.forEach(step => {
           other.value += step.value;
         });
-        data.push(other);
-        data = data.sort((a,b) => {
+        this.dataIn.push(other);
+        this.dataIn = this.dataIn.sort((a,b) => {
           if (a.value > b.value)
             return -1;
           if (a.value < b.value)
@@ -111,7 +111,7 @@ export class EpuStatsComponent implements OnInit {
       },
       series: [{
         type: "pie",
-        data: data,
+        data: this.dataIn,
         emphasis: {
           scale: true
         },
@@ -130,35 +130,35 @@ export class EpuStatsComponent implements OnInit {
   }
 
   options2: any;
+  dataOut = [];
+  otherOut = [];
   changeOptions2() {
-    let data = [];
-    let otherOut = [];
     let totalStepOut = this.step.getNumberOutcoming();
     let percentageShow = 1;
     if(this.step.steps_out) {
       this.step.steps_out.forEach(step => {
         if(step.number > percentageShow*totalStepOut/100) {
-          data.push(
+          this.dataOut.push(
             {
               value: step.number,
               name: step.step_code //get le nom ?
             }
           );
         } else {
-          otherOut.push(
+          this.otherOut.push(
             {
               value: step.number,
               name: step.step_code //get le nom ?
             });
         }
       });
-      if(otherOut.length > 0) {
+      if(this.otherOut.length > 0) {
         let other = {value:0, name: "Autre"};
-        otherOut.forEach(step => {
+        this.otherOut.forEach(step => {
           other.value += step.value;
         });
-        data.push(other);
-        data = data.sort((a,b) => {
+        this.dataOut.push(other);
+        this.dataOut = this.dataOut.sort((a,b) => {
           if (a.value > b.value)
             return -1;
           if (a.value < b.value)
@@ -174,7 +174,7 @@ export class EpuStatsComponent implements OnInit {
       },
       series: [{
         type: "pie",
-        data: data,
+        data: this.dataOut,
         emphasis: {
           scale: true
         },
