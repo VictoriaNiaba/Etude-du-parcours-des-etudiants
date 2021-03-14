@@ -14,8 +14,6 @@ export class EpuStatsComponent implements OnInit {
 
   /**/
   step: Step;
-  stepInNumber: number = 0;
-  stepOutNumber: number = 0;
   setFormation(stepCode: string) {
     this.httpClient.getStepByCode(stepCode).subscribe(res => {
       this.step = new Step(
@@ -45,26 +43,25 @@ export class EpuStatsComponent implements OnInit {
     //console.log('on chart init 2:', e);
   }
 
-  //faire changeOptions2() pour le out ??? à gerer avec la même logique
   options1: any;
   changeOptions1() {
     let data = [];
-    let temp = [];
-
+    let totalStepIn = this.step.getNumberIncoming();
+    let percentageShow = 1;
     if(this.step.steps_in) {
       this.step.steps_in.forEach(step => {
-        data.push(
-          {
-            value: step.number,
-            name: step.step_code //get le nom ?
-          }
-        );
+        if(step.number > percentageShow*totalStepIn/100) {
+          data.push(
+            {
+              value: step.number,
+              name: step.step_code //get le nom ?
+            });
+        }
       });
-
       // sert à avoir la liste de "string" pour les ajouter dans la légende.
-      data.forEach(element => {
+      /*data.forEach(element => {
         temp.push(element.name);
-      });
+      });*/
     }
 
     this.options1 = {
@@ -94,21 +91,18 @@ export class EpuStatsComponent implements OnInit {
   options2: any;
   changeOptions2() {
     let data = [];
-    let temp = [];
-
+    let totalStepOut = this.step.getNumberOutcoming();
+    let percentageShow = 1;
     if(this.step.steps_out) {
       this.step.steps_out.forEach(step => {
-        data.push(
-          {
-            value: step.number,
-            name: step.step_code //get le nom ?
-          }
-        );
-      });
-
-      // sert à avoir la liste de "string" pour les ajouter dans la légende.
-      data.forEach(element => {
-        temp.push(element.name);
+        if(step.number > percentageShow*totalStepOut/100) {
+          data.push(
+            {
+              value: step.number,
+              name: step.step_code //get le nom ?
+            }
+          );
+        }
       });
     }
 
