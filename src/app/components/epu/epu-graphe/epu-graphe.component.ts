@@ -96,8 +96,8 @@ export class EpuGrapheComponent implements OnInit {
   }
 
   switchPath(index: number){
-    let pathTmp = this.uniquePaths[index];
-    this.uniquePaths[index] = this.paths[0];
+    let pathTmp = this.paths.find(element => element == this.uniquePaths[index]);
+    this.paths[this.paths.indexOf(pathTmp)] = this.paths[0];
     this.paths[0] = pathTmp;
     this.pathSelectedIndex = index;
     this.changeOptions();
