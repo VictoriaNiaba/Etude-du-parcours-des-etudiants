@@ -28,7 +28,6 @@ export class EpuGrapheComponent implements OnInit {
   firstStep: StepPath = new StepPath("POST-BAC", "POST-BAC");
   lastStep: string = "PRSIN5AI";
   getFirstStep(): StepPath {
-    //return this.firstStep ? this.firstStep : new StepPath("POST-BAC", "POST-BAC");
     return this.firstStep;
   }
 
@@ -62,7 +61,6 @@ export class EpuGrapheComponent implements OnInit {
           let stepName = this.stepsService.getByCode(path['steps'][i]);
           let step = new StepPath( //init
             path['steps'][i],
-            //TODO: récupérer le nom des steps
             stepName,
             path['registered'][i]);
           pathTemp.addSteps(step);
@@ -75,6 +73,15 @@ export class EpuGrapheComponent implements OnInit {
       });
       this.changeOptions();
     });
+  }
+
+  example() {
+    //swap
+    let pathTmp = this.paths[1];
+    this.paths[1] = this.paths[0];
+    this.paths[0] = pathTmp;
+    
+    this.changeOptions();
   }
 
   //change les options du graphique
@@ -125,6 +132,13 @@ export class EpuGrapheComponent implements OnInit {
             formatter: function (params) {
               return params['value']
             }
+          },
+          lineStyle: {
+            color: incrementCat==0 ? "rgba(255, 113, 113, 1)" : "rgba(0, 0, 0, 1)"
+          },
+          itemStyle: {
+            color: incrementCat==0 ? "rgba(255, 113, 113, 1)" : "rgba(0, 0, 0, 1)",
+            borderColor: "rgba(0, 0, 0, 1)"
           }
         }
 
@@ -138,7 +152,8 @@ export class EpuGrapheComponent implements OnInit {
         }
       }
 
-      incrementCat++;
+      //incrementCat++;
+      incrementCat = 1;
     });
 
     //On ajoute la valeur des liens dupliqués au liens existants
@@ -161,7 +176,7 @@ export class EpuGrapheComponent implements OnInit {
         show: true,
         formatter: function (params) {
           if (params.dataType == 'node')
-            return `<div class="text-secondary" style="font-size:10">${params.name}</div>${params.value}`;
+            return `<div class="text-secondary" style="font-size:10">${params.value}</div>${params.name}`;
           else
             return "";
         }
@@ -205,12 +220,13 @@ export class EpuGrapheComponent implements OnInit {
             width: 2,
             curveness: 0.1
           },
+          itemStyle: {},
           zoom: 0.6,
-          categories: data,
+          categories: data
         }
       ]
     };
-    console.log("Graph updated")
+    console.log("Graph updated");
   }
 
 

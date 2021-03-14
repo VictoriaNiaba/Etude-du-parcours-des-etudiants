@@ -47,7 +47,7 @@ export class Step {
 export class StepPath {
     step_code: string;
     step_name: string;
-    step_number: number;
+    step_number: number; //nombre entrant dans ce step
 
     constructor(step_code: string, step_name: string, step_number?: number) {
         this.step_code = step_code;
