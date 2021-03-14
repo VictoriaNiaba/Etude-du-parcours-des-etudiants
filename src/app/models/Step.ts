@@ -30,11 +30,7 @@ export class Step {
     }
     getNumberIncoming():number {
         let total = 0;
-        console.log("incoming", this.steps_in);
-        let tempSteps = this.steps_in;
-        tempSteps.forEach(step => {
-            console.log(step.step_code, step.number);
-        });
+        this.steps_in.forEach(step => total += step.number);
         return total;
     }
     getNumberOutcoming():number {
