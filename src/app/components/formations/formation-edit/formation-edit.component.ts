@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Formation } from 'src/app/models/formation';
 import { Step } from 'src/app/models/Step';
 import { HttpClientService } from 'src/app/services/http-client.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-formation-edit',
@@ -135,15 +136,18 @@ export class FormationEditComponent implements OnInit {
   }
 
   //Pour le drag and drop des étapes
+  @ViewChild('virtualScroller') virtualScroller: CdkVirtualScrollViewport;
   drop(event: CdkDragDrop<string[]>) {
+    const vsStartIndex = this.virtualScroller.getRenderedRange().start;
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      moveItemInArray(event.container.data, event.previousIndex + vsStartIndex, event.currentIndex + vsStartIndex);
     } else {
       transferArrayItem(event.previousContainer.data,
         event.container.data,
-        event.previousIndex,
-        event.currentIndex);
+        event.previousIndex + vsStartIndex,
+        event.currentIndex + vsStartIndex);
     }
+    this.steps= [...this.steps]
   }
 
   search(){

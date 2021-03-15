@@ -52,18 +52,19 @@
                         <h4>Liste des étapes</h4>
                         <div class="input-group">
                             <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Rechercher"
-                                #myInput [(ngModel)]="searchWord" [ngModelOptions]="{standalone: true}" (input)="search()" />
+                                #myInput [(ngModel)]="searchWord" [ngModelOptions]="{standalone: true}"
+                                (input)="search()" />
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fas fa-search"></i></div>
                             </div>
                         </div>
-                        <div cdkDropList #stepsList="cdkDropList" [cdkDropListData]="steps"
-                            [cdkDropListConnectedTo]="[stepsFormationList]" class="example-list"
-                            (cdkDropListDropped)="drop($event)">
-                            <div class="example-box" *ngFor="let item of steps" cdkDrag>{{item.step_code}} -
+                        <cdk-virtual-scroll-viewport cdkDropList #virtualScroller #stepsList="cdkDropList"
+                            [cdkDropListData]="steps" [cdkDropListConnectedTo]="[stepsFormationList]"
+                            class="example-list" (cdkDropListDropped)="drop($event)" itemSize="10" class="example-viewport">
+                            <div class="example-box" *cdkVirtualFor="let item of steps" cdkDrag>{{item.step_code}} -
                                 {{item.step_name}}
                             </div>
-                        </div>
+                        </cdk-virtual-scroll-viewport>
                     </div>
                     <div class="example-container">
                         <h4>Etapes de la formation</h4>
