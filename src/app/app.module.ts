@@ -23,6 +23,7 @@ import { EpuGrapheComponent } from './components/epu/epu-graphe/epu-graphe.compo
 import { EpuStatsComponent } from './components/epu/epu-stats/epu-stats.component';
 import { EpuPageComponent } from './components/epu/epu-page/epu-page.component';
 import { StepsService } from './services/steps.service';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 export function initializeApp1(stepsService: StepsService) {
   return (): Promise<any> => { 
@@ -58,7 +59,8 @@ export function initializeApp1(stepsService: StepsService) {
     NgbModule,
     NgbPaginationModule,
     AutocompleteLibModule,
-    DragDropModule
+    DragDropModule,
+    ScrollingModule
   ],
   providers: [
     StepsService,
