@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,10 @@ import fr.univamu.epu.errorhandler.UploadException;
 import fr.univamu.epu.errorhandler.NotFoundException;
 import fr.univamu.epu.model.step.Step;
 import fr.univamu.epu.services.csvimport.CsvParser;
+import fr.univamu.epu.services.step.StepFormationLinker;
 
 @Service("stepManager")
+@DependsOn("formationManager")
 public class StepCsvInMemoryManager implements StepManager {
 
 	@Autowired
@@ -27,6 +30,9 @@ public class StepCsvInMemoryManager implements StepManager {
 
 	@Autowired
 	CsvParser<Step> scp;
+	
+	@Autowired
+	StepFormationLinker fsl;
 
 	@PostConstruct
 	public void init() throws FileNotFoundException {
@@ -72,6 +78,7 @@ public class StepCsvInMemoryManager implements StepManager {
 	@Override
 	public void upload(InputStream inputStream) {
 		Set<Step> steps = scp.parse(inputStream);
+		steps = fsl.link(steps);
 		try {
 			addAll(steps);
 		} catch (ConstraintViolationException | DataIntegrityViolationException e) {

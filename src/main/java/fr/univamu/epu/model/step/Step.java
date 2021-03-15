@@ -1,6 +1,7 @@
 package fr.univamu.epu.model.step;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -9,13 +10,12 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import fr.univamu.epu.model.formation.Formation;
-
-
 
 @Entity(name = "Step")
 public class Step implements Serializable {
@@ -23,20 +23,20 @@ public class Step implements Serializable {
 	@Id
 	@Column(name = "step_code", length = 10, nullable = false, unique = false)
 	private String step_code;
-	
+
 	@Basic(optional = true)
 	@Column(name = "name", length = 100, nullable = true)
 	private String step_name;
-	
-	@ManyToMany(mappedBy = "steps")
+
+	@ManyToMany(mappedBy = "steps", fetch = FetchType.EAGER)
 	private Set<Formation> formations;
 
-	@OneToMany(mappedBy="step_in_of")
+	@OneToMany(mappedBy = "step_in_of")
 	private List<StepStat> steps_in;
-	
-	@OneToMany(mappedBy="step_out_of")
+
+	@OneToMany(mappedBy = "step_out_of")
 	private List<StepStat> steps_out;
-	
+
 	@Column(name = "average_repeat")
 	private Double average_repeat;
 
@@ -69,6 +69,13 @@ public class Step implements Serializable {
 
 	public void setStep_name(String step_name) {
 		this.step_name = step_name;
+	}
+
+	public void addFormation(Formation p) {
+		if (formations == null) {
+			formations = new HashSet<Formation>();
+		}
+		formations.add(p);
 	}
 
 	public Set<Formation> getFormations() {

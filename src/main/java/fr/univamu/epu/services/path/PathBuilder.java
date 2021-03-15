@@ -13,11 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.univamu.epu.dao.Dao;
-import fr.univamu.epu.model.path.MergedPath;
 import fr.univamu.epu.model.path.Path;
 import fr.univamu.epu.model.registration.Registration;
 import fr.univamu.epu.model.step.Step;
 import fr.univamu.epu.model.step.StepStat;
+import fr.univamu.epu.services.step.StepFormationLinker;
 
 @Service("pathBuilder")
 public class PathBuilder {
@@ -30,6 +30,8 @@ public class PathBuilder {
 	Dao<Step> stepDao;
 	@Autowired
 	Dao<StepStat> stepStatDao;
+	@Autowired
+	StepFormationLinker sfl;
 
 	private List<List<Registration>> studentPaths = new ArrayList<List<Registration>>();
 	private Map<String, Integer> stepCount = new HashMap<String, Integer>();
@@ -45,9 +47,11 @@ public class PathBuilder {
 		});
 
 		// FILTRE DES ETAPES A ENLEVER
-		List<String> badSteps = new ArrayList<>();
-		badSteps.add("SC2IN1");
-
+		//List<String> badSteps = new ArrayList<>();
+		//badSteps.add("SC2IN1");
+		List<String> badSteps = sfl.getBadSteps();
+		//System.out.println(badSteps);
+		
 		// gen des students paths
 		String currentStudentCode = "";
 		List<Registration> currentStudentRegs = new ArrayList<Registration>();
@@ -62,7 +66,7 @@ public class PathBuilder {
 			currentStudentRegs.add(reg);
 		}
 
-		generateStepStats();
+		generateStepStats(badSteps);
 
 		// gen des paths spécifique dans une map
 		Map<List<String>, List<Integer>> pathmap = new HashMap<List<String>, List<Integer>>();
@@ -142,9 +146,10 @@ public class PathBuilder {
 		return regs;
 	}
 
-	public void generateStepStats() {
+	public void generateStepStats(List<String> badSteps) {
 		Collection<Step> steps = stepDao.findAll(Step.class);
 		for (Step s : steps) {
+			if(badSteps.contains(s)) continue;
 			Map<String, List<Integer>> mapStepsIn = new HashMap<String, List<Integer>>();
 			Map<String, List<Integer>> mapStepsOut = new HashMap<String, List<Integer>>();
 

@@ -1,11 +1,14 @@
 package fr.univamu.epu.model.formation;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -36,16 +39,16 @@ public class Formation {
 	@Basic(optional = true)
 	@Column(name = "url", length = 2083, nullable = true)
 	private String url;
-	
+
 	@Basic
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date add_date;
-	
+
 	@Basic
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date last_modification;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "formation_step")
 	private Set<Step> steps;
 
@@ -64,7 +67,7 @@ public class Formation {
 		this.add_date = new Date();
 		this.last_modification = new Date();
 	}
-	
+
 	public String getFormation_code() {
 		return formation_code;
 	}
@@ -109,12 +112,18 @@ public class Formation {
 		return steps;
 	}
 
-	// add step et gerer l'association
+	public void addStep(Step s) {
+		if (steps == null) {
+			steps = new HashSet<Step>();
+		}
+		s.addFormation(this);
+		steps.add(s);
+	}
 
 	public void setSteps(Set<Step> steps) {
 		this.steps = steps;
 	}
-	
+
 	public Date getAdd_date() {
 		return add_date;
 	}
