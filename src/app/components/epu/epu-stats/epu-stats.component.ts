@@ -68,6 +68,8 @@ export class EpuStatsComponent implements OnInit {
   dataIn = [];
   otherIn = [];
   changeOptions1() {
+    this.dataIn = [];
+    this.otherIn = [];
     let totalStepIn = this.step.getNumberIncoming();
     let percentageShow = 1;
     if(this.step.steps_in) {
@@ -134,6 +136,8 @@ export class EpuStatsComponent implements OnInit {
   dataOut = [];
   otherOut = [];
   changeOptions2() {
+    this.dataOut = [];
+    this.otherOut = [];
     let totalStepOut = this.step.getNumberOutcoming();
     let percentageShow = 1;
     if(this.step.steps_out) {
