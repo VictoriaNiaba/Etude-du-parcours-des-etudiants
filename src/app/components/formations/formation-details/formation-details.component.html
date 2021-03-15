@@ -16,7 +16,7 @@
                 <h5>Liste des Etapes</h5>
                 <div class="d-flex flex-wrap">
                     <a *ngFor="let step of formation.steps" class="btn btn-outline-primary" style="margin: 1px;">
-                        {{step}}
+                        {{step.step_code}} - {{step.step_name}}
                     </a>
                 </div>
             </div>

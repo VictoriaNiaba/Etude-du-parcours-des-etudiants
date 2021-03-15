@@ -120,6 +120,7 @@ export class EpuGrapheComponent implements OnInit {
     let data: any[] = [];
     let links: any[] = [];
     let linksDuplicate: any[] = [];
+    let isPostBacUse = false;
 
     //Ajoute le noeud Post BAC si nécessaire
     if (this.getFirstStep().step_code == "POST-BAC") {
@@ -146,13 +147,17 @@ export class EpuGrapheComponent implements OnInit {
           data.push(tmpData);
         }
 
-        if(index != 0 || this.getFirstStep().step_code == "POST-BAC"){
+        let fisrtStepPath = pathSteps[0].step_code.substring(3,4);
+        if(index != 0 || (fisrtStepPath ===  "1" || fisrtStepPath ===  "P")){
           //On cherche les liens qui peuvent être dupliqués
           let currentSourceStepCode: String = index - 1 < 0 ? this.getFirstStep().step_code : pathSteps[index - 1].step_code;
           let linkFilter = links.filter(link =>
             link.source == currentSourceStepCode
             && link.target == pathSteps[index].step_code
           );
+
+          //Savoir si le noeud post bac est utilisé
+          if(currentSourceStepCode === "POST-BAC"){isPostBacUse = true;}
 
           let tmpLink = {
             source: currentSourceStepCode,
@@ -197,6 +202,8 @@ export class EpuGrapheComponent implements OnInit {
       })
     })
 
+    //On enlève le noeud Post-Bac si il n'est pas utilisé
+    if(isPostBacUse == false) data = data.filter(element => element.name !== "POST-BAC");
 
     let tmpNodeIndex; //le dernier index dans data de la dernière node du parcours affiché
     for(let i=0; i < data.length; i++) {
@@ -325,7 +332,7 @@ export class EpuGrapheComponent implements OnInit {
         let tmpData = {
           code: res[i].formation_code,
           name: res[i].formation_name,
-          type: "formation",
+          formation_steps: res[i].steps,
           //permet la recherche multiple
           key: res[i].formation_code + res[i].formation_name
         }
@@ -338,7 +345,7 @@ export class EpuGrapheComponent implements OnInit {
         let tmpData = {
           code: res[i].step_code,
           name: res[i].step_name,
-          type: "step",
+          formation_steps: null,
           //permet la recherche multiple
           key: res[i].step_code + res[i].step_name
         }
@@ -357,22 +364,18 @@ export class EpuGrapheComponent implements OnInit {
 
     //On récupère les codes des étapes de la formation sinon le code de l'étape directement
     nodesCodeStart.forEach(element => {
-      if(element.type === "formation"){
-        this.httpClient.getFormationByCode(element.code).subscribe(res => {
-          res.steps.forEach(step => {
-            stepsStart.concat(step+',');
-          });
+      if(element.formation_steps != null){
+        element.formation_steps.forEach(step => {
+          stepsStart = stepsStart.concat(step.step_code+',');
         });
       }
       else stepsStart = stepsStart.concat(element.code+',');
     });
     //De même pour la recherche d'arrivée
     nodesCodeEnd.forEach(element => {
-      if(element.type === "formation"){
-        this.httpClient.getFormationByCode(element.code).subscribe(res => {
-          res.steps.forEach(step => {
-            stepsStart.concat(step+',');
-          });
+      if(element.formation_steps != null){
+        element.formation_steps.forEach(step => {
+          stepsEnd = stepsEnd.concat(step.step_code+',');
         });
       }
       else stepsEnd = stepsEnd.concat(element.code+',');
