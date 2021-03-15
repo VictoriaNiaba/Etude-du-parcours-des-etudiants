@@ -105,17 +105,6 @@ export class EpuGrapheComponent implements OnInit {
       let tmpPath = this.paths[i].path_steps.map(item => item.step_code);
       if(!tmpPaths.includes(tmpPath) && new Set(tmpPath).size == tmpPath.length) this.uniquePaths.push(this.paths[i]);
     }
-
-    this.uniquePaths = this.uniquePaths.sort((a,b) => {
-      if(a.path_steps[a.path_steps.length-1].step_number < 
-        b.path_steps[b.path_steps.length-1].step_number)
-        return 1;
-      if(a.path_steps[a.path_steps.length-1].step_number > 
-        b.path_steps[b.path_steps.length-1].step_number)
-        return -1;
-      return 0;
-    });
-
   }
 
   switchPath(index: number){

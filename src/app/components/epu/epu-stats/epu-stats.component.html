@@ -12,7 +12,7 @@
   </div>
   <div class="card-body">
     <div *ngIf="step" class="stats">
-
+      <div *ngIf="dataInExist">
       <h3 class="card-title">Entrants</h3>
       <div
         echarts
@@ -26,7 +26,13 @@
             {{ data.name }} : {{ data.value }}&nbsp;étudiant(s)
           </div>
           <div *ngIf="data.name === 'Autre'">
-            <a data-toggle="collapse" href="#otherIn" role="button" aria-expanded="false" aria-controls="otherIn">
+            <a
+              data-toggle="collapse"
+              href="#otherIn"
+              role="button"
+              aria-expanded="false"
+              aria-controls="otherIn"
+            >
               {{ data.name }}
             </a>
             : {{ data.value }}&nbsp;étudiant(s)
@@ -39,35 +45,42 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="card-body">
-    <h3 class="card-title">Sortants</h3>
-    <div
-      echarts
-      (chartInit)="onChartInit2($event)"
-      [options]="options2"
-      id="chartStats2"
-    ></div>
-    <div class="stats-container list-group">
-      <div *ngFor="let data of dataOut" class="stats-item list-group-item">
-        <div *ngIf="data.name != 'Autre'">
-          {{ data.name }} : {{ data.value }}&nbsp;étudiant(s)
-        </div>
-        <div *ngIf="data.name === 'Autre'">
-          <a data-toggle="collapse" href="#otherOut" role="button" aria-expanded="false" aria-controls="otherOut" >
-            {{ data.name }}
-          </a>
-          : {{ data.value }}&nbsp;étudiant(s)
-          <div class="collapse" id="otherOut">
-            <div *ngFor="let other of otherOut" class="list-group-item">
-              {{ other.name }} : {{ other.value }}&nbsp;étudiant(s)
+
+    <div *ngIf="dataOutExist">
+      <h3 class="card-title">Sortants</h3>
+      <div
+        echarts
+        (chartInit)="onChartInit2($event)"
+        [options]="options2"
+        id="chartStats2"
+      ></div>
+      <div class="stats-container list-group">
+        <div *ngFor="let data of dataOut" class="stats-item list-group-item">
+          <div *ngIf="data.name != 'Autre'">
+            {{ data.name }} : {{ data.value }}&nbsp;étudiant(s)
+          </div>
+          <div *ngIf="data.name === 'Autre'">
+            <a
+              data-toggle="collapse"
+              href="#otherOut"
+              role="button"
+              aria-expanded="false"
+              aria-controls="otherOut"
+            >
+              {{ data.name }}
+            </a>
+            : {{ data.value }}&nbsp;étudiant(s)
+            <div class="collapse" id="otherOut">
+              <div *ngFor="let other of otherOut" class="list-group-item">
+                {{ other.name }} : {{ other.value }}&nbsp;étudiant(s)
+              </div>
             </div>
           </div>
         </div>
       </div>
+      </div>
+      <!-- Ajout de la liste des formations lié <= récupération par requête lors du setFormation() -->
     </div>
-    <!-- Ajout de la liste des formations lié <= récupération par requête lors du setFormation() -->
-  
     <div *ngIf="!step" class="stats">
       <div class="text-center text-white bg-primary" style="margin: 40px 0px;">
         Cliquez sur une formation pour en afficher les statistiques

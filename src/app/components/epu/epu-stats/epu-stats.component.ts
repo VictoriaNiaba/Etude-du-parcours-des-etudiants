@@ -47,6 +47,9 @@ export class EpuStatsComponent implements OnInit {
 
       this.changeOptions1();
       this.changeOptions2();
+      
+      this.dataInExist = this.dataIn.length > 0;
+      this.dataOutExist = this.dataOut.length > 0;
     });
   }
 
@@ -67,6 +70,7 @@ export class EpuStatsComponent implements OnInit {
   options1: any;
   dataIn = [];
   otherIn = [];
+  dataInExist = true;
   changeOptions1() {
     this.dataIn = [];
     this.otherIn = [];
@@ -135,6 +139,7 @@ export class EpuStatsComponent implements OnInit {
   options2: any;
   dataOut = [];
   otherOut = [];
+  dataOutExist = true;
   changeOptions2() {
     this.dataOut = [];
     this.otherOut = [];
