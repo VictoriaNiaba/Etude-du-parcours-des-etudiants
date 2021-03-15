@@ -121,14 +121,6 @@ export class EpuGrapheComponent implements OnInit {
       }
       data.push(postBacNode);
     }
-    else{
-      let OtherNode = {
-        name: 'Autre',
-        value: 'Autre',
-        type: 'node'
-      }
-      data.push(OtherNode);
-    }
 
     let incrementCat = 0;
     this.paths.forEach(path => {
@@ -145,40 +137,41 @@ export class EpuGrapheComponent implements OnInit {
           data.push(tmpData);
         }
 
+        if(index != 0 || this.getFirstStep().step_code == "POST-BAC"){
+          //On cherche les liens qui peuvent être dupliqués
+          let currentSourceStepCode: String = index - 1 < 0 ? this.getFirstStep().step_code : pathSteps[index - 1].step_code;
+          let linkFilter = links.filter(link =>
+            link.source == currentSourceStepCode
+            && link.target == pathSteps[index].step_code
+          );
 
-        //On cherche les liens qui peuvent être dupliqués
-        let currentSourceStepCode: String = index - 1 < 0 ? this.getFirstStep().step_code : pathSteps[index - 1].step_code;
-        let linkFilter = links.filter(link =>
-          link.source == currentSourceStepCode
-          && link.target == pathSteps[index].step_code
-        );
-
-        let tmpLink = {
-          source: currentSourceStepCode,
-          target: pathSteps[index].step_code,
-          value: pathSteps[index].step_number,
-          label: {
-            show: true,
-            formatter: function (params) {
-              return params['value']
+          let tmpLink = {
+            source: currentSourceStepCode,
+            target: pathSteps[index].step_code,
+            value: pathSteps[index].step_number,
+            label: {
+              show: true,
+              formatter: function (params) {
+                return params['value']
+              }
+            },
+            lineStyle: {
+              color: incrementCat==0 ? "rgba(255, 113, 113, 1)" : "rgba(0, 0, 0, 1)"
+            },
+            itemStyle: {
+              color: incrementCat==0 ? "rgba(255, 113, 113, 1)" : "rgba(0, 0, 0, 1)",
+              borderColor: "rgba(0, 0, 0, 1)"
             }
-          },
-          lineStyle: {
-            color: incrementCat==0 ? "rgba(255, 113, 113, 1)" : "rgba(0, 0, 0, 1)"
-          },
-          itemStyle: {
-            color: incrementCat==0 ? "rgba(255, 113, 113, 1)" : "rgba(0, 0, 0, 1)",
-            borderColor: "rgba(0, 0, 0, 1)"
           }
-        }
 
-        //Si le lien n'existe pas déjà on le crée
-        if (linkFilter.length == 0) {
-          links.push(tmpLink);
-        }
-        //On stock les liens qui sont dupliqués
-        else {
-          linksDuplicate.push(tmpLink);
+          //Si le lien n'existe pas déjà on le crée
+          if (linkFilter.length == 0) {
+            links.push(tmpLink);
+          }
+          //On stock les liens qui sont dupliqués
+          else {
+            linksDuplicate.push(tmpLink);
+          }
         }
       }
 
