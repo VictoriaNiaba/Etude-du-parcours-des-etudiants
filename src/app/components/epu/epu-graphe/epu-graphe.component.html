@@ -106,10 +106,10 @@
         <ul class="list-group">
           <li class="list-group-item" *ngFor="let path of uniquePaths; let index = index;">
             <a *ngIf="index == pathSelectedIndex" class="btn btn-outline-primary" style="margin: 1px;" (click)="switchPath(index)">
-              Cheminement {{ index + 1 }}
+              {{path.getNbStudent()*100/totalStudentPaths | number:'1.0-1'}}% :: Cheminement {{ index + 1 }}
             </a>
             <a *ngIf="index != pathSelectedIndex" class="btn btn-outline-secondary" style="margin: 1px;" (click)="switchPath(index)">
-              Cheminement {{ index + 1 }}
+              {{path.getNbStudent()*100/totalStudentPaths | number:'1.0-1'}}% :: Cheminement {{ index + 1 }}
             </a>
           </li>
         </ul>

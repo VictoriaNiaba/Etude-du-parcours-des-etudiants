@@ -33,22 +33,21 @@ export class EpuGrapheComponent implements OnInit {
   slideValue: number =  1;
 
   getFirstStep(): StepPath {
-    return this.firstStep;
+    if(this.firstStep == null) return new StepPath("Autre", "Autre");
+    else return this.firstStep;
   }
 
   setFirstStep(code: string){
-    if(code != ""){
-      this.httpClient.getStepByCode(code).subscribe(res => {
-        this.firstStep = res;
-      });
+    if(code === ""){
+      this.firstStep = new StepPath("POST-BAC", "POST-BAC");
     }
-    else this.firstStep = new StepPath("POST-BAC", "POST-BAC");
+    else this.firstStep = null;
   }
 
   //renseigne "paths" un tableau de path... suivant la base de données
   getPaths(stepsStart: string, stepsEnd: string) {
     //permet d'obtenir seulement le premier code
-    this.setFirstStep(stepsStart.slice(0, 6));
+    this.setFirstStep(stepsStart);
 
     //Pour bien former la requête attendu au près du backend
     if(stepsStart === "") stepsStart = null;
@@ -57,8 +56,6 @@ export class EpuGrapheComponent implements OnInit {
     this.paths = new Array<Path>();
 
     this.httpClient.getPaths(stepsStart, stepsEnd).subscribe(res => {
-      this.getFirstStep();
-
       res.forEach(path => {
         let pathTemp = new Path();
         for (let i = 0; i < path['steps'].length; i++) {
@@ -118,6 +115,14 @@ export class EpuGrapheComponent implements OnInit {
         type: 'node'
       }
       data.push(postBacNode);
+    }
+    else{
+      let OtherNode = {
+        name: 'Autre',
+        value: 'Autre',
+        type: 'node'
+      }
+      data.push(OtherNode);
     }
 
     let incrementCat = 0;
