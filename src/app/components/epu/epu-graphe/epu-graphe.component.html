@@ -92,12 +92,13 @@
       </ul>
     </div>
     <div class="graphBox">
-      <div class="chart h">
+      <div class="chart">
         <div
           echarts
           id="EPU-chart"
           [options]="chartOptions"
           (chartClick)="chartClicked($event)"
+          class="echart"
         ></div>
       </div>
       <div class="path-list" *ngIf="uniquePaths != []">

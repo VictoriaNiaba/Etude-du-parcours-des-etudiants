@@ -7,7 +7,6 @@
     left: 75%;
     min-width: 25%;
     max-width: 25%;
-    height: 400px;
     overflow: hidden;
     //background-color: rgba($color: #000000, $alpha: 0.1);
     overflow-y: scroll;
@@ -20,12 +19,14 @@
 .f-width {
     width: 100%;
 }
-.chart {
+.echart, .chart {
     background-color: lightcyan;
     width: 100%;
-    height: 100%;
     padding: 0px;
     margin: 0px;
+}
+.echart, .chart, .path-list {
+    height: 600px;
 }
 .searchInput {
     display: inline-flex;
