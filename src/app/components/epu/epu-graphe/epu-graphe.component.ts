@@ -46,7 +46,7 @@ export class EpuGrapheComponent implements OnInit {
 
   pop(index:number) {
     let result = "";
-    this.paths[index].path_steps.forEach(
+    this.uniquePaths[index-1].path_steps.forEach(
       step => result += step.step_code+" > "
     )
     result = result.slice(0, -3)
