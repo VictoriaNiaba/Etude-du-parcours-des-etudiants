@@ -1,4 +1,4 @@
-package fr.univamu.epu.openapi;
+package fr.univamu.epu.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
