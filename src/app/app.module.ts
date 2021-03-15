@@ -15,7 +15,7 @@ import { RegistrationsComponent } from './components/registrations/registrations
 import { HttpClientModule } from '@angular/common/http';
 import { FormationDetailsComponent } from './components/formations/formation-details/formation-details.component';
 import { FormationEditComponent } from './components/formations/formation-edit/formation-edit.component';
-import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbPaginationModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { StepsComponent } from './components/steps/steps.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -58,6 +58,7 @@ export function initializeApp1(stepsService: StepsService) {
     HttpClientModule,
     NgbModule,
     NgbPaginationModule,
+    NgbPopoverModule,
     AutocompleteLibModule,
     DragDropModule,
     ScrollingModule

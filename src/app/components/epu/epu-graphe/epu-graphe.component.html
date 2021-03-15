@@ -91,31 +91,32 @@
         </li>
       </ul>
     </div>
-    <div class="chart h">
-      <div
-        echarts
-        id="EPU-chart"
-        [options]="chartOptions"
-        (chartClick)="chartClicked($event)"
-      ></div>
-    </div>
-
-    <div *ngIf="uniquePaths != []">
-      <h5>Liste des Cheminements</h5>
-      <div class="d-flex flex-wrap">
-        <ul class="list-group">
-          <li class="list-group-item" *ngFor="let path of uniquePaths | slice:0:slideValue; let index = index;">
-            <a *ngIf="index == pathSelectedIndex" class="btn btn-outline-primary" style="margin: 1px;" (click)="switchPath(index)">
+    <div class="graphBox">
+      <div class="chart h">
+        <div
+          echarts
+          id="EPU-chart"
+          [options]="chartOptions"
+          (chartClick)="chartClicked($event)"
+        ></div>
+      </div>
+      <div class="path-list" *ngIf="uniquePaths != []">
+        <div class="d-flex flex-wrap f-width">
+          <div class="f-width" *ngFor="let path of uniquePaths | slice:0:slideValue; let index = index;">
+            <a *ngIf="index == pathSelectedIndex"
+            ngbPopover="{{pop(index + 1)}}" triggers="mouseenter:mouseleave" container="body" popoverClass="popoverClass"
+            class="badge badge-info f-width" style="margin: 1px;" (click)="switchPath(index)">
               {{path.getNbStudent()*100/totalStudentPaths | number:'1.0-1'}}% :: Cheminement {{ index + 1 }}
             </a>
-            <a *ngIf="index != pathSelectedIndex" class="btn btn-outline-secondary" style="margin: 1px;" (click)="switchPath(index)">
+            <a *ngIf="index != pathSelectedIndex"
+            ngbPopover="{{pop(index + 1)}}" triggers="mouseenter:mouseleave" container="body" popoverClass="popoverClass"
+            class="badge badge-secondary f-width" style="margin: 1px;" (click)="switchPath(index)">
               {{path.getNbStudent()*100/totalStudentPaths | number:'1.0-1'}}% :: Cheminement {{ index + 1 }}
             </a>
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
     </div>
-
     <!-- Affichage simple -->
     <!--
     <div>
@@ -138,7 +139,6 @@
       </div>
     </div>-->
     <!-- fin de l'affichage simple -->
-    
     <div class="card-footer">
       <div class="slidecontainer">
         Nombre de chemins à afficher : {{ slideValue }}

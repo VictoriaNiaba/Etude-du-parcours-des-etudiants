@@ -19,7 +19,7 @@ export class EpuGrapheComponent implements OnInit {
   constructor(private httpClient: HttpClientService, private stepsService: StepsService, private router: Router) { }
 
   ngOnInit(): void {
-    this.getPaths("SIN3AA", "SIN5AB");
+    this.getPaths(null, null);
     this.searchInit();
   }
 
@@ -42,6 +42,15 @@ export class EpuGrapheComponent implements OnInit {
       this.firstStep = new StepPath("POST-BAC", "POST-BAC");
     }
     else this.firstStep = null;
+  }
+
+  pop(index:number) {
+    let result = "";
+    this.paths[index].path_steps.forEach(
+      step => result += step.step_code+" > "
+    )
+    result = result.slice(0, -3)
+    return result;
   }
 
   //renseigne "paths" un tableau de path... suivant la base de données
@@ -240,7 +249,7 @@ export class EpuGrapheComponent implements OnInit {
           draggable: true, //only force
           force: { //only force
             //initLayout: 'circular',
-            gravity: 0,
+            gravity: 0.1,
             repulsion: 1000,
             edgeLength: 200
           },
