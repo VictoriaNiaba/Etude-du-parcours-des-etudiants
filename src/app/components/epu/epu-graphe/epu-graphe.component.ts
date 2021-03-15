@@ -195,6 +195,30 @@ export class EpuGrapheComponent implements OnInit {
       })
     })
 
+    
+    let tmpNodeIndex; //le dernier index dans data de la dernière node du parcours affiché
+    for(let i=0; i < data.length; i++) {
+      if(data[i].category == 0)
+      tmpNodeIndex = i+1;
+    }
+
+    data[0].fixed = true;
+    data[0].x = 0;
+    data[0].y = 200;
+    if(data.length > 2) {
+      for(let i=2; i<data.length; i++) {
+        data[i].fixed = false;
+      }
+      data[tmpNodeIndex-1].fixed = true;
+      data[tmpNodeIndex-1].x = 500;
+      data[tmpNodeIndex-1].y = 200;
+      
+      data[Math.round((tmpNodeIndex-1)/2)].fixed = true;
+      data[Math.round((tmpNodeIndex-1)/2)].x = 500/2;
+      data[Math.round((tmpNodeIndex-1)/2)].y = 200;
+    }
+
+
     this.chartOptions = {
       title: {
         text: 'Graphe'
