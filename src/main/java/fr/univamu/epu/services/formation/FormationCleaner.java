@@ -46,9 +46,6 @@ public class FormationCleaner {
 		for (List<Formation> fs : groupByCode) {
 			result.addAll(removeMainFormation(fs));
 		}
-		for (Formation f : result)
-			System.out.println(f.getFormation_name());
-
 		return result;
 	}
 
