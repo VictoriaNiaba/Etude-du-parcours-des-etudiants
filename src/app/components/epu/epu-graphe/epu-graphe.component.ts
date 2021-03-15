@@ -80,6 +80,11 @@ export class EpuGrapheComponent implements OnInit {
     });
   }
 
+  //Récupère la valeure du slider
+  valueChanged(e){
+    this.slideValue = e;
+  }
+
   //Permet d'éviter les cheminements avec des redoublements et ceux qui ont la même suite d'étapes
   displayUniquePaths(){
     let tmpPaths = [];
