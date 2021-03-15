@@ -66,7 +66,7 @@ export class FormationEditComponent implements OnInit {
           this.editForm.setValue({ formation_code: this.formation.formation_code, formation_name: this.formation.formation_name, description: this.formation.description, type: this.formation.type, url: this.formation.url });
           this.formation.steps.forEach(element => {
             //Récupérer l'étape à partir du code
-            this.httpClientService.getStepByCode(element).subscribe(res => {
+            this.httpClientService.getStepByCode(element.step_code).subscribe(res => {
               //On l'ajoute à la liste des étapes de la formation
               this.stepsOfFormation.push(res);
               //Pour le faire qu'une fois
@@ -99,8 +99,8 @@ export class FormationEditComponent implements OnInit {
 
     if (this.isAddMode) {
       //Pour obtenir seulement les codes
-      let tmpList: string[] = [];
-      this.stepsOfFormation.forEach(element => tmpList.push(element.step_code));
+      let tmpList: Step[] = [];
+      this.stepsOfFormation.forEach(element => tmpList.push(element));
 
       //On crée une nouvelle formation
       this.formation = new Formation(this.editForm.value.formation_code, this.editForm.value.formation_name, this.editForm.value.description, this.editForm.value.type, this.editForm.value.url, tmpList, new Date, new Date);
@@ -117,7 +117,7 @@ export class FormationEditComponent implements OnInit {
 
       //Pour obtenir seulement les codes
       this.formation.steps = [];
-      this.stepsOfFormation.forEach(element => this.formation.steps.push(element.step_code));
+      this.stepsOfFormation.forEach(element => this.formation.steps.push(element));
 
       this.update(this.formation);
     }
