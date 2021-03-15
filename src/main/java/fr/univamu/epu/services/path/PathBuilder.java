@@ -56,6 +56,7 @@ public class PathBuilder {
 		String currentStudentCode = "";
 		List<Registration> currentStudentRegs = new ArrayList<Registration>();
 		for (Registration reg : regs) {
+			if(badSteps.contains(reg.getStepCode())) continue;
 			if (!currentStudentCode.equals(reg.getStudentCode())) {
 				if (!currentStudentRegs.isEmpty()) {// changement de student code, on a toutes nos ia du student courant
 					studentPaths.add(generateStudentPathFromRegs(currentStudentRegs));
@@ -76,8 +77,6 @@ public class PathBuilder {
 			List<Integer> countAndYears = new ArrayList<Integer>(2);
 
 			for (Registration reg : sp) {
-				if (badSteps.contains(reg.getStepCode()))
-					continue;
 				stepCodes.add(reg.getStepCode());
 			}
 			if (stepCodes.isEmpty())
@@ -149,7 +148,7 @@ public class PathBuilder {
 	public void generateStepStats(List<String> badSteps) {
 		Collection<Step> steps = stepDao.findAll(Step.class);
 		for (Step s : steps) {
-			if(badSteps.contains(s)) continue;
+			if(badSteps.contains(s.getStep_code())) continue;
 			Map<String, List<Integer>> mapStepsIn = new HashMap<String, List<Integer>>();
 			Map<String, List<Integer>> mapStepsOut = new HashMap<String, List<Integer>>();
 
