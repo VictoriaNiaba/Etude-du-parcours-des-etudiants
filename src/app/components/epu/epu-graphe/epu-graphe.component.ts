@@ -19,7 +19,7 @@ export class EpuGrapheComponent implements OnInit {
   constructor(private httpClient: HttpClientService, private stepsService: StepsService, private router: Router) { }
 
   ngOnInit(): void {
-    this.getPaths("SIN1T0", "SIN5AB");
+    this.getPaths("SIN3AA", "SIN5AB");
     this.searchInit();
   }
 
@@ -188,7 +188,7 @@ export class EpuGrapheComponent implements OnInit {
       })
     })
 
-    
+
     let tmpNodeIndex; //le dernier index dans data de la dernière node du parcours affiché
     for(let i=0; i < data.length; i++) {
       if(data[i].category == 0)
