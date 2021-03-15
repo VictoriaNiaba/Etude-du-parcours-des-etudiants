@@ -199,7 +199,7 @@ export class EpuGrapheComponent implements OnInit {
     data[0].x = 0;
     data[0].y = 200;
     if(data.length > 2) {
-      for(let i=2; i<data.length; i++) {
+      for(let i=1; i<data.length; i++) {
         data[i].fixed = false;
       }
       data[tmpNodeIndex-1].fixed = true;
