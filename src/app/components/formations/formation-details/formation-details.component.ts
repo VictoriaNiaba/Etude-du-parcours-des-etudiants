@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Formation } from 'src/app/models/formation';
+import { Formation } from 'src/app/models/Formation';
 import { User } from 'src/app/models/User';
 import { AuthentificationService } from 'src/app/services/authentification.service';
 import { HttpClientService } from 'src/app/services/http-client.service';
@@ -18,7 +18,7 @@ export class FormationDetailsComponent implements OnInit {
   constructor(private route: ActivatedRoute,private authenticationService: AuthentificationService, private httpClientService: HttpClientService, private router: Router) { }
 
   ngOnInit(): void {
-    this.httpClientService.getFormationByCode(this.route.snapshot.paramMap.get('code')).subscribe(res => { 
+    this.httpClientService.getFormationByCode(this.route.snapshot.paramMap.get('code')).subscribe(res => {
       this.formation=res;
     });
     this.canEdit=this.setEdit();

@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Formation } from '../models/formation';
+import { Formation } from '../models/Formation';
 import { User } from '../models/User';
 
 /*
@@ -25,7 +25,7 @@ export class HttpClientService {
   //spring server
   baseUrl = "http://localhost:8080";
   //*/
-  
+
 
   constructor(private httpClient:HttpClient) { }
 
@@ -34,11 +34,11 @@ export class HttpClientService {
       'Content-Type': 'application/json'
     })
   }
-  
+
   getHello(){
     return this.httpClient.get<any>(`${this.baseUrl}/salutations`);
   }
-  
+
   login(email: string, password: string) {
     //return this.httpClient.get<User>(`${this.baseUrl}/users?email=${email}&password=${password}`);
     return this.httpClient.get<User>(`http://localhost:3000/users?email=${email}&password=${password}`); //passage via mock car non codé !
