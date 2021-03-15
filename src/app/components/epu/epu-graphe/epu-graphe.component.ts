@@ -19,7 +19,7 @@ export class EpuGrapheComponent implements OnInit {
   constructor(private httpClient: HttpClientService, private stepsService: StepsService, private router: Router) { }
 
   ngOnInit(): void {
-    this.getPaths(null, null);
+    this.getPaths("", "");
     this.searchInit();
   }
 
@@ -28,7 +28,7 @@ export class EpuGrapheComponent implements OnInit {
   firstStep: StepPath = new StepPath("POST-BAC", "POST-BAC");
 
   //Pour la sélection du cheminement à mettre en surbrillance
-  uniquePaths = [];
+  uniquePaths: Path[] = new Array<Path>();
   pathSelectedIndex: number = 0;
   slideValue: number =  1;
 
@@ -82,7 +82,7 @@ export class EpuGrapheComponent implements OnInit {
       this.paths.forEach(path => {
         this.totalStudentPaths += path.getNbStudent();
       });
-      this.uniquePaths = [];
+      this.uniquePaths = new Array<Path>();
       this.displayUniquePaths();
       this.changeOptions();
       this.pathSelectedIndex = 0;
@@ -105,6 +105,14 @@ export class EpuGrapheComponent implements OnInit {
       let tmpPath = this.paths[i].path_steps.map(item => item.step_code);
       if(!tmpPaths.includes(tmpPath) && new Set(tmpPath).size == tmpPath.length) this.uniquePaths.push(this.paths[i]);
     }
+
+    this.uniquePaths = this.uniquePaths.sort((a,b) => {
+      if(a.path_steps[a.path_steps.length-1].step_number < b.path_steps[b.path_steps.length-1].step_number)
+       return 1;
+      if(a.path_steps[a.path_steps.length-1].step_number > b.path_steps[b.path_steps.length-1].step_number)
+       return -1;
+      return 0;
+    });
   }
 
   switchPath(index: number){
