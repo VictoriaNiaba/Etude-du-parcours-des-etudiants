@@ -38,3 +38,5 @@ blog/bin/
 data/
 
 .factorypath
+
+src/main/resources/static/
