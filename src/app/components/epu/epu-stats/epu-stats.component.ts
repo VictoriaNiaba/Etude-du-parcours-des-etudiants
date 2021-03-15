@@ -12,7 +12,7 @@ import { StepsService } from 'src/app/services/steps.service';
 export class EpuStatsComponent implements OnInit {
 
   constructor(private httpClient: HttpClientService, private stepsService: StepsService) {
-    this.setFormation("SSV2AT") //temporairePourTest
+    //this.setFormation("SSV2AT") //temporairePourTest
   }
 
   /**/
