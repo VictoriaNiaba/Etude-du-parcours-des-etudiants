@@ -55,9 +55,12 @@ export class EpuGrapheComponent implements OnInit {
 
   //renseigne "paths" un tableau de path... suivant la base de données
   getPaths(stepsStart: string, stepsEnd: string) {
-    //permet d'obtenir seulement le premier code
     this.setFirstStep(stepsStart);
+
+    //permet de reset l'affichage
     this.slideValue =  1;
+    this.stepClick(null);
+
     //Pour bien former la requête attendu au près du backend
     if(stepsStart === "") stepsStart = null;
     if(stepsEnd === "") stepsEnd = null;
