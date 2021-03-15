@@ -78,10 +78,6 @@ public class Step implements Serializable {
 		formations.add(p);
 	}
 
-	public Set<Formation> getFormations() {
-		return formations;
-	}
-
 	public void setFormations(Set<Formation> formations) {
 		this.formations = formations;
 	}

@@ -21,10 +21,12 @@ public class StepFormationLinker {
 
 	@Autowired
 	Dao<Formation> formationDao;
+	@Autowired
+	Dao<Step> stepDao;
 
 	private List<String> badSteps = new ArrayList<String>();
 
-	public Set<Step> link(Set<Step> steps) {
+	public void linkAndAddAll(Set<Step> steps) {
 		List<Step> stepList = new ArrayList<Step>(steps);
 		Collections.sort(stepList, new Comparator<Step>() {
 			public int compare(Step o1, Step o2) {
@@ -65,8 +67,10 @@ public class StepFormationLinker {
 			if (badStep)
 				badSteps.add(s.getStep_code());
 		}
-
-		return resultSteps;
+		
+		stepDao.addAll(resultSteps);
+		for(Formation f : formationList)
+			formationDao.update(f);
 	}
 
 	public List<String> getBadSteps() {
