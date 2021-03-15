@@ -18,6 +18,7 @@ import fr.univamu.epu.errorhandler.NotFoundException;
 import fr.univamu.epu.errorhandler.UploadException;
 import fr.univamu.epu.model.formation.Formation;
 import fr.univamu.epu.services.csvimport.CsvParser;
+import fr.univamu.epu.services.formation.FormationCleaner;
 
 @Service("formationManager")
 public class FormationCsvInMemoryManager implements FormationManager {
@@ -27,6 +28,9 @@ public class FormationCsvInMemoryManager implements FormationManager {
 
 	@Autowired
 	CsvParser<Formation> fcp;
+	
+	@Autowired
+	FormationCleaner fc;
 	
 	@PostConstruct
 	public void init() throws FileNotFoundException {
@@ -72,6 +76,7 @@ public class FormationCsvInMemoryManager implements FormationManager {
 	@Override
 	public void upload(InputStream inputStream) {
 		Set<Formation> formations = fcp.parse(inputStream);
+		formations = fc.clean(formations);
 		try {
 			addAll(formations);
 		} catch (ConstraintViolationException | DataIntegrityViolationException e) {

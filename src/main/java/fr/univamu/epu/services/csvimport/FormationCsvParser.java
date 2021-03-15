@@ -18,7 +18,9 @@ public class FormationCsvParser implements CsvParser<Formation> {
 
 		try (Scanner scanner = new Scanner(inputStream)) {
 			while (scanner.hasNextLine()) {
-				formations.add(getFormationFromLine(scanner.nextLine()));
+				Formation f = getFormationFromLine(scanner.nextLine());
+				if(f != null)
+					formations.add(f);
 			}
 		}
 
@@ -40,6 +42,7 @@ public class FormationCsvParser implements CsvParser<Formation> {
 			if (rowScanner.hasNext())
 				f.setDescription(rowScanner.next());
 		}
+		if(f.getFormation_code().equals("CODE")) return null;
 		return f;
 	}
 

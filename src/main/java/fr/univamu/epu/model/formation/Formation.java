@@ -22,7 +22,7 @@ public class Formation {
 	private String formation_code;
 
 	@Basic(optional = true)
-	@Column(name = "name", length = 150, nullable = true)
+	@Column(name = "name", length = 200, nullable = true)
 	private String formation_name;
 
 	@Basic(optional = true)
