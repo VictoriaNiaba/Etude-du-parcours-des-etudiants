@@ -20,13 +20,15 @@ export class EpuGrapheComponent implements OnInit {
   constructor(private httpClient: HttpClientService, private stepsService: StepsService, private router: Router) { }
 
   ngOnInit(): void {
-    this.getPaths("", "");
+    //init déplacé dans le onChartInit
     this.searchInit();
+    this.changeOptions();
   }
 
   onChartInit(e: any) {
     this.chartInstance = e;
     console.log('on chart init:', e);
+    this.getPaths("", "");
   }
 
   paths: Path[] = new Array<Path>();
