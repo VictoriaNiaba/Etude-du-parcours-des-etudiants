@@ -26,6 +26,10 @@ export class FormationEditComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private httpClientService: HttpClientService) { }
 
   ngOnInit(): void {
+    //Pour éviter la duplication lors de la recherche
+    this.stepsOfFormation = [];
+    this.steps = [];
+    
     //-------------Initialisation----------------
     this.code = this.route.snapshot.paramMap.get('code');
     if (this.code === null) { this.isAddMode = true; }
