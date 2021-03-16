@@ -198,8 +198,8 @@ export class EpuGrapheComponent implements OnInit {
             }
           }
 
-          //Si le lien n'existe pas déjà on le crée
-          if (linkFilter.length == 0) {
+          //Si le lien n'existe pas déjà on le crée et on évite les liens sur eux-mêmes
+          if (linkFilter.length == 0 && pathSteps[index].step_code != currentSourceStepCode) {
             links.push(tmpLink);
           }
           //On stock les liens qui sont dupliqués
