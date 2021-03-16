@@ -97,7 +97,7 @@ export class EpuGrapheComponent implements OnInit {
       this.displayUniquePaths();
       this.changeOptions();
       this.pathSelectedIndex = 0;
-      this.slideValue =  Math.min(5, this.paths.length); //max de 5 par défaut
+      this.slideValue =  Math.min(5, this.uniquePaths.length); //max de 5 par défaut
     });
   }
 
