@@ -1,29 +1,52 @@
 export class Step {
     step_code: string;
     step_name: string;
-    step_stats_in: number;
-    step_stats_other: number;
-    step_stats_repeating: number;
+    steps_in = new Array<{step_code:string, number:number}>();
+    steps_out = new Array<{step_code:string, number:number}>();
+    average_repeat: number;
 
-    constructor(step_code: string, step_name: string, step_stats_in?:number, step_stats_other?:number, step_stats_repeating?:number) {
+    constructor(step_code: string, step_name: string, steps_in?: Array<{step_code:string, number:number}>, steps_out?: Array<{step_code:string, number:number}>, average_repeat?: number) {
         this.step_code = step_code;
         this.step_name = step_name;
-        this.step_stats_in = step_stats_in;
-        this.step_stats_other = step_stats_other;
-        this.step_stats_repeating = step_stats_repeating;
+        if(steps_in) {
+            this.steps_in = steps_in;
+        } else {
+            this.steps_in = [];
+        }
+        if(steps_out) {
+            this.steps_out = steps_out;
+        } else {
+            this.steps_out = [];
+        }
+        this.average_repeat = average_repeat ? average_repeat : this.average_repeat;
     }
 
-    setStats(step_stats_in:number, step_stats_other:number, step_stats_repeating:number) {
-        this.step_stats_in = step_stats_in;
-        this.step_stats_other = step_stats_other;
-        this.step_stats_repeating = step_stats_repeating;
+    setStats(steps_in: Array<{step_code:string, number:number}>, steps_out: Array<{step_code:string, number:number}>, average_repeat: number) {
+        this.steps_in = steps_in;
+        this.steps_out = steps_out;
+        this.average_repeat = average_repeat;
     }
-    getStatsTotal():number {
-        return this.step_stats_in + this.step_stats_other + this.step_stats_repeating;
+    getNumberIncoming():number {
+        let total = 0;
+        this.steps_in.forEach(step => total += step.number);
+        return total;
     }
-    clearStats() {
-        this.step_stats_in = undefined;
-        this.step_stats_other = undefined;
-        this.step_stats_repeating = undefined;
+    getNumberOutcoming():number {
+        let total = 0;
+        this.steps_out.forEach(step => total += step.number);
+        return total;
+    }
+}
+
+export class StepPath {
+    step_code: string;
+    step_name: string;
+    step_number: number; //nombre entrant dans ce step
+
+    constructor(step_code: string, step_name: string, step_number?: number) {
+        this.step_code = step_code;
+        this.step_name = step_name;
+
+        this.step_number = step_number ? step_number : null;
     }
 }

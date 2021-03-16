@@ -19,7 +19,7 @@
             <div class="ng-autocomplete">
               <ng-autocomplete
                 #searchStart
-                [data]="formationSearch"
+                [data]="dataSearch"
                 [searchKeyword]="keyword"
                 placeholder="Je suis en ..."
                 (selected)="selectEventStart($event)"
@@ -30,20 +30,19 @@
 
               <ng-template #itemTemplate let-item>
                 <div class="d-flex flex-column text-left flex-sm-wrap inside">
-                  <a [innerHTML]="item.id" class="top text-secondary"></a>
-                  <a [innerHTML]="item.formation_name" class="bottom"></a>
+                  <a [innerHTML]="item.code" class="top text-secondary"></a>
+                  <a [innerHTML]="item.name" class="bottom"></a>
                 </div>
               </ng-template>
 
               <ng-template #notFoundTemplate let-notFound>
                 <div [innerHTML]="notFound"></div>
               </ng-template>
-
-              <div *ngFor="let formation of formationsStart" class="searchItems">
-                <div class="badge badge-success" (click)="removeFromFormationStart(formation)">{{formation.formation_name}}</div>
+              <div *ngFor="let node of nodesStart" class="searchItems">
+                <div class="badge badge-success" (click)="removeFromNodeStart(node)">{{node.name}}</div>
               </div>
             </div>
-            <!---->
+            
             <div class="input-group-prepend"></div>
           </div>
           <div>
@@ -62,7 +61,7 @@
             <div class="ng-autocomplete">
               <ng-autocomplete
                 #searchEnd
-                [data]="formationSearch"
+                [data]="dataSearch"
                 [searchKeyword]="keyword"
                 placeholder="Je vais en ..."
                 (selected)="selectEventEnd($event)"
@@ -73,8 +72,8 @@
                 (inputChanged)="onChangeSearchEnd($event)" -->
               <ng-template #itemTemplate2 let-item>
                 <div class="d-flex flex-column text-left flex-sm-wrap inside">
-                  <a [innerHTML]="item.id" class="top text-secondary"></a>
-                  <a [innerHTML]="item.formation_name" class="bottom"></a>
+                  <a [innerHTML]="item.code" class="top text-secondary"></a>
+                  <a [innerHTML]="item.name" class="bottom"></a>
                 </div>
               </ng-template>
 
@@ -82,8 +81,8 @@
                 <div [innerHTML]="notFound"></div>
               </ng-template>
 
-              <div *ngFor="let formation of formationsEnd" class="searchItems">
-                <div class="badge badge-danger" (click)="removeFromFormationEnd(formation)">{{formation.formation_name}}</div>
+              <div *ngFor="let node of nodesEnd" class="searchItems">
+                <div class="badge badge-danger" (click)="removeFromNodeEnd(node)">{{node.name}}</div>
               </div>
             </div>
             <!---->
@@ -92,45 +91,60 @@
         </li>
       </ul>
     </div>
-    <div class="chart h">
-      <div
-        echarts
-        id="EPU-chart"
-        [options]="chartOptions"
-        (chartClick)="chartClicked($event)"
-      ></div>
+    <div class="graphBox">
+      <div class="chart">
+        <div
+          echarts
+          id="EPU-chart"
+          [options]="chartOptions"
+          (chartClick)="chartClicked($event)"
+          (chartInit)="onChartInit($event)"
+          class="echart"
+        ></div>
+      </div>
+      <div class="path-list" *ngIf="uniquePaths != []">
+        <div class="d-flex flex-wrap f-width">
+          <div class="f-width" *ngFor="let path of uniquePaths | slice:0:slideValue; let index = index;">
+            <a [ngClass]="index==pathSelectedIndex? 'badge-primary' : 'badge-secondary'"
+            ngbPopover="{{pop(index + 1)}}" triggers="mouseenter:mouseleave" container="body" popoverClass="popoverClass"
+            class="badge f-width" style="margin: 1px;" (click)="switchPath(index)">
+              {{path.getNbStudent()*100/totalStudentPaths | number:'1.0-1'}}% :: Cheminement {{ index + 1 }}
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-
     <!-- Affichage simple -->
+    <!--
     <div>
       <div class="btn btn-outline-primary disabled" style="width: 100%;">Total : {{totalStudentPaths}}</div>
 
-      <div class="simplePathsDisplay" *ngFor="let path of paths; let ind = index" style="padding: 0px 5px"> <!-- Pour chaque path -->
+      <div class="simplePathsDisplay" *ngFor="let path of paths; let ind = index" style="padding: 0px 5px">
 
         <div class="text-danger">{{path.getNbStudent()}} :: {{path.getNbStudent()*100/totalStudentPaths | number:'1.0-1'}}%</div> &nbsp;
         <div class="text-warning">{{getFirstStep().step_name}}</div>
 
-        <div *ngFor="let step of path.path_steps; let index = index"> <!-- pour chaque step -->
+        <div *ngFor="let step of path.path_steps; let index = index"> 
           <div class="text-primary" style="margin: 0px 10px; font-size: 10px;">
             <i class="fas fa-minus" style="align-self: center;"></i>
-            <div style="align-self: center;">{{path.getSteps(index).getStatsTotal()}}</div>
+            <div style="align-self: center;">{{path.getSteps(index).step_number}}</div>
             <i class="fas fa-arrow-right" style="align-self: center;"></i>
           </div>
           <a class="badge badge-info" style="align-self: center;" (click)="stepClick(path.getSteps(index).step_code)">{{path.getSteps(index).step_code}}</a>
         </div>
 
       </div>
-    </div>
+    </div>-->
     <!-- fin de l'affichage simple -->
-    
     <div class="card-footer">
       <div class="slidecontainer">
-        Nombre de parcours à afficher : {{ 0 }}
+        Nombre de chemins à afficher : {{ slideValue }} / {{ uniquePaths.length }}
         <input
           type="range"
           min="1"
-          max="20"
-          [value]="10"
+          max= "{{uniquePaths.length}}"
+          [value]= "slideValue"
+          (input)="valueChanged($event.target.value)"
           class="slider form-control-range"
           id="myRange"
         />

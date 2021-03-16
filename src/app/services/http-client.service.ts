@@ -49,15 +49,26 @@ export class HttpClientService {
   }
 
   getPaths(firstStep: string, lastStep: string) {
-    return this.httpClient.get<any>(`http://localhost:3000/paths`);
+    let request = `${this.baseUrl}/paths`;
+    if(firstStep || lastStep) {
+      request += "?"
+      if(firstStep && lastStep)
+        request += `firststep=${firstStep}&laststep=${lastStep}`
+      if(firstStep && !lastStep)
+        request += `firststep=${firstStep}`
+      if(!firstStep && lastStep)
+        request += `laststep=${lastStep}`
+    }
+    console.warn(request)
+    return this.httpClient.get<any>(request);
   }
 
   getSteps(){
-    return this.httpClient.get<any>(`http://localhost:3000/steps`);
+    return this.httpClient.get<any>(`${this.baseUrl}/steps`);
   }
 
   getStepByCode(code){
-    return this.httpClient.get<any>(`http://localhost:3000/steps/${code}`);
+    return this.httpClient.get<any>(`${this.baseUrl}/steps/${code}`);
   }
 
   getFormations(){

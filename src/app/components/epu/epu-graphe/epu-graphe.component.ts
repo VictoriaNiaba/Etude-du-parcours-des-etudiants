@@ -1,12 +1,10 @@
 import { Input, ViewChild } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormControlName } from '@angular/forms';
 import { Router } from '@angular/router';
-import { element } from 'protractor';
-import { Formation } from 'src/app/models/formation';
 import { Path } from 'src/app/models/Path';
-import { Step } from 'src/app/models/Step';
+import { StepPath } from 'src/app/models/Step';
 import { HttpClientService } from 'src/app/services/http-client.service';
+import { StepsService } from 'src/app/services/steps.service';
 import { EpuStatsComponent } from '../epu-stats/epu-stats.component';
 
 @Component({
@@ -16,40 +14,77 @@ import { EpuStatsComponent } from '../epu-stats/epu-stats.component';
 })
 export class EpuGrapheComponent implements OnInit {
 
+  chartInstance: any;
   chartOptions: any;
 
-  constructor(private httpClient: HttpClientService, private router: Router) { }
+  constructor(private httpClient: HttpClientService, private stepsService: StepsService, private router: Router) { }
 
   ngOnInit(): void {
-    this.getPaths();
+    //init déplacé dans le onChartInit
     this.searchInit();
+    this.changeOptions();
+  }
+
+  onChartInit(e: any) {
+    this.chartInstance = e;
+    console.log('on chart init:', e);
+    this.getPaths("", "");
   }
 
   paths: Path[] = new Array<Path>();
   totalStudentPaths: number;
-  firstStep: Step = new Step("POST-BAC", "POST-BAC");
-  lastStep: string = "PRSIN5AI";
-  getFirstStep(): Step {
-    //Temporaire
-    return this.firstStep ? this.firstStep : new Step("POST-BAC", "POST-BAC");
+  firstStep: StepPath = new StepPath("POST-BAC", "POST-BAC");
+
+  //Pour la sélection du cheminement à mettre en surbrillance
+  uniquePaths: Path[] = new Array<Path>();
+  pathSelectedIndex: number = 0;
+  slideValue: number =  1;
+
+  getFirstStep(): StepPath {
+    if(this.firstStep == null) return new StepPath("Autre", "Autre");
+    else return this.firstStep;
+  }
+
+  setFirstStep(code: string){
+    if(code === ""){
+      this.firstStep = new StepPath("POST-BAC", "POST-BAC");
+    }
+    else this.firstStep = null;
+  }
+
+  pop(index:number) {
+    let result = "";
+    this.uniquePaths[index-1].path_steps.forEach(
+      step => result += step.step_code+" > "
+    )
+    result = result.slice(0, -3)
+    return result;
   }
 
   //renseigne "paths" un tableau de path... suivant la base de données
-  getPaths() {
-    this.httpClient.getPaths(this.firstStep.step_name, this.lastStep).subscribe(res => {
+  getPaths(stepsStart: string, stepsEnd: string) {
+    this.setFirstStep(stepsStart);
 
-      this.getFirstStep();
+    //permet de reset l'affichage
+    this.slideValue = 1;
+    this.stepClick(null);
 
+    //Pour bien former la requête attendu au près du backend
+    if(stepsStart === "") stepsStart = null;
+    if(stepsEnd === "") stepsEnd = null;
+    
+    this.paths = new Array<Path>();
+
+    this.httpClient.getPaths(stepsStart, stepsEnd).subscribe(res => {
       res.forEach(path => {
         let pathTemp = new Path();
         for (let i = 0; i < path['steps'].length; i++) {
-          let step = new Step( //init
+          //console.warn("epu-graphe component",path['steps'][i]);
+          let stepName = this.stepsService.getByCode(path['steps'][i]);
+          let step = new StepPath( //init
             path['steps'][i],
-            //TODO: récupérer le nom des steps
-            path['steps'][i],
-            path['registered'][i],
-            0, //other
-            0); //redoublement
+            stepName,
+            path['registered'][i]);
           pathTemp.addSteps(step);
         }
         this.paths.push(pathTemp);
@@ -58,8 +93,46 @@ export class EpuGrapheComponent implements OnInit {
       this.paths.forEach(path => {
         this.totalStudentPaths += path.getNbStudent();
       });
-      this.changeOptions()
-    })
+      this.uniquePaths = new Array<Path>();
+      this.displayUniquePaths();
+      this.changeOptions();
+      this.pathSelectedIndex = 0;
+      this.slideValue =  Math.min(5, this.paths.length); //max de 5 par défaut
+    });
+  }
+
+  //Récupère la valeure du slider
+  valueChanged(e){
+    this.slideValue = e;
+  }
+
+  //Permet d'éviter les cheminements avec des redoublements et ceux qui ont la même suite d'étapes
+  displayUniquePaths(){
+    let tmpPaths = [];
+    this.paths.forEach(element => {
+      tmpPaths.push(element.path_steps.map(item => item.step_code));
+    });
+
+    for(let i=0; i<this.paths.length; i++){
+      let tmpPath = this.paths[i].path_steps.map(item => item.step_code);
+      if(!tmpPaths.includes(tmpPath) && new Set(tmpPath).size == tmpPath.length) this.uniquePaths.push(this.paths[i]);
+    }
+
+    this.uniquePaths = this.uniquePaths.sort((a,b) => {
+      if(a.path_steps[a.path_steps.length-1].step_number < b.path_steps[b.path_steps.length-1].step_number)
+       return 1;
+      if(a.path_steps[a.path_steps.length-1].step_number > b.path_steps[b.path_steps.length-1].step_number)
+       return -1;
+      return 0;
+    });
+  }
+
+  switchPath(index: number){
+    let pathTmp = this.paths.find(element => element == this.uniquePaths[index]);
+    this.paths[this.paths.indexOf(pathTmp)] = this.paths[0];
+    this.paths[0] = pathTmp;
+    this.pathSelectedIndex = index;
+    this.changeOptions();
   }
 
   //change les options du graphique
@@ -67,6 +140,7 @@ export class EpuGrapheComponent implements OnInit {
     let data: any[] = [];
     let links: any[] = [];
     let linksDuplicate: any[] = [];
+    let isPostBacUse = false;
 
     //Ajoute le noeud Post BAC si nécessaire
     if (this.getFirstStep().step_code == "POST-BAC") {
@@ -87,44 +161,59 @@ export class EpuGrapheComponent implements OnInit {
           let tmpData = {
             name: pathSteps[index].step_code,
             value: pathSteps[index].step_name,
-            category: incrementCat,
-            type: 'node'
+            cat: incrementCat,
+            type: 'node',
+            itemStyle: {
+              color: incrementCat==0 ? "rgba(255, 113, 113, 1)" : "rgba(0, 0, 0, 0.1)",
+              //borderColor: "rgba(0, 0, 0, 1)"
+            }
           }
           data.push(tmpData);
         }
 
+        let fisrtStepPath = pathSteps[0].step_code.substring(3,4);
+        if(index != 0 || (fisrtStepPath ===  "1" || fisrtStepPath ===  "P")){
+          //On cherche les liens qui peuvent être dupliqués
+          let currentSourceStepCode: String = index - 1 < 0 ? this.getFirstStep().step_code : pathSteps[index - 1].step_code;
+          let linkFilter = links.filter(link =>
+            link.source == currentSourceStepCode
+            && link.target == pathSteps[index].step_code
+          );
 
-        //On cherche les liens qui peuvent être dupliqués
-        let currentSourceStepCode: String = index - 1 < 0 ? this.getFirstStep().step_code : pathSteps[index - 1].step_code;
-        let linkFilter = links.filter(link =>
-          link.source == currentSourceStepCode
-          && link.target == pathSteps[index].step_code
-        );
+          //Savoir si le noeud post bac est utilisé
+          if(currentSourceStepCode === "POST-BAC"){isPostBacUse = true;}
 
-        let tmpLink = {
-          source: currentSourceStepCode,
-          target: pathSteps[index].step_code,
-          value: pathSteps[index].getStatsTotal(),
-          label: {
-            show: true,
-            formatter: function (params) {
-              return params['value']
+          let tmpLink = {
+            source: currentSourceStepCode,
+            target: pathSteps[index].step_code,
+            value: pathSteps[index].step_number,
+            label: {
+              show: true,
+              formatter: function (params) {
+                return params['value']
+              }
+            },
+            lineStyle: {
+              color: incrementCat==0 ? "rgba(255, 113, 113, 1)" : "rgba(0, 0, 0, 0.1)"
             }
           }
-        }
 
-        //Si le lien n'existe pas déjà on le crée
-        if (linkFilter.length == 0) {
-          links.push(tmpLink);
-        }
-        //On stock les liens qui sont dupliqués
-        else {
-          linksDuplicate.push(tmpLink);
+          //Si le lien n'existe pas déjà on le crée et on évite les liens sur eux-mêmes
+          if (linkFilter.length == 0 && pathSteps[index].step_code != currentSourceStepCode) {
+            links.push(tmpLink);
+          }
+          //On stock les liens qui sont dupliqués
+          else {
+            linksDuplicate.push(tmpLink);
+          }
         }
       }
 
-      incrementCat++;
+      //incrementCat++;
+      incrementCat = 1;
     });
+
+    
 
     //On ajoute la valeur des liens dupliqués au liens existants
     linksDuplicate.forEach(linkDuplicate => {
@@ -135,9 +224,39 @@ export class EpuGrapheComponent implements OnInit {
       })
     })
 
+    //On enlève le noeud Post-Bac si il n'est pas utilisé
+    if(isPostBacUse == false) data = data.filter(element => element.name !== "POST-BAC");
+
+    let tmpNodeIndex; //le dernier index dans data de la dernière node du parcours affiché
+    for(let i=0; i < data.length; i++) {
+      if(data[i].cat == 0)
+      tmpNodeIndex = i+1;
+    }
+
+    if(this.chartInstance && data[0]) {
+      let width = this.chartInstance['getWidth']();
+      let height = this.chartInstance['getHeight']();
+      data[0].fixed = true;
+      data[0].x = 0;
+      data[0].y = height/2;
+      if(data.length > 2) {
+        for(let i=1; i<data.length; i++) {
+          data[i].fixed = false;
+        }
+        data[tmpNodeIndex-1].fixed = true;
+        data[tmpNodeIndex-1].x = width;
+        data[tmpNodeIndex-1].y = height/2;
+        
+        /*data[Math.round((tmpNodeIndex-1)/2)].fixed = true;
+        data[Math.round((tmpNodeIndex-1)/2)].x = 500/2;
+        data[Math.round((tmpNodeIndex-1)/2)].y = 200;*/
+      }
+    }
+
+
     this.chartOptions = {
       title: {
-        text: 'Graphe'
+        text: 'EPU'
       },
       tooltip: {
         trigger: 'item',
@@ -146,7 +265,7 @@ export class EpuGrapheComponent implements OnInit {
         show: true,
         formatter: function (params) {
           if (params.dataType == 'node')
-            return `<div class="text-secondary" style="font-size:10">${params.name}</div>${params.value}`;
+            return `<div class="text-secondary" style="font-size:10">${params.value}</div>${params.name}`;
           else
             return "";
         }
@@ -163,9 +282,9 @@ export class EpuGrapheComponent implements OnInit {
           draggable: true, //only force
           force: { //only force
             //initLayout: 'circular',
-            gravity: 0,
+            gravity: 0.0,
             repulsion: 1000,
-            edgeLength: 200
+            edgeLength: 100
           },
           symbolSize: 60,
           roam: true,
@@ -191,11 +310,11 @@ export class EpuGrapheComponent implements OnInit {
             curveness: 0.1
           },
           zoom: 0.6,
-          categories: data,
+          //categories: data
         }
       ]
     };
-    console.log("Graph updated")
+    console.log("Graph updated");
   }
 
 
@@ -207,12 +326,12 @@ export class EpuGrapheComponent implements OnInit {
     if (e.dataType === 'node')
       this.stepClick(e.name);
   }
-  stepClick(name: string) {
+  stepClick(code: string) {
     //trouver le step cliqué dans paths puis récupérer les statistiques et envoyer à la place de name puis modifier setFormation + affichage
-    let res: Step;
+    let res: StepPath;
     this.paths.forEach(path => {
       path.path_steps.filter(x => {
-        if (x.step_name === name) {
+        if (x.step_code === code) {
           res = x;
           return;
         }
@@ -220,31 +339,81 @@ export class EpuGrapheComponent implements OnInit {
       if (res) return;
     });
     if (res)
-      return this.statsComponent.setFormation(res);
-    return console.error('Click failed');
+      return this.statsComponent.setFormation(res.step_code);
+    return this.statsComponent.setFormation("");
   }
 
-  /*Recherche*/
-  keyword = 'formation_name';
-  formationSearch: any[];
-  formationsStart = new Array<any>();
-  formationsEnd = new Array<any>();
+
+
+  /*-----------------------------Recherche------------------------------------*/
+  keyword = 'key';
+  dataSearch: any[] =[];
+  nodesStart = new Array<any>();
+  nodesEnd = new Array<any>();
 
   searchInit() {
     this.httpClient.getFormations().subscribe(res => {
-      this.formationSearch = res; //peut être limité à id + formation_name sauf si on doit utiliser toutes les données de formation dans le component !
+      for(let i=0; i<res.length; i++){
+        let tmpData = {
+          code: res[i].formation_code,
+          name: res[i].formation_name,
+          formation_steps: res[i].steps,
+          //permet la recherche multiple
+          key: res[i].formation_code + res[i].formation_name
+        }
+        this.dataSearch.push(tmpData);
+      }
     });
+
+    this.httpClient.getSteps().subscribe(res => {
+      for(let i=0; i<res.length; i++){
+        let tmpData = {
+          code: res[i].step_code,
+          name: res[i].step_name,
+          formation_steps: null,
+          //permet la recherche multiple
+          key: res[i].step_code + res[i].step_name
+        }
+        this.dataSearch.push(tmpData);
+      }
+    })
   }
 
   search() {
-    let formationsNameStart = this.formationsStart.map(formation => formation.id);
-    let formationsNameEnd = this.formationsEnd.map(formation => formation.id);
-    console.info("Recherche :");
-    console.info("START", formationsNameStart);
-    console.info("END", formationsNameEnd);
-    /*
-    this.httpClient.getPaths(formationsNameStart, formationsNameEnd).subscribe( ... ); //pour la mise en place de la recherche multiple
-    */
+    let nodesCodeStart = this.nodesStart.map(node => node);
+    let nodesCodeEnd = this.nodesEnd.map(node => node);
+
+    //Strings finales pour obtenir les codes des étapes pour générer les cheminements
+    let stepsStart = "";
+    let stepsEnd = "";
+
+    //On récupère les codes des étapes de la formation sinon le code de l'étape directement
+    nodesCodeStart.forEach(element => {
+      if(element.formation_steps != null){
+        element.formation_steps.forEach(step => {
+          stepsStart = stepsStart.concat(step.step_code+',');
+        });
+      }
+      else stepsStart = stepsStart.concat(element.code+',');
+    });
+    //De même pour la recherche d'arrivée
+    nodesCodeEnd.forEach(element => {
+      if(element.formation_steps != null){
+        element.formation_steps.forEach(step => {
+          stepsEnd = stepsEnd.concat(step.step_code+',');
+        });
+      }
+      else stepsEnd = stepsEnd.concat(element.code+',');
+    });
+
+    //Pour enlever la dernière virgule
+    stepsStart = stepsStart.slice(0, stepsStart.length-1);
+    stepsEnd = stepsEnd.slice(0, stepsEnd.length-1);
+    console.log("Steps Start", stepsStart);
+    console.log("Steps End", stepsEnd);
+
+    //On appelle la génération du graphe
+    this.getPaths(stepsStart,stepsEnd);
   }
 
   removeFromArray(array: any[], item: any) {
@@ -252,29 +421,29 @@ export class EpuGrapheComponent implements OnInit {
       if(item==element) array.splice(index,1);
     });
   }
-  removeFromFormationStart(item: any) {
-    this.removeFromArray(this.formationsStart, item);
-    this.formationSearch.push(item);
+  removeFromNodeStart(item: any) {
+    this.removeFromArray(this.nodesStart, item);
+    this.dataSearch.push(item);
     this.search();
   }
-  removeFromFormationEnd(item: any) {
-    this.removeFromArray(this.formationsEnd, item);
-    this.formationSearch.push(item);
+  removeFromNodeEnd(item: any) {
+    this.removeFromArray(this.nodesEnd, item);
+    this.dataSearch.push(item);
     this.search();
   }
 
   @ViewChild('searchStart') searchStart;
   selectEventStart(event) {
-    if(this.formationsStart.find(formation => formation.id == event.id)) {
-      alert("Formation déjà ajoutée.")
+    if(this.nodesStart.find(node => node.code == event.code)) {
+      alert("Node déjà ajouté.")
       return;
     }
-    this.formationsStart.push(
-      this.formationSearch.find(formation => formation.id == event.id)
+    this.nodesStart.push(
+      this.dataSearch.find(node => node.code == event.code)
     );
     this.removeFromArray(
-      this.formationSearch,
-      this.formationSearch.find(formation => formation.id == event.id)
+      this.dataSearch,
+      this.dataSearch.find(node => node.code == event.code)
     );
     this.searchStart.clear();
     this.search();
@@ -282,16 +451,16 @@ export class EpuGrapheComponent implements OnInit {
 
   @ViewChild('searchEnd') searchEnd;
   selectEventEnd(event) {
-    if(this.formationsEnd.find(formation => formation.id == event.id)) {
-      alert("Formation déjà ajoutée.")
+    if(this.nodesEnd.find(node => node.code == event.code)) {
+      alert("Node déjà ajouté.")
       return;
     }
-    this.formationsEnd.push(
-      this.formationSearch.find(formation => formation.id == event.id)
+    this.nodesEnd.push(
+      this.dataSearch.find(node => node.code == event.code)
     );
     this.removeFromArray(
-      this.formationSearch,
-      this.formationSearch.find(formation => formation.id == event.id)
+      this.dataSearch,
+      this.dataSearch.find(node => node.code == event.code)
     );
     this.searchEnd.clear();
     this.search();

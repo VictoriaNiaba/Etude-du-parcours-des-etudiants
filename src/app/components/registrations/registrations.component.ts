@@ -32,12 +32,13 @@ export class RegistrationsComponent implements OnInit {
 
   uploadFileToService() {
     this.httpClientService.postFile(this.fileToUpload, "/registrations/_upload").subscribe(data => {
+      this.ngOnInit();
+    }, error => {
+      console.log(error);
+      this.ngOnInit();
+    });
 
-      }, error => {
-        console.log(error);
-      });
-
-      this.ngOnInit(); //reload
+    this.ngOnInit(); //reload
   }
 
 }

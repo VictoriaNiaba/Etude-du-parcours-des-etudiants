@@ -202,32 +202,88 @@
   ],
   "steps": [
     {
-      "step_code": "SIN4T0",
-      "step_name": "AMU.M1 Informatique"
+      "step_code": "MESSIN-PRSIN5AA",
+      "step_name": "AMU.M1 Informatique",
+      "steps_in": [
+        {}
+      ],
+      "steps_out": [
+        {
+          "step_code": "SIN4T1",
+          "number": 10
+        }
+      ],
+      "average_repeat": 10.5
     },
     {
-      "step_code": "SIN4T1",
-      "step_name": "AMU.M1 Informatique FSI"
+      "step_code": "MESSIN-PRSIN5AB",
+      "step_name": "AMU.M1 Informatique FSI",
+      "steps_in": [
+        {
+          "step_code": "MESSIN-PRSIN5AA",
+          "number": 20
+        }
+      ],
+      "average_repeat": 10.5
     },
     {
-      "step_code": "SIN4T2",
-      "step_name": "AMU.M1 Informatique ILD"
+      "step_code": "MESSIN-PRSIN5AC",
+      "step_name": "AMU.M1 Informatique ILD",
+      "steps_in": [
+        {
+          "step_code": "MESSIN-PRSIN5AA",
+          "number": 30
+        }
+      ],
+      "average_repeat": 5.5
     },
     {
-      "step_code": "SIN4T3",
-      "step_name": "AMU.M1 Informatique IAAA"
+      "step_code": "MESSIN-PRSIN5AD",
+      "step_name": "AMU.M1 Informatique IAAA",
+      "steps_in": [
+        {
+          "step_code": "MESSIN-PRSIN5AA",
+          "number": 40
+        }
+      ],
+      "average_repeat": 25
     },
     {
-      "step_code": "SIN4T4",
-      "step_name": "AMU.M1 Informatique IMD"
+      "step_code": "MESSIN-PRSIN5AE",
+      "step_name": "AMU.M1 Informatique IMD",
+      "steps_in": [
+        {
+          "step_code": "MESSIN-PRSIN5AA",
+          "number": 2
+        }
+      ],
+      "average_repeat": 0
     },
     {
-      "step_code": "SIN4T5",
-      "step_name": "AMU.M1 Informatique CMB"
+      "step_code": "MESSIN-PRSIN5AF",
+      "step_name": "AMU.M1 Informatique CMB",
+      "steps_in": [
+        {
+          "step_code": "MESSIN-PRSIN5AA",
+          "number": 1
+        }
+      ],
+      "average_repeat": 5.5
     },
     {
-      "step_code": "SIN4T6",
-      "step_name": "AMU.M1 Informatique YAA"
+      "step_code": "MESSIN-PRSIN5AG",
+      "step_name": "AMU.M1 Informatique YAA",
+      "steps_in": [
+        {
+          "step_code": "MESSIN-PRSIN5AB",
+          "number": 10
+        },
+        {
+          "step_code": "MESSIN-PRSIN5AC",
+          "number": 5
+        }
+      ],
+      "average_repeat": 4
     }
   ],
   "users": [
@@ -236,7 +292,6 @@
       "password": "psw"
     }
   ],
-  "POST-CSV": {},
   "salutations": {
     "message": "salutations le monde (mock)"
   },

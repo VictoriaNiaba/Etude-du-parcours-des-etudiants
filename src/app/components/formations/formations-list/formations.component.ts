@@ -12,6 +12,7 @@ export class FormationsComponent implements OnInit {
   page: number;
   collectionSize: number;
   fileToUpload: File = null;
+  searchWord: String;
 
   constructor(private httpClientService: HttpClientService) { }
 
@@ -30,10 +31,20 @@ export class FormationsComponent implements OnInit {
 
   uploadFileToService() {
     this.httpClientService.postFile(this.fileToUpload, "/formations/_upload").subscribe(data => {
-
+        this.ngOnInit();
       }, error => {
+        this.ngOnInit();
         console.log(error);
       });
   }
 
+  search(){
+    if(this.searchWord != ""){
+      this.formations = this.formations.filter(res => {
+        return res.formation_code.toLocaleLowerCase().match(this.searchWord.toLocaleLowerCase());
+      });
+    }else if(this.searchWord == ""){
+      this.ngOnInit();
+    }
+  }
 }

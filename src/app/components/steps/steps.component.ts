@@ -13,6 +13,7 @@ export class StepsComponent implements OnInit {
   pageSize = 30;
   page: number;
   collectionSize: number;
+  searchWord: String;
 
   constructor(private httpClientService: HttpClientService) { }
 
@@ -31,10 +32,20 @@ export class StepsComponent implements OnInit {
 
   uploadFileToService() {
     this.httpClientService.postFile(this.fileToUpload, "/steps/_upload").subscribe(data => {
-
+      this.ngOnInit();
       }, error => {
         console.log(error);
+        this.ngOnInit();
       });
   }
 
+  search(){
+    if(this.searchWord != ""){
+      this.steps = this.steps.filter(res => {
+        return res.step_code.toLocaleLowerCase().match(this.searchWord.toLocaleLowerCase());
+      });
+    }else if(this.searchWord == ""){
+      this.ngOnInit();
+    }
+  }
 }

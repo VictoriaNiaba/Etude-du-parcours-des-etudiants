@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Formation } from 'src/app/models/formation';
 import { Step } from 'src/app/models/Step';
 import { HttpClientService } from 'src/app/services/http-client.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-formation-edit',
@@ -20,10 +21,15 @@ export class FormationEditComponent implements OnInit {
   steps: Array<Step> = [];
   stepsOfFormation: Array<Step> = [];
   code: string = null;
+  searchWord: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private httpClientService: HttpClientService) { }
 
   ngOnInit(): void {
+    //Pour éviter la duplication lors de la recherche
+    this.stepsOfFormation = [];
+    this.steps = [];
+    
     //-------------Initialisation----------------
     this.code = this.route.snapshot.paramMap.get('code');
     if (this.code === null) { this.isAddMode = true; }
@@ -64,7 +70,7 @@ export class FormationEditComponent implements OnInit {
           this.editForm.setValue({ formation_code: this.formation.formation_code, formation_name: this.formation.formation_name, description: this.formation.description, type: this.formation.type, url: this.formation.url });
           this.formation.steps.forEach(element => {
             //Récupérer l'étape à partir du code
-            this.httpClientService.getStepByCode(element).subscribe(res => {
+            this.httpClientService.getStepByCode(element.step_code).subscribe(res => {
               //On l'ajoute à la liste des étapes de la formation
               this.stepsOfFormation.push(res);
               //Pour le faire qu'une fois
@@ -97,8 +103,8 @@ export class FormationEditComponent implements OnInit {
 
     if (this.isAddMode) {
       //Pour obtenir seulement les codes
-      let tmpList: string[] = [];
-      this.stepsOfFormation.forEach(element => tmpList.push(element.step_code));
+      let tmpList: Step[] = [];
+      this.stepsOfFormation.forEach(element => tmpList.push(element));
 
       //On crée une nouvelle formation
       this.formation = new Formation(this.editForm.value.formation_code, this.editForm.value.formation_name, this.editForm.value.description, this.editForm.value.type, this.editForm.value.url, tmpList, new Date, new Date);
@@ -115,7 +121,7 @@ export class FormationEditComponent implements OnInit {
 
       //Pour obtenir seulement les codes
       this.formation.steps = [];
-      this.stepsOfFormation.forEach(element => this.formation.steps.push(element.step_code));
+      this.stepsOfFormation.forEach(element => this.formation.steps.push(element));
 
       this.update(this.formation);
     }
@@ -134,14 +140,27 @@ export class FormationEditComponent implements OnInit {
   }
 
   //Pour le drag and drop des étapes
+  @ViewChild('virtualScroller') virtualScroller: CdkVirtualScrollViewport;
   drop(event: CdkDragDrop<string[]>) {
+    const vsStartIndex = this.virtualScroller.getRenderedRange().start;
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      moveItemInArray(event.container.data, event.previousIndex + vsStartIndex, event.currentIndex + vsStartIndex);
     } else {
       transferArrayItem(event.previousContainer.data,
         event.container.data,
-        event.previousIndex,
-        event.currentIndex);
+        event.previousIndex + vsStartIndex,
+        event.currentIndex + vsStartIndex);
+    }
+    this.steps= [...this.steps]
+  }
+
+  search(){
+    if(this.searchWord != ""){
+      this.steps = this.steps.filter(res => {
+        return res.step_code.toLocaleLowerCase().match(this.searchWord.toLocaleLowerCase());
+      });
+    }else if(this.searchWord == ""){
+      this.ngOnInit();
     }
   }
 }
