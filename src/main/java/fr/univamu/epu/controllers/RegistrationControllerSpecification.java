@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import fr.univamu.epu.model.registration.Registration;
+import fr.univamu.epu.model.registration.RegistrationYearInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -16,10 +17,11 @@ public interface RegistrationControllerSpecification {
 	@Operation(summary = "Récupère toutes les inscriptions administratives", //
 			description = "", //
 			tags = { "Inscription administrative" })
-	public ResponseEntity<Collection<Registration>> findAll();
+	public ResponseEntity<Collection<RegistrationYearInfo>> getRegistrationYearInfos();
 
 	@Operation(summary = "Upload un lot d'inscriptions administratives", //
 			description = "Cette route supporte le format CSV uniquement.", //
 			tags = { "Inscription administrative" })
 	public ResponseEntity<String> upload(MultipartFile csvfile) throws IOException;
+
 }

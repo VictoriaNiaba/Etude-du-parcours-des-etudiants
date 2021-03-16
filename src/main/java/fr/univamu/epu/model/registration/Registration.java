@@ -18,7 +18,7 @@ import fr.univamu.epu.model.step.Step;
 public class Registration implements Serializable {
 
 	@EmbeddedId
-	RegistrationId id;
+	public RegistrationId id;
 
 	public Registration() {
 		super();

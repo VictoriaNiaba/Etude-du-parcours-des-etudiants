@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import fr.univamu.epu.business.RegistrationManager;
 import fr.univamu.epu.errorhandler.UploadException;
 import fr.univamu.epu.model.registration.Registration;
+import fr.univamu.epu.model.registration.RegistrationYearInfo;
 
 @CrossOrigin("*")
 @RestController
@@ -28,8 +29,8 @@ public class RegistrationControllerREST implements RegistrationControllerSpecifi
 
 	@Override
 	@GetMapping
-	public ResponseEntity<Collection<Registration>> findAll() {
-		return ResponseEntity.ok(registrationManager.findAll());
+	public ResponseEntity<Collection<RegistrationYearInfo>> getRegistrationYearInfos() {
+		return ResponseEntity.ok(registrationManager.getRegistrationYearInfos());
 	}
 
 	@Override

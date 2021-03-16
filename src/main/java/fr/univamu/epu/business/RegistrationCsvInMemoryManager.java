@@ -3,7 +3,10 @@ package fr.univamu.epu.business;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Service;
 import fr.univamu.epu.dao.Dao;
 import fr.univamu.epu.errorhandler.UploadException;
 import fr.univamu.epu.model.registration.Registration;
+import fr.univamu.epu.model.registration.RegistrationYearInfo;
 import fr.univamu.epu.services.csvimport.RegistrationCsvParser;
 import fr.univamu.epu.services.path.PathBuilder;
 
@@ -25,43 +29,73 @@ import fr.univamu.epu.services.path.PathBuilder;
 public class RegistrationCsvInMemoryManager implements RegistrationManager {
 
 	@Autowired
-	Dao<Registration> dao;
+	Dao<Registration> registrationDao;
+	@Autowired
+	Dao<RegistrationYearInfo> regYearInfoDao;
 
 	@Autowired
 	RegistrationCsvParser rcp;
 
 	@Autowired
 	PathBuilder pb;
-	
+
 	@PostConstruct
 	public void init() throws FileNotFoundException {
-		if (dao.findAll(Registration.class).isEmpty()) {
+		if (registrationDao.findAll(Registration.class).isEmpty()) {
 			upload(new FileInputStream("files/IA.csv"));
 		}
-		
-		pb.buildPaths();//depends on step
-		//System.out.println(pm.getMergedPath(null, null));
 	}
 
 	@Override
 	public void addAll(Collection<Registration> registrations) {
-		dao.addAll(registrations);
+		registrationDao.addAll(registrations);
 	}
 
 	@Override
-	public Collection<Registration> findAll() {
-		return dao.findAll(Registration.class);
+	public Collection<RegistrationYearInfo> getRegistrationYearInfos() {
+		return regYearInfoDao.findAll(RegistrationYearInfo.class);
 	}
 
 	@Override
 	public void upload(InputStream inputStream) {
 		Set<Registration> registrations = rcp.parse(inputStream);
+		// logique d'upload: suppression des années importées
+		List<Integer> yearsUploaded = new ArrayList<Integer>();
+
+		List<RegistrationYearInfo> infos = new ArrayList<RegistrationYearInfo>();
+
+		for (Registration reg : registrations) {
+			if (!yearsUploaded.contains(reg.getYear())) {
+				yearsUploaded.add(reg.getYear());
+				infos.add(new RegistrationYearInfo(reg.getYear(), 1, new Date()));
+			} else {
+				for (RegistrationYearInfo info : infos) {
+					if (info.getYear().equals(reg.getYear())) {
+						infos.remove(info);
+						info.setRegistrationCount(info.getRegistrationCount() + 1);
+						info.setTimeStamp(new Date());
+						infos.add(info);
+						break;
+					}
+				}
+			}
+		}
+		Collection<Registration> oldRegs = registrationDao.findAll(Registration.class);
+		for (Registration reg : oldRegs) {
+			if (yearsUploaded.contains(reg.getYear()))
+				registrationDao.remove(Registration.class, reg.id);
+		}
+
 		try {
 			addAll(registrations);
 		} catch (ConstraintViolationException | DataIntegrityViolationException e) {
 			throw new UploadException(
 					"Une partie des inscriptions administratives fournies existent déjà en base de données");
 		}
-	}
 
+		regYearInfoDao.addAll(infos);
+		
+		//gen paths
+		pb.buildPaths();// depends on step
+	}
 }
