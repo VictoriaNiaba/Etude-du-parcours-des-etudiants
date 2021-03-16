@@ -7,8 +7,9 @@ export class Path {
         this.path_steps = new Array<StepPath>();
     }
     getMeanStudents():number{
-        if(this.path_steps.length == 0) return null;
-        return this.getNbStudent()/this.path_steps.length;
+        if(this.path_steps.length == 0)
+            return null;
+        return (this.getNbStudent()/this.path_steps.length);
     }
     getNbStudent(): number{
         let tmp = 0;

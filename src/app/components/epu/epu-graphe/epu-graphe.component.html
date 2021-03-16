@@ -108,7 +108,7 @@
             <a [ngClass]="index==pathSelectedIndex? 'badge-primary' : 'badge-secondary'"
             ngbPopover="{{pop(index + 1)}}" triggers="mouseenter:mouseleave" container="body" popoverClass="popoverClass"
             class="badge f-width" style="margin: 1px;" (click)="switchPath(index)">
-              {{path.getNbStudent()*100/totalStudentPaths | number:'1.0-1'}}% :: Cheminement {{ index + 1 }}
+              {{pathStats[index] | number:'1.0-1'}}% :: Cheminement {{ index + 1 }}
             </a>
           </div>
         </div>

@@ -27,12 +27,17 @@ export class EpuGrapheComponent implements OnInit {
 
   onChartInit(e: any) {
     this.chartInstance = e;
-    console.log('on chart init:', e);
+    //console.log('on chart init:', e);
     this.getPaths("", "");
   }
 
+  getMeanStudents(path: Path) {
+    return path.getMeanStudents();
+  }
+
   paths: Path[] = new Array<Path>();
-  totalStudentPaths: number;
+  totalStudentPaths: number = 1;
+  pathStats: number[] = [];
   firstStep: StepPath = new StepPath("POST-BAC", "POST-BAC");
 
   //Pour la sélection du cheminement à mettre en surbrillance
@@ -74,7 +79,8 @@ export class EpuGrapheComponent implements OnInit {
     if(stepsEnd === "") stepsEnd = null;
     
     this.paths = new Array<Path>();
-
+    this.pathStats = [];
+    
     this.httpClient.getPaths(stepsStart, stepsEnd).subscribe(res => {
       res.forEach(path => {
         let pathTemp = new Path();
@@ -88,11 +94,16 @@ export class EpuGrapheComponent implements OnInit {
           pathTemp.addSteps(step);
         }
         this.paths.push(pathTemp);
+        this.pathStats.push(pathTemp.getMeanStudents());
       });
       this.totalStudentPaths = 0;
       this.paths.forEach(path => {
         this.totalStudentPaths += path.getNbStudent();
       });
+      if(this.totalStudentPaths > 0)
+        for(let i=0; i<this.pathStats.length; i++)
+          this.pathStats[i] = this.pathStats[i]*100/this.totalStudentPaths;
+
       this.uniquePaths = new Array<Path>();
       this.displayUniquePaths();
       this.changeOptions();
@@ -314,7 +325,6 @@ export class EpuGrapheComponent implements OnInit {
         }
       ]
     };
-    console.log("Graph updated");
   }
 
 
