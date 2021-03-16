@@ -66,7 +66,7 @@ export class EpuGrapheComponent implements OnInit {
     this.setFirstStep(stepsStart);
 
     //permet de reset l'affichage
-    this.slideValue =  1;
+    this.slideValue = 1;
     this.stepClick(null);
 
     //Pour bien former la requête attendu au près du backend
@@ -97,6 +97,7 @@ export class EpuGrapheComponent implements OnInit {
       this.displayUniquePaths();
       this.changeOptions();
       this.pathSelectedIndex = 0;
+      this.slideValue =  Math.min(5, this.paths.length); //max de 5 par défaut
     });
   }
 
@@ -160,8 +161,12 @@ export class EpuGrapheComponent implements OnInit {
           let tmpData = {
             name: pathSteps[index].step_code,
             value: pathSteps[index].step_name,
-            category: incrementCat,
-            type: 'node'
+            cat: incrementCat,
+            type: 'node',
+            itemStyle: {
+              color: incrementCat==0 ? "rgba(255, 113, 113, 1)" : "rgba(0, 0, 0, 0.1)",
+              //borderColor: "rgba(0, 0, 0, 1)"
+            }
           }
           data.push(tmpData);
         }
@@ -189,11 +194,7 @@ export class EpuGrapheComponent implements OnInit {
               }
             },
             lineStyle: {
-              color: incrementCat==0 ? "rgba(255, 113, 113, 1)" : "rgba(0, 0, 0, 1)"
-            },
-            itemStyle: {
-              color: incrementCat==0 ? "rgba(255, 113, 113, 1)" : "rgba(0, 0, 0, 1)",
-              borderColor: "rgba(0, 0, 0, 1)"
+              color: incrementCat==0 ? "rgba(255, 113, 113, 1)" : "rgba(0, 0, 0, 0.1)"
             }
           }
 
@@ -212,6 +213,8 @@ export class EpuGrapheComponent implements OnInit {
       incrementCat = 1;
     });
 
+    
+
     //On ajoute la valeur des liens dupliqués au liens existants
     linksDuplicate.forEach(linkDuplicate => {
       links.forEach(link => {
@@ -226,22 +229,23 @@ export class EpuGrapheComponent implements OnInit {
 
     let tmpNodeIndex; //le dernier index dans data de la dernière node du parcours affiché
     for(let i=0; i < data.length; i++) {
-      if(data[i].category == 0)
+      if(data[i].cat == 0)
       tmpNodeIndex = i+1;
     }
 
     if(this.chartInstance && data[0]) {
       let width = this.chartInstance['getWidth']();
+      let height = this.chartInstance['getHeight']();
       data[0].fixed = true;
       data[0].x = 0;
-      data[0].y = 200;
+      data[0].y = height/2;
       if(data.length > 2) {
         for(let i=1; i<data.length; i++) {
           data[i].fixed = false;
         }
         data[tmpNodeIndex-1].fixed = true;
         data[tmpNodeIndex-1].x = width;
-        data[tmpNodeIndex-1].y = 200;
+        data[tmpNodeIndex-1].y = height/2;
         
         /*data[Math.round((tmpNodeIndex-1)/2)].fixed = true;
         data[Math.round((tmpNodeIndex-1)/2)].x = 500/2;
@@ -252,7 +256,7 @@ export class EpuGrapheComponent implements OnInit {
 
     this.chartOptions = {
       title: {
-        text: 'Graphe'
+        text: 'EPU'
       },
       tooltip: {
         trigger: 'item',
@@ -305,9 +309,8 @@ export class EpuGrapheComponent implements OnInit {
             width: 2,
             curveness: 0.1
           },
-          itemStyle: {},
           zoom: 0.6,
-          categories: data
+          //categories: data
         }
       ]
     };
