@@ -14,6 +14,7 @@ import { EpuStatsComponent } from '../epu-stats/epu-stats.component';
 })
 export class EpuGrapheComponent implements OnInit {
 
+  chartInstance: any;
   chartOptions: any;
 
   constructor(private httpClient: HttpClientService, private stepsService: StepsService, private router: Router) { }
@@ -21,6 +22,11 @@ export class EpuGrapheComponent implements OnInit {
   ngOnInit(): void {
     this.getPaths("", "");
     this.searchInit();
+  }
+
+  onChartInit(e: any) {
+    this.chartInstance = e;
+    console.log('on chart init:', e);
   }
 
   paths: Path[] = new Array<Path>();
@@ -222,20 +228,23 @@ export class EpuGrapheComponent implements OnInit {
       tmpNodeIndex = i+1;
     }
 
-    data[0].fixed = true;
-    data[0].x = 0;
-    data[0].y = 200;
-    if(data.length > 2) {
-      for(let i=1; i<data.length; i++) {
-        data[i].fixed = false;
+    if(this.chartInstance && data[0]) {
+      let width = this.chartInstance['getWidth']();
+      data[0].fixed = true;
+      data[0].x = 0;
+      data[0].y = 200;
+      if(data.length > 2) {
+        for(let i=1; i<data.length; i++) {
+          data[i].fixed = false;
+        }
+        data[tmpNodeIndex-1].fixed = true;
+        data[tmpNodeIndex-1].x = width;
+        data[tmpNodeIndex-1].y = 200;
+        
+        /*data[Math.round((tmpNodeIndex-1)/2)].fixed = true;
+        data[Math.round((tmpNodeIndex-1)/2)].x = 500/2;
+        data[Math.round((tmpNodeIndex-1)/2)].y = 200;*/
       }
-      data[tmpNodeIndex-1].fixed = true;
-      data[tmpNodeIndex-1].x = 500;
-      data[tmpNodeIndex-1].y = 200;
-      
-      data[Math.round((tmpNodeIndex-1)/2)].fixed = true;
-      data[Math.round((tmpNodeIndex-1)/2)].x = 500/2;
-      data[Math.round((tmpNodeIndex-1)/2)].y = 200;
     }
 
 
@@ -267,9 +276,9 @@ export class EpuGrapheComponent implements OnInit {
           draggable: true, //only force
           force: { //only force
             //initLayout: 'circular',
-            gravity: 0.1,
+            gravity: 0.0,
             repulsion: 1000,
-            edgeLength: 200
+            edgeLength: 100
           },
           symbolSize: 60,
           roam: true,
