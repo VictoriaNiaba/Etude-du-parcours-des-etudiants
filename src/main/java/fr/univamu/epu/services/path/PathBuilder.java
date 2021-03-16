@@ -77,7 +77,8 @@ public class PathBuilder {
 			List<Integer> countAndYears = new ArrayList<Integer>(2);
 
 			for (Registration reg : sp) {
-				stepCodes.add(reg.getStepCode());
+				if(!stepCodes.contains(reg.getStepCode()))
+					stepCodes.add(reg.getStepCode());
 			}
 			if (stepCodes.isEmpty())
 				continue;
