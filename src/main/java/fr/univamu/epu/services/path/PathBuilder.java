@@ -38,6 +38,13 @@ public class PathBuilder {
 
 	// TODO: a séparer en plusieurs methodes pour que ça soit + lisible
 	public void buildPaths() {
+		
+		//delete old paths
+		Collection<Path> oldPaths = pathDao.findAll(Path.class);
+		if(!oldPaths.isEmpty()) {
+			for(Path p : oldPaths)
+				pathDao.remove(Path.class, p.pathId);
+		}
 
 		List<Registration> regs = new ArrayList<Registration>(registrationDao.findAll(Registration.class));
 		Collections.sort(regs, new Comparator<Registration>() {

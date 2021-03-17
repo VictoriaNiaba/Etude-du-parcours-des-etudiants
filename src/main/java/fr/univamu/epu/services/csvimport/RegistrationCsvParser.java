@@ -32,7 +32,7 @@ public class RegistrationCsvParser implements CsvParser<Registration> {
 
 	private Registration getRegistrationFromLine(String line) {
 		try (Scanner rowScanner = new Scanner(line)) {
-			rowScanner.useDelimiter(";");
+			rowScanner.useDelimiter(",");
 			if (!rowScanner.hasNext())
 				return null;
 			String studentCode = rowScanner.next();

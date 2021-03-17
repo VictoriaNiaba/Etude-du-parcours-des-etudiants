@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContextType;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,10 +59,21 @@ public class GenericDao<T> implements Dao<T> {
 	@Override
 	public Collection<T> findAll(Class<T> clazz) {
 		CriteriaQuery<T> criteriaQuery = em.getCriteriaBuilder().createQuery(clazz);
-		
+
 		criteriaQuery.select(criteriaQuery.from(clazz));
 		TypedQuery<T> typedQuery = em.createQuery(criteriaQuery);
 
 		return typedQuery.getResultList();
 	}
+
+	@Override
+	public void executeQuery(String query) {
+		em.createQuery(query).executeUpdate();
+	}
+
+	@Override
+	public void executeQueryWithIntParam(String query, Object param) {
+		em.createQuery(query).setParameter("p", param).executeUpdate();
+	}
+
 }

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import fr.univamu.epu.dao.Dao;
 import fr.univamu.epu.errorhandler.UploadException;
+import fr.univamu.epu.model.path.Path;
 import fr.univamu.epu.model.registration.Registration;
 import fr.univamu.epu.model.registration.RegistrationYearInfo;
 import fr.univamu.epu.services.csvimport.RegistrationCsvParser;
@@ -60,6 +61,7 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 	public void upload(InputStream inputStream) {
 		Set<Registration> registrations = rcp.parse(inputStream);
 		// logique d'upload: suppression des années importées
+		System.out.println("uploading " + registrations.size() + " registrations");
 		List<Integer> yearsUploaded = new ArrayList<Integer>();
 
 		List<RegistrationYearInfo> infos = new ArrayList<RegistrationYearInfo>();
@@ -80,10 +82,13 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 				}
 			}
 		}
-		Collection<Registration> oldRegs = registrationDao.findAll(Registration.class);
-		for (Registration reg : oldRegs) {
-			if (yearsUploaded.contains(reg.getYear()))
-				registrationDao.remove(Registration.class, reg.id);
+
+		for (Integer i : yearsUploaded) {
+			if (!registrationDao.findAll(Registration.class).isEmpty())
+				registrationDao.executeQueryWithIntParam("DELETE FROM registration r WHERE r.id.year = :p", i);
+
+			if (!regYearInfoDao.findAll(RegistrationYearInfo.class).isEmpty())
+				regYearInfoDao.executeQueryWithIntParam("DELETE FROM registrationYearInfo r WHERE r.year = :p", i);
 		}
 
 		try {
@@ -94,8 +99,8 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 		}
 
 		regYearInfoDao.addAll(infos);
-		
-		//gen paths
+
+		// gen paths
 		pb.buildPaths();// depends on step
 	}
 }

@@ -17,7 +17,7 @@ public class Path implements Serializable{
 
 	@Id()
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long pathId;
+	public long pathId;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<String> stepCodes;

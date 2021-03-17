@@ -47,6 +47,7 @@ public class PathMerger {
 		
 		List<MergedPath> mergedPaths = new ArrayList<MergedPath>();
 		for (Path p : paths) {
+			//if(p.getAvgStudentCountPerYear() < 2) break;
 			if(mergedPaths.size() == 50) break;
 			if(p.getStepCodes().size() < 2) continue;
 			List<Double> registered = new ArrayList<Double>();

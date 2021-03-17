@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 
 import fr.univamu.epu.model.step.Step;
 
-@Entity(name = "Registration")
+@Entity(name = "registration")
 public class Registration implements Serializable {
 
 	@EmbeddedId

@@ -15,5 +15,9 @@ public interface Dao<T> {
 	public T find(Class<T> clazz, Object id);
 
 	public Collection<T> findAll(Class<T> clazz);
+
+	public void executeQuery(String query);
+
+	public void executeQueryWithIntParam(String query, Object param);
 	
 }
