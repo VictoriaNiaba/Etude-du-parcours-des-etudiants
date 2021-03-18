@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -48,7 +49,7 @@ public class Formation {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date last_modification;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "formation_step")
 	private Set<Step> steps;
 
@@ -119,6 +120,10 @@ public class Formation {
 		s.addFormation(this);
 		steps.add(s);
 	}
+	
+	public void removeAllSteps() {
+		steps = new HashSet<Step>();
+	}
 
 	public void setSteps(Set<Step> steps) {
 		this.steps = steps;
@@ -146,5 +151,6 @@ public class Formation {
 				+ description + ", type=" + type + ", url=" + url + ", add_date=" + add_date + ", last_modification="
 				+ last_modification + ", steps=" + steps + "]";
 	}
+
 
 }

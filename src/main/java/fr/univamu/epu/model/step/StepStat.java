@@ -1,5 +1,7 @@
 package fr.univamu.epu.model.step;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,12 +11,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity(name = "StepStat")
-public class StepStat {
+public class StepStat implements Serializable {
 	
 	@Id()
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long stepStatId;
-	
+
 	@ManyToOne
     @JoinColumn(name="step_in_of", nullable=true)
 	private Step step_in_of;
@@ -23,7 +25,7 @@ public class StepStat {
     @JoinColumn(name="step_out_of", nullable=true)
 	private Step step_out_of;
 	
-	@Column(name = "step_code", length = 10, nullable = false, unique = false)
+	@Column(name = "step_code", length = 10, nullable = true, unique = false)
 	private String step_code;
 	
 	@Column(name = "number")
@@ -37,6 +39,10 @@ public class StepStat {
 		super();
 		this.step_code = stepCode;
 		this.number = number;
+	}
+	
+	public long getStepStatId() {
+		return stepStatId;
 	}
 
 	public String getStep_code() {

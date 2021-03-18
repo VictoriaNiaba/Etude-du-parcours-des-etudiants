@@ -18,10 +18,10 @@ import javax.persistence.OneToMany;
 import fr.univamu.epu.model.formation.Formation;
 
 @Entity(name = "Step")
-public class Step implements Serializable {
+public class Step {
 
 	@Id
-	@Column(name = "step_code", length = 10, nullable = false, unique = false)
+	@Column(name = "step_code", length = 10, nullable = false, unique = true)
 	private String step_code;
 
 	@Basic(optional = true)
@@ -49,6 +49,31 @@ public class Step implements Serializable {
 		this.step_code = stepCode;
 		this.step_name = name;
 	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((step_code == null) ? 0 : step_code.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Step other = (Step) obj;
+		if (step_code == null) {
+			if (other.step_code != null)
+				return false;
+		} else if (!step_code.equals(other.step_code))
+			return false;
+		return true;
+	}
 
 	@Override
 	public String toString() {
@@ -71,11 +96,11 @@ public class Step implements Serializable {
 		this.step_name = step_name;
 	}
 
-	public void addFormation(Formation p) {
+	public void addFormation(Formation f) {
 		if (formations == null) {
 			formations = new HashSet<Formation>();
 		}
-		formations.add(p);
+		formations.add(f);
 	}
 
 	public void setFormations(Set<Formation> formations) {

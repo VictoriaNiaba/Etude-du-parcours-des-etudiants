@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 import fr.univamu.epu.dao.Dao;
 import fr.univamu.epu.errorhandler.UploadException;
 import fr.univamu.epu.errorhandler.NotFoundException;
+import fr.univamu.epu.model.formation.Formation;
 import fr.univamu.epu.model.step.Step;
+import fr.univamu.epu.model.step.StepStat;
 import fr.univamu.epu.services.csvimport.CsvParser;
 import fr.univamu.epu.services.step.StepFormationLinker;
 
@@ -27,10 +29,14 @@ public class StepCsvInMemoryManager implements StepManager {
 
 	@Autowired
 	Dao<Step> dao;
+	@Autowired
+	Dao<Formation> formationDao;
+	@Autowired
+	Dao<StepStat> stepStatDao;
 
 	@Autowired
 	CsvParser<Step> scp;
-	
+
 	@Autowired
 	StepFormationLinker fsl;
 
@@ -54,7 +60,7 @@ public class StepCsvInMemoryManager implements StepManager {
 	@Override
 	public Step find(String code) {
 		Step step = dao.find(Step.class, code);
-		if(step == null) {
+		if (step == null) {
 			throw new NotFoundException("L'étape n'a pas été trouvée avec le code " + code);
 		}
 		return step;
@@ -77,12 +83,15 @@ public class StepCsvInMemoryManager implements StepManager {
 
 	@Override
 	public void upload(InputStream inputStream) {
+		System.out.println("uploading steps");
 		Set<Step> steps = scp.parse(inputStream);
+
 		try {
 			fsl.linkAndAddAll(steps);
 		} catch (ConstraintViolationException | DataIntegrityViolationException e) {
 			throw new UploadException("Une partie des étapes fournies existent déjà en base de données");
-		}		
+		}
+		System.out.println("uploaded steps");
 	}
 
 }

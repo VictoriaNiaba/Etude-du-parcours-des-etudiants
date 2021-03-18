@@ -99,6 +99,7 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 		}
 
 		regYearInfoDao.addAll(infos);
+		System.out.println("uploaded regs");
 
 		// gen paths
 		pb.buildPaths();// depends on step

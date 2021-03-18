@@ -17,28 +17,29 @@ import fr.univamu.epu.dao.Dao;
 import fr.univamu.epu.errorhandler.NotFoundException;
 import fr.univamu.epu.errorhandler.UploadException;
 import fr.univamu.epu.model.formation.Formation;
+import fr.univamu.epu.model.path.Path;
 import fr.univamu.epu.services.csvimport.CsvParser;
 import fr.univamu.epu.services.formation.FormationCleaner;
 
 @Service("formationManager")
 public class FormationCsvInMemoryManager implements FormationManager {
-	
+
 	@Autowired
 	Dao<Formation> dao;
 
 	@Autowired
 	CsvParser<Formation> fcp;
-	
+
 	@Autowired
 	FormationCleaner fc;
-	
+
 	@PostConstruct
 	public void init() throws FileNotFoundException {
 		if (dao.findAll(Formation.class).isEmpty()) {
 			upload(new FileInputStream("files/formations.csv"));
 		}
 	}
-	
+
 	@Override
 	public Collection<Formation> findAll() {
 		return dao.findAll(Formation.class);
@@ -75,13 +76,22 @@ public class FormationCsvInMemoryManager implements FormationManager {
 
 	@Override
 	public void upload(InputStream inputStream) {
+		System.out.println("uploading formations");
 		Set<Formation> formations = fcp.parse(inputStream);
 		formations = fc.clean(formations);
+		
 		try {
-			addAll(formations);
+			for (Formation f : formations) {
+				if (dao.find(Formation.class, f.getFormation_code()) != null) {
+					dao.update(f);
+				} else {
+					dao.add(f);
+				}
+			}
 		} catch (ConstraintViolationException | DataIntegrityViolationException e) {
 			throw new UploadException("Une partie des formations fournies existent déjà en base de données");
-		}	
+		}
+		System.out.println("uploaded formations");
 	}
 
 }

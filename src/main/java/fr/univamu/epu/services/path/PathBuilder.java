@@ -55,7 +55,7 @@ public class PathBuilder {
 		//delete old stepstats
 		if(!stepStatDao.findAll(StepStat.class).isEmpty()) {
 			for(StepStat s : stepStatDao.findAll(StepStat.class)) {
-				stepStatDao.remove(StepStat.class, s);
+				stepStatDao.remove(StepStat.class, s.getStepStatId());
 			}
 		}	
 		// generate Step Stats (depends on student paths)

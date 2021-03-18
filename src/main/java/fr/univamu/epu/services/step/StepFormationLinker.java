@@ -68,9 +68,18 @@ public class StepFormationLinker {
 				badSteps.add(s.getStep_code());
 		}
 		
-		stepDao.addAll(resultSteps);
-		for(Formation f : formationList)
+		for (Step s : resultSteps) {
+			if (stepDao.find(Step.class, s.getStep_code()) != null) {
+				stepDao.update(s);
+			} else {
+				stepDao.add(s);
+			}
+		}
+		for(Formation f : formationList) {
 			formationDao.update(f);
+		}
+		
+
 	}
 
 	public List<String> getBadSteps() {
