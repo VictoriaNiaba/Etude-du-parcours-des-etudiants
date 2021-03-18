@@ -26,10 +26,6 @@ export class FormationEditComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private httpClientService: HttpClientService) { }
 
   ngOnInit(): void {
-    //Pour éviter la duplication lors de la recherche
-    this.stepsOfFormation = [];
-    this.steps = [];
-    
     //-------------Initialisation----------------
     this.code = this.route.snapshot.paramMap.get('code');
     if (this.code === null) { this.isAddMode = true; }
@@ -58,7 +54,25 @@ export class FormationEditComponent implements OnInit {
       url: ['', [Validators.required]],
     });
 
+    this.httpClientService.getSteps().subscribe(res => {
+      this.steps = res;
+      if (!this.isAddMode) {
+        //On récupère les infos de la formation
+        this.httpClientService.getFormationByCode(this.route.snapshot.paramMap.get('code')).subscribe(res => {
+          this.formation = res;
+          this.editForm.setValue({ formation_code: this.formation.formation_code, formation_name: this.formation.formation_name, description: this.formation.description, type: this.formation.type, url: this.formation.url });
+        });
+      }
+    });
 
+    this.initStepsList();
+  }
+
+  initStepsList(){
+    //Pour éviter la duplication lors de la recherche
+    this.stepsOfFormation = [];
+    this.steps = [];
+    
     //Préparation des listes pour le drag and drop
     //On récupère toutes les étapes
     this.httpClientService.getSteps().subscribe(res => {
@@ -67,7 +81,6 @@ export class FormationEditComponent implements OnInit {
         //On récupère les infos de la formation
         this.httpClientService.getFormationByCode(this.route.snapshot.paramMap.get('code')).subscribe(res => {
           this.formation = res;
-          this.editForm.setValue({ formation_code: this.formation.formation_code, formation_name: this.formation.formation_name, description: this.formation.description, type: this.formation.type, url: this.formation.url });
           this.formation.steps.forEach(element => {
             //Récupérer l'étape à partir du code
             this.httpClientService.getStepByCode(element.step_code).subscribe(res => {
@@ -160,7 +173,7 @@ export class FormationEditComponent implements OnInit {
         return res.step_code.toLocaleLowerCase().match(this.searchWord.toLocaleLowerCase());
       });
     }else if(this.searchWord == ""){
-      this.ngOnInit();
+      this.initStepsList();
     }
   }
 }
