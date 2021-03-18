@@ -18,6 +18,9 @@ $chartSize: 600px;
 .path-list::-webkit-scrollbar {
     display: none;
 }
+.path-list > * {
+    cursor: pointer;
+}
 .f-width {
     width: 100%;
 }
@@ -203,7 +206,7 @@ $chartSize: 600px;
 
 .highlight {
     animation-fill-mode: forwards;
-    animation-duration: 1s;
+    animation-duration: .5s;
     animation-iteration-count: 1;
 }
 

@@ -100,9 +100,9 @@ export class EpuGrapheComponent implements OnInit {
   highlight(id:string) {
     document.getElementById(id).style.animationName = "_highlight";
     (async () => { 
-      await new Promise( resolve => { setTimeout(resolve, 1100) });
+      await new Promise( resolve => { setTimeout(resolve, 500) });
       document.getElementById(id).style.animationName = "";
-  })();
+    })();
     /*
     if(id != "_search")
       document.getElementById("_search").style.animationName = "";
@@ -391,8 +391,9 @@ export class EpuGrapheComponent implements OnInit {
   */
   @Input() statsComponent: EpuStatsComponent;
   chartClicked(e: any) {
-    if (e.dataType === 'node')
+    if (e.dataType === 'node') {
       this.stepClick(e.name);
+    }
   }
   stepClick(code: string) {
     //trouver le step cliqué dans paths puis récupérer les statistiques et envoyer à la place de name puis modifier setFormation + affichage
@@ -407,7 +408,9 @@ export class EpuGrapheComponent implements OnInit {
       if (res) return;
     });
     if (res)
-      return this.statsComponent.setFormation(res.step_code);
+      {
+        return this.statsComponent.setFormation(res.step_code);
+      }
     return this.statsComponent.setFormation("");
   }
 

@@ -12,3 +12,11 @@ span {
     margin-bottom: 10px;
     width: 200px;
 }
+
+@media (max-width: 600px) {
+    .customflex {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+    }
+}

@@ -50,6 +50,15 @@ export class EpuStatsComponent implements OnInit {
       
       this.dataInExist = this.dataIn.length > 0;
       this.dataOutExist = this.dataOut.length > 0;
+      
+      if(document.getElementById("statistics")) {
+        //oblige à attendre pour que l'élément soit graphiquement à jour pour scroller dessus
+        (async () => { 
+          await new Promise( resolve => { setTimeout(resolve, 1) });
+          document.getElementById("statistics").scrollIntoView({ behavior: 'smooth', block: 'start'});
+        })();
+      }
+      
     });
   }
 
