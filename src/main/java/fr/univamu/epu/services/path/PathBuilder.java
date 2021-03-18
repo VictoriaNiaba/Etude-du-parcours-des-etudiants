@@ -52,6 +52,12 @@ public class PathBuilder {
 		// gen des students paths
 		List<List<Registration>> studentPaths = generateStudentPaths(regs, badSteps);
 
+		//delete old stepstats
+		if(!stepStatDao.findAll(StepStat.class).isEmpty()) {
+			for(StepStat s : stepStatDao.findAll(StepStat.class)) {
+				stepStatDao.remove(StepStat.class, s);
+			}
+		}	
 		// generate Step Stats (depends on student paths)
 		generateStepStats(studentPaths, badSteps);
 
