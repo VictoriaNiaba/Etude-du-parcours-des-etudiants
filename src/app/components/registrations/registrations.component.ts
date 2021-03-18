@@ -21,7 +21,7 @@ export class RegistrationsComponent implements OnInit {
       this.registrations = res;
       this.totalRegistration = 0;
       this.registrations.forEach(registrations => {
-        this.totalRegistration += registrations['nb_registrations']
+        this.totalRegistration += registrations['registrationCount']
       });
     });
   }
