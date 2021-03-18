@@ -66,14 +66,57 @@ export class EpuGrapheComponent implements OnInit {
     return result;
   }
 
+  helpMode = false;
+  helpButtonText= "";
+  //si on clique sur une node aïe aïe aïe
+  help() {
+    this.helpMode = !this.helpMode;
+    if(this.helpMode) {
+      this.helpButtonText = "Retour";
+      this.helpMode = true;
+      this.firstStep = new StepPath("1", "Formation 1", 100);
+      let paths = new Array<Path>();
+
+      paths.push(new Path());
+      paths.push(new Path());
+
+      paths[0].addStep(this.firstStep)
+      paths[0].addStep(new StepPath("2", "Formation 2", 80))
+      paths[0].addStep(new StepPath("3A", "Formation 3-A", 40))
+
+      paths[1].addStep(this.firstStep);
+      paths[1].addStep(new StepPath("2", "Formation 2", 80));
+      paths[1].addStep(new StepPath("3B", "Formation 3-B", 30));
+
+      this.paths = paths;
+
+      this.initPaths();
+      //this.changeOptions()
+    } else {
+      this.search();
+    }
+  }
+
+  highlight(id:string) {
+    document.getElementById(id).style.animationName = "_highlight";
+    (async () => { 
+      await new Promise( resolve => { setTimeout(resolve, 1100) });
+      document.getElementById(id).style.animationName = "";
+  })();
+    /*
+    if(id != "_search")
+      document.getElementById("_search").style.animationName = "";
+    if(id != "_slider")
+      document.getElementById("_slider").style.animationName = "";
+    if(id != "_pathlist")
+      document.getElementById("_pathlist").style.animationName = "";*/
+  }
+
   //renseigne "paths" un tableau de path... suivant la base de données
   getPaths(stepsStart: string, stepsEnd: string) {
+    this.helpButtonText = "Aide";
+    this.helpMode = false;
     this.setFirstStep(stepsStart);
-
-    //permet de reset l'affichage
-    this.slideValue = 1;
-    this.stepClick(null);
-
     //Pour bien former la requête attendu au près du backend
     if(stepsStart === "") stepsStart = null;
     if(stepsEnd === "") stepsEnd = null;
@@ -86,12 +129,12 @@ export class EpuGrapheComponent implements OnInit {
         let pathTemp = new Path();
         for (let i = 0; i < path['steps'].length; i++) {
           //console.warn("epu-graphe component",path['steps'][i]);
-          let stepName = this.stepsService.getByCode(path['steps'][i]);
+          let stepName = this.stepsService.getByCode(path['steps'][i])
           let step = new StepPath( //init
             path['steps'][i],
             stepName,
             path['registered'][i]);
-          pathTemp.addSteps(step);
+          pathTemp.addStep(step);
         }
         this.paths.push(pathTemp);
         this.pathStats.push(pathTemp.getMeanStudents());
@@ -103,13 +146,22 @@ export class EpuGrapheComponent implements OnInit {
       if(this.totalStudentPaths > 0)
         for(let i=0; i<this.pathStats.length; i++)
           this.pathStats[i] = this.pathStats[i]*100/this.totalStudentPaths;
-
-      this.uniquePaths = new Array<Path>();
-      this.displayUniquePaths();
-      this.changeOptions();
-      this.pathSelectedIndex = 0;
-      this.slideValue =  Math.min(5, this.uniquePaths.length); //max de 5 par défaut
+      this.initPaths();
     });
+  }
+
+  private initPaths() {
+
+    //permet de reset l'affichage
+    //this.slideValue = 1;
+    this.stepClick(null);
+
+    this.uniquePaths = new Array<Path>();
+    this.displayUniquePaths();
+    
+    this.changeOptions();
+    this.pathSelectedIndex = 0;
+    this.slideValue =  Math.min(5, this.uniquePaths.length); //max de 5 par défaut
   }
 
   //Récupère la valeure du slider
@@ -120,20 +172,21 @@ export class EpuGrapheComponent implements OnInit {
   //Permet d'éviter les cheminements avec des redoublements et ceux qui ont la même suite d'étapes
   displayUniquePaths(){
     let tmpPaths = [];
-    this.paths.forEach(element => {
-      tmpPaths.push(element.path_steps.map(item => item.step_code));
+    this.paths.forEach(path => {
+      tmpPaths.push(path.path_steps.map(p => p.step_code));
     });
 
     for(let i=0; i<this.paths.length; i++){
       let tmpPath = this.paths[i].path_steps.map(item => item.step_code);
-      if(!tmpPaths.includes(tmpPath) && new Set(tmpPath).size == tmpPath.length) this.uniquePaths.push(this.paths[i]);
+      if(!tmpPaths.includes(tmpPath) && new Set(tmpPath).size == tmpPath.length)
+        this.uniquePaths.push(this.paths[i]);
     }
 
     this.uniquePaths = this.uniquePaths.sort((a,b) => {
       if(a.path_steps[a.path_steps.length-1].step_number < b.path_steps[b.path_steps.length-1].step_number)
-       return 1;
+      return 1;
       if(a.path_steps[a.path_steps.length-1].step_number > b.path_steps[b.path_steps.length-1].step_number)
-       return -1;
+      return -1;
       return 0;
     });
   }
@@ -175,8 +228,7 @@ export class EpuGrapheComponent implements OnInit {
             cat: incrementCat,
             type: 'node',
             itemStyle: {
-              color: incrementCat==0 ? "rgba(255, 113, 113, 1)" : "rgba(0, 0, 0, 0.1)",
-              //borderColor: "rgba(0, 0, 0, 1)"
+              color: incrementCat==0 ? "rgba(255, 113, 113, 1)" : "rgba(0, 0, 0, 0.1)"
             }
           }
           data.push(tmpData);
@@ -258,17 +310,23 @@ export class EpuGrapheComponent implements OnInit {
         data[tmpNodeIndex-1].x = width;
         data[tmpNodeIndex-1].y = height/2;
         
-        /*data[Math.round((tmpNodeIndex-1)/2)].fixed = true;
+        /*
+        data[Math.round((tmpNodeIndex-1)/2)].fixed = true;
         data[Math.round((tmpNodeIndex-1)/2)].x = 500/2;
-        data[Math.round((tmpNodeIndex-1)/2)].y = 200;*/
+        data[Math.round((tmpNodeIndex-1)/2)].y = 200;
+        */
       }
     }
 
 
-    this.chartOptions = {
-      title: {
+    this.chartOptions = this.getOptions(data, links);
+  }
+
+  private getOptions(data:any[], links:any[]) {
+    return {
+      /*title: {
         text: 'EPU'
-      },
+      },*/
       tooltip: {
         trigger: 'item',
         showDelay: 0.1,
@@ -295,7 +353,7 @@ export class EpuGrapheComponent implements OnInit {
             //initLayout: 'circular',
             gravity: 0.0,
             repulsion: 1000,
-            edgeLength: 100
+            edgeLength: Math.min(this.chartInstance?this.chartInstance['getWidth']()/2:0, 200)
           },
           symbolSize: 60,
           roam: true,

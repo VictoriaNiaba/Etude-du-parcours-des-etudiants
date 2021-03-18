@@ -25,7 +25,7 @@ export class StepsService {
       let step = this.steps.find(step => step.step_code == code);
       if(!step) {
         console.error(`No step ${code} found`)
-        return;
+        return code;
       }
       return step.step_name.replace("AMU.","");
     }

@@ -4,9 +4,10 @@
         <li class="nav-item">
           <div class="nav-link active" href="#">
             <h2>Parcours des étudiants</h2>
+            <div class="btn btn-info" style="padding: 1px 10px; margin: 1px; font-size: 8pt;" (click)="help()">{{helpButtonText}}</div>
           </div>
         </li>
-        <li class="nav-item searchInput">
+        <li id="_search" class="nav-item searchInput highlight">
           <div class="input-group">
             <div class="group-step">
               <label>Étape de départ</label>
@@ -39,7 +40,7 @@
                 <div [innerHTML]="notFound"></div>
               </ng-template>
               <div *ngFor="let node of nodesStart" class="searchItems">
-                <div class="badge badge-success" (click)="removeFromNodeStart(node)">{{node.name}}</div>
+                <div class="badge badge-success" (click)="removeFromNodeStart(node)">{{node.name.length>10? ((node.name | slice:0:40)+'...'):node.name}}</div>
               </div>
             </div>
             
@@ -82,7 +83,7 @@
               </ng-template>
 
               <div *ngFor="let node of nodesEnd" class="searchItems">
-                <div class="badge badge-danger" (click)="removeFromNodeEnd(node)">{{node.name}}</div>
+                <div class="badge badge-danger" (click)="removeFromNodeEnd(node)">{{node.name.length>10? ((node.name | slice:0:40)+'...'):node.name}}</div>
               </div>
             </div>
             <!---->
@@ -101,8 +102,24 @@
           (chartInit)="onChartInit($event)"
           class="echart"
         ></div>
+        <div *ngIf="helpMode" id="helpText" class="help">
+          <div>
+            Voici un <span style="color: tomato;">cheminement</span> il part de <span style="color: tomato;">formation 1</span>, passe par la <span style="color: tomato;">formation 2</span> et se termine sur la <span style="color: tomato;">formation 3</span>.
+          </div>
+          <div>
+            Vous pouvez utiliser le <a (click)="highlight('_search')">moteur de recherche</a> ci-dessus pour chercher de nouveaux cheminements.
+            Vous pouvez afficher plus ou moins de cheminements en manipulant le curseur sur la <a (click)="highlight('_slider')">barre</a> ci-dessous<br/>
+            Pour mettre en avant un autre cheminement, cliquez sur <a (click)="highlight('_pathlist')">les boutons</a> présents en haut à droite de la fenêtre.
+          </div>
+          <div>
+            Entre chaque formation, il y a une transition (<span style="color: tomato;">flèche</span>) avec son nombre d'étudiants moyens par années. 
+          </div>
+          <div>
+            Vous pouvez cliquer sur une <span style="color: tomato;">année</span> pour en avoir les détails plus bas dans la page.
+          </div>
+        </div>
       </div>
-      <div class="path-list" *ngIf="uniquePaths != []">
+      <div id="_pathlist" class="path-list highlight" *ngIf="uniquePaths != []">
         <div class="d-flex flex-wrap f-width">
           <div class="f-width" *ngFor="let path of uniquePaths | slice:0:slideValue; let index = index;">
             <a [ngClass]="index==pathSelectedIndex? 'badge-primary' : 'badge-secondary'"
@@ -137,7 +154,7 @@
     </div>-->
     <!-- fin de l'affichage simple -->
     <div class="card-footer">
-      <div class="slidecontainer">
+      <div id="_slider" class="slidecontainer highlight">
         Nombre de chemins à afficher : {{ slideValue }} / {{ uniquePaths.length }}
         <input
           type="range"

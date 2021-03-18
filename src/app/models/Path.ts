@@ -3,7 +3,10 @@ import { StepPath } from "./Step";
 export class Path {
     path_steps:StepPath[]; 
 
-    constructor() {
+    constructor(path_steps?: StepPath[]) {
+        if(path_steps) {
+            this.path_steps = path_steps;
+        }
         this.path_steps = new Array<StepPath>();
     }
     getMeanStudents():number{
@@ -18,10 +21,10 @@ export class Path {
         });
         return tmp;
     }
-    addSteps(step: StepPath){
+    addStep(step: StepPath){
         this.path_steps.push(step);
     }
-    setSteps(path_steps: StepPath[]) {
+    setStep(path_steps: StepPath[]) {
         this.path_steps = path_steps;
     }
     getSteps(index:number) {
