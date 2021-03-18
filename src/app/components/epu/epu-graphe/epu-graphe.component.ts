@@ -87,6 +87,7 @@ export class EpuGrapheComponent implements OnInit {
       paths[1].addStep(this.firstStep);
       paths[1].addStep(new StepPath("2", "Formation 2", 80));
       paths[1].addStep(new StepPath("3B", "Formation 3-B", 30));
+      paths[1].addStep(new StepPath("4B", "Formation 4-B", 10));
 
       this.paths = paths;
 
