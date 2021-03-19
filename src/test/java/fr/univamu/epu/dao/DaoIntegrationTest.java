@@ -87,7 +87,7 @@ class DaoIntegrationTest {
 	}
 
 	@Test
-	void whenFind_thenReturnEntity() {
+	void givenExistingEntity_whenFind_thenReturnEntity() {
 		// given
 		Step expected = new Step("SIN3AA", "Licence 3 Informatique");
 		em.persistAndFlush(expected);
@@ -97,6 +97,18 @@ class DaoIntegrationTest {
 
 		// then
 		assertThat(actual).isEqualTo(expected);
+	}
+
+	@Test
+	void givenNoMatchingEntities_whenFind_thenReturnNull() {
+		// given
+		String nonMatchingEntityId = "nonMatchingEntityId";
+
+		// when
+		Step actual = dao.find(Step.class, nonMatchingEntityId);
+
+		// then
+		assertThat(actual).isNull();
 	}
 
 	@Test
