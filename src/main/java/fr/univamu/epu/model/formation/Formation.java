@@ -49,7 +49,7 @@ public class Formation {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date last_modification;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinTable(name = "formation_step")
 	private Set<Step> steps;
 
