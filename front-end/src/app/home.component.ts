@@ -3,17 +3,17 @@ import { AppService } from './app.service';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  templateUrl: './home.component.html'
+  templateUrl: './home.component.html',
 })
 export class HomeComponent {
-
   title = 'Demo';
-  greeting:any = {};
+  greeting: any = {};
 
   constructor(private app: AppService, private http: HttpClient) {
-    http.get('http://localhost:8080/steps/SIN3AA').subscribe(data => this.greeting = data);
+    http.get('/api/steps/SIN3AA').subscribe((data) => (this.greeting = data));
   }
 
-  authenticated() { return this.app.authenticated; }
-
+  authenticated() {
+    return this.app.authenticated;
+  }
 }

@@ -8,8 +8,7 @@ import { AppService } from './app.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
   constructor(
@@ -21,7 +20,7 @@ export class AppComponent {
   }
   logout() {
     this.http
-      .post('logout', {})
+      .post('/api/logout', {})
       .pipe(
         finalize(() => {
           this.app.authenticated = false;

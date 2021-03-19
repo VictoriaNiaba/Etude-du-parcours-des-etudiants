@@ -1,24 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AppService } from './app.service';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
 })
 export class LoginComponent {
+  error: any;
+  credentials = { username: '', password: '' };
 
-  error:any;
-  credentials = {username: '', password: ''};
-
-  constructor(private app: AppService, private http: HttpClient, private router: Router) {
-  }
+  constructor(
+    private app: AppService,
+    private router: Router
+  ) {}
 
   login() {
     this.app.authenticate(this.credentials, () => {
-        this.router.navigateByUrl('/');
+      this.router.navigateByUrl('/');
     });
     return false;
   }
-
 }

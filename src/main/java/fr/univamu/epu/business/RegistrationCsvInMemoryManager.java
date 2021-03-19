@@ -32,15 +32,15 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 
 	@Autowired
 	PathBuilder pb;
-	
+
 	@PostConstruct
 	public void init() throws FileNotFoundException {
 		if (dao.findAll(Registration.class).isEmpty()) {
 			upload(new FileInputStream("files/IA.csv"));
 		}
-		
-		pb.buildPaths();//depends on step
-		//System.out.println(pm.getMergedPath(null, null));
+
+		pb.buildPaths();// depends on step
+		// System.out.println(pm.getMergedPath(null, null));
 	}
 
 	@Override
