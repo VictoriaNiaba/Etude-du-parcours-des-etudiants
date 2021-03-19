@@ -1,14 +1,11 @@
 package fr.univamu.epu.model.step;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -49,7 +46,7 @@ public class Step {
 		this.step_code = stepCode;
 		this.step_name = name;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
