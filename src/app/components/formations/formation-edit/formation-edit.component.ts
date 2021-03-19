@@ -33,11 +33,11 @@ export class FormationEditComponent implements OnInit {
 
     //Custom Validator pour savoir si le code utilisé n'est pas déjà pris
     const uniqueIdValidator = (control: AbstractControl): { [key: string]: boolean } | null => {
-      let formationTmp: Formation [] = [];
+      let formationTmp: Formation[] = [];
       this.httpClientService.getFormations().subscribe(res => {
         formationTmp = res;
-        formationTmp.forEach(f =>{
-          if(control.value === f.formation_code && control.value !== undefined && control.value != this.code){
+        formationTmp.forEach(f => {
+          if (control.value === f.formation_code && control.value !== undefined && control.value != this.code) {
             console.log(f.formation_code, control.value)
             return { uniqueId: true };
           }
@@ -61,47 +61,61 @@ export class FormationEditComponent implements OnInit {
         this.httpClientService.getFormationByCode(this.route.snapshot.paramMap.get('code')).subscribe(res => {
           this.formation = res;
           this.editForm.setValue({ formation_code: this.formation.formation_code, formation_name: this.formation.formation_name, description: this.formation.description, type: this.formation.type, url: this.formation.url });
+          this.initStepsList();
         });
       }
     });
-
-    this.initStepsList();
   }
 
-  initStepsList(){
+  initStepsList() {
     //Pour éviter la duplication lors de la recherche
     this.stepsOfFormation = [];
     this.steps = [];
-    
+
     //Préparation des listes pour le drag and drop
     //On récupère toutes les étapes
     this.httpClientService.getSteps().subscribe(res => {
       this.steps = res;
       if (!this.isAddMode) {
         //On récupère les infos de la formation
-        this.httpClientService.getFormationByCode(this.route.snapshot.paramMap.get('code')).subscribe(res => {
-          this.formation = res;
-          this.formation.steps.forEach(element => {
-            //Récupérer l'étape à partir du code
-            this.httpClientService.getStepByCode(element.step_code).subscribe(res => {
-              //On l'ajoute à la liste des étapes de la formation
-              this.stepsOfFormation.push(res);
-              //Pour le faire qu'une fois
-              if (this.formation.steps.indexOf(element) == this.formation.steps.length - 1) {
-                //Pour éviter des duplications dans les listes
-                this.stepsOfFormation.forEach(sf => {
-                  this.steps.forEach(step => {
-                    if (sf.step_code === step.step_code) {
-                      //On enlève l'item dupliqué dans la liste d'étapes
-                      this.steps.splice(this.steps.indexOf(step), 1);
-                    }
-                  })
+        this.formation.steps.forEach(element => {
+          //Récupérer l'étape à partir du code
+          this.httpClientService.getStepByCode(element.step_code).subscribe(res => {
+            //On l'ajoute à la liste des étapes de la formation
+            this.stepsOfFormation.push(res);
+            //Pour le faire qu'une fois
+            if (this.formation.steps.indexOf(element) == this.formation.steps.length - 1) {
+              //Pour éviter des duplications dans les listes
+              this.stepsOfFormation.forEach(sf => {
+                this.steps.forEach(step => {
+                  if (sf.step_code === step.step_code) {
+                    //On enlève l'item dupliqué dans la liste d'étapes
+                    this.steps.splice(this.steps.indexOf(step), 1);
+                  }
                 })
-              }
-            });
+              })
+            }
           });
         });
       }
+    });
+  }
+
+  //Permet de remettre à jour la liste des étapes lorsque qu'on efface la recherche
+  searchClearList() {
+    this.steps = [];
+
+    this.httpClientService.getSteps().subscribe(res => {
+      this.steps = res;
+      //Pour éviter des duplications dans les listes
+      this.stepsOfFormation.forEach(sf => {
+        this.steps.forEach(step => {
+          if (sf.step_code === step.step_code) {
+            //On enlève l'item dupliqué dans la liste d'étapes
+            this.steps.splice(this.steps.indexOf(step), 1);
+          }
+        })
+      })
     });
   }
 
@@ -164,16 +178,16 @@ export class FormationEditComponent implements OnInit {
         event.previousIndex + vsStartIndex,
         event.currentIndex + vsStartIndex);
     }
-    this.steps= [...this.steps]
+    this.steps = [...this.steps]
   }
 
-  search(){
-    if(this.searchWord != ""){
+  search() {
+    if (this.searchWord != "") {
       this.steps = this.steps.filter(res => {
         return res.step_code.toLocaleLowerCase().match(this.searchWord.toLocaleLowerCase());
       });
-    }else if(this.searchWord == ""){
-      this.initStepsList();
+    } else if (this.searchWord == "") {
+      this.searchClearList();
     }
   }
 }
