@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import fr.univamu.epu.dao.Dao;
 import fr.univamu.epu.dao.UserDao;
 import fr.univamu.epu.errorhandler.EmailExistsException;
 import fr.univamu.epu.model.user.User;
@@ -18,14 +17,10 @@ public class UserInMemoryManager implements UserManager {
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
-	private Dao<User> dao;
-
-	@Autowired
-	private UserDao udao;
+	private UserDao dao;
 
 	@PostConstruct
 	public void init() throws EmailExistsException {
-		registerNewUserAccount(new User("niaba.victoria@gmail.com", "password"));
 		registerNewUserAccount(new User("admin.email@email.email", "psw"));
 	}
 
@@ -41,7 +36,7 @@ public class UserInMemoryManager implements UserManager {
 	}
 
 	private boolean emailExist(String email) {
-		return udao.findByEmail(email) != null;
+		return dao.findByEmail(email) != null;
 	}
 
 }

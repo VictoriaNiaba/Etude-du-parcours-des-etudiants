@@ -8,15 +8,24 @@ import javax.persistence.PersistenceContextType;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public class GenericDao<T> implements Dao<T> {
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
+public class GenericDao<T, I> implements Dao<T, I> {
 
 	@PersistenceContext(type = PersistenceContextType.TRANSACTION)
-	EntityManager em;
+	protected EntityManager em;
+
+	private Class<T> clazz;
+
+	public void setClazz(Class<T> clazz) {
+		this.clazz = clazz;
+	}
 
 	@Override
 	public T add(T entity) {
@@ -43,7 +52,7 @@ public class GenericDao<T> implements Dao<T> {
 	}
 
 	@Override
-	public void remove(Class<T> clazz, Object id) {
+	public void remove(I id) {
 		T entity = em.find(clazz, id);
 		if (entity != null) {
 			em.remove(entity);
@@ -51,14 +60,14 @@ public class GenericDao<T> implements Dao<T> {
 	}
 
 	@Override
-	public T find(Class<T> clazz, Object id) {
+	public T find(I id) {
 		return em.find(clazz, id);
 	}
 
 	@Override
-	public Collection<T> findAll(Class<T> clazz) {
+	public Collection<T> findAll() {
 		CriteriaQuery<T> criteriaQuery = em.getCriteriaBuilder().createQuery(clazz);
-		
+
 		criteriaQuery.select(criteriaQuery.from(clazz));
 		TypedQuery<T> typedQuery = em.createQuery(criteriaQuery);
 

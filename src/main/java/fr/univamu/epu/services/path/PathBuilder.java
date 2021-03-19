@@ -12,8 +12,10 @@ import java.util.Map.Entry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.univamu.epu.business.PathManager;
+import fr.univamu.epu.business.RegistrationManager;
+import fr.univamu.epu.business.StepManager;
 import fr.univamu.epu.dao.Dao;
-import fr.univamu.epu.model.path.MergedPath;
 import fr.univamu.epu.model.path.Path;
 import fr.univamu.epu.model.registration.Registration;
 import fr.univamu.epu.model.step.Step;
@@ -23,13 +25,19 @@ import fr.univamu.epu.model.step.StepStat;
 public class PathBuilder {
 
 	@Autowired
-	Dao<Registration> registrationDao;
+	RegistrationManager registrationManager;
 	@Autowired
-	Dao<Path> pathDao;
+	PathManager pathManager;
 	@Autowired
-	Dao<Step> stepDao;
+	StepManager stepManager;
+
+	Dao<StepStat, Long> stepStatDao;
+
 	@Autowired
-	Dao<StepStat> stepStatDao;
+	public void setDao(Dao<StepStat, Long> stepStatDao) {
+		this.stepStatDao = stepStatDao;
+		stepStatDao.setClazz(StepStat.class);
+	}
 
 	private List<List<Registration>> studentPaths = new ArrayList<List<Registration>>();
 	private Map<String, Integer> stepCount = new HashMap<String, Integer>();
@@ -37,7 +45,7 @@ public class PathBuilder {
 	// TODO: a séparer en plusieurs methodes pour que ça soit + lisible
 	public void buildPaths() {
 
-		List<Registration> regs = new ArrayList<Registration>(registrationDao.findAll(Registration.class));
+		List<Registration> regs = new ArrayList<Registration>(registrationManager.findAll());
 		Collections.sort(regs, new Comparator<Registration>() {
 			public int compare(Registration o1, Registration o2) {
 				return o1.getStudentCode().compareTo(o2.getStudentCode());
@@ -101,14 +109,14 @@ public class PathBuilder {
 		for (Entry<List<String>, List<Integer>> pathEntry : pathmap.entrySet()) {
 			// if (pathEntry.getKey().size() > 2)
 			paths.add(new Path(pathEntry.getKey(),
-					(double) ( pathEntry.getValue().get(0) / (pathEntry.getValue().size() - 1)))); // div
+					(double) (pathEntry.getValue().get(0) / (pathEntry.getValue().size() - 1)))); // div
 		}
 
 		// ajout des paths dans le DAO
-		pathDao.addAll(paths);
+		pathManager.addAll(paths);
 
 		//
-		paths = new ArrayList<Path>(pathDao.findAll(Path.class));
+		paths = new ArrayList<Path>(pathManager.findAll());
 		Collections.sort(paths, new Comparator<Path>() {
 			public int compare(Path o1, Path o2) {
 				return o2.getAvgStudentCountPerYear().compareTo(o1.getAvgStudentCountPerYear());
@@ -143,7 +151,7 @@ public class PathBuilder {
 	}
 
 	public void generateStepStats() {
-		Collection<Step> steps = stepDao.findAll(Step.class);
+		Collection<Step> steps = stepManager.findAll();
 		for (Step s : steps) {
 			Map<String, List<Integer>> mapStepsIn = new HashMap<String, List<Integer>>();
 			Map<String, List<Integer>> mapStepsOut = new HashMap<String, List<Integer>>();
@@ -198,24 +206,24 @@ public class PathBuilder {
 			}
 			List<StepStat> stepsOut = new ArrayList<StepStat>();
 			for (Entry<String, List<Integer>> entryOut : mapStepsOut.entrySet()) {
-				if(entryOut.getKey().equals(s.getStep_code())) {
+				if (entryOut.getKey().equals(s.getStep_code())) {
 					s.setAverage_repeat((double) (entryOut.getValue().get(0) / (entryOut.getValue().size() - 1)));
 				} else {
-				stepsOut.add(new StepStat(entryOut.getKey(),
-						(double) (entryOut.getValue().get(0) / (entryOut.getValue().size() - 1)))); // div
+					stepsOut.add(new StepStat(entryOut.getKey(),
+							(double) (entryOut.getValue().get(0) / (entryOut.getValue().size() - 1)))); // div
 				}
 			}
-			
-			for(StepStat ss : stepsIn)
+
+			for (StepStat ss : stepsIn)
 				ss.setStepInOf(s);
-			for(StepStat ss : stepsOut)
+			for (StepStat ss : stepsOut)
 				ss.setStepOutOf(s);
-			
+
 			s.setSteps_in(stepsIn);
 			stepStatDao.addAll(stepsIn);
 			s.setSteps_out(stepsOut);
 			stepStatDao.addAll(stepsOut);
-			stepDao.update(s);
+			stepManager.update(s);
 		}
 	}
 }

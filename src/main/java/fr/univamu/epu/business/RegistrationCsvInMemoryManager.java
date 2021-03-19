@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import fr.univamu.epu.dao.Dao;
 import fr.univamu.epu.errorhandler.UploadException;
 import fr.univamu.epu.model.registration.Registration;
+import fr.univamu.epu.model.registration.RegistrationId;
 import fr.univamu.epu.services.csvimport.RegistrationCsvParser;
 import fr.univamu.epu.services.path.PathBuilder;
 
@@ -24,8 +25,13 @@ import fr.univamu.epu.services.path.PathBuilder;
 @DependsOn("stepManager")
 public class RegistrationCsvInMemoryManager implements RegistrationManager {
 
+	Dao<Registration, RegistrationId> dao;
+
 	@Autowired
-	Dao<Registration> dao;
+	public void setDao(Dao<Registration, RegistrationId> dao) {
+		this.dao = dao;
+		dao.setClazz(Registration.class);
+	}
 
 	@Autowired
 	RegistrationCsvParser rcp;
@@ -35,7 +41,7 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 
 	@PostConstruct
 	public void init() throws FileNotFoundException {
-		if (dao.findAll(Registration.class).isEmpty()) {
+		if (dao.findAll().isEmpty()) {
 			upload(new FileInputStream("files/IA.csv"));
 		}
 
@@ -50,7 +56,7 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 
 	@Override
 	public Collection<Registration> findAll() {
-		return dao.findAll(Registration.class);
+		return dao.findAll();
 	}
 
 	@Override

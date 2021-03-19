@@ -13,15 +13,20 @@ import fr.univamu.epu.services.path.PathMerger;
 @Service("pathManager")
 public class PathCsvInMemoryManager implements PathManager {
 
+	Dao<Path, Long> dao;
+
 	@Autowired
-	Dao<Path> dao;
+	public void setDao(Dao<Path, Long> dao) {
+		this.dao = dao;
+		dao.setClazz(Path.class);
+	}
 
 	@Autowired
 	PathMerger pm;
 
 	@Override
 	public Collection<Path> findAll() {
-		return dao.findAll(Path.class);
+		return dao.findAll();
 	}
 
 	@Override

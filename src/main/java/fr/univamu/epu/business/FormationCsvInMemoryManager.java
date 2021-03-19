@@ -21,23 +21,28 @@ import fr.univamu.epu.services.csvimport.CsvParser;
 
 @Service("formationManager")
 public class FormationCsvInMemoryManager implements FormationManager {
-	
+
+	Dao<Formation, String> dao;
+
 	@Autowired
-	Dao<Formation> dao;
+	public void setDao(Dao<Formation, String> dao) {
+		this.dao = dao;
+		dao.setClazz(Formation.class);
+	}
 
 	@Autowired
 	CsvParser<Formation> fcp;
-	
+
 	@PostConstruct
 	public void init() throws FileNotFoundException {
-		if (dao.findAll(Formation.class).isEmpty()) {
+		if (dao.findAll().isEmpty()) {
 			upload(new FileInputStream("files/formations.csv"));
 		}
 	}
-	
+
 	@Override
 	public Collection<Formation> findAll() {
-		return dao.findAll(Formation.class);
+		return dao.findAll();
 	}
 
 	@Override
@@ -47,7 +52,7 @@ public class FormationCsvInMemoryManager implements FormationManager {
 
 	@Override
 	public Formation find(String code) {
-		Formation formation = dao.find(Formation.class, code);
+		Formation formation = dao.find(code);
 		if (formation == null) {
 			throw new NotFoundException("La formation n'a pas été trouvée avec le code " + code);
 		}
@@ -66,7 +71,7 @@ public class FormationCsvInMemoryManager implements FormationManager {
 
 	@Override
 	public void remove(String code) {
-		dao.remove(Formation.class, code);
+		dao.remove(code);
 	}
 
 	@Override
@@ -76,7 +81,7 @@ public class FormationCsvInMemoryManager implements FormationManager {
 			addAll(formations);
 		} catch (ConstraintViolationException | DataIntegrityViolationException e) {
 			throw new UploadException("Une partie des formations fournies existent déjà en base de données");
-		}	
+		}
 	}
 
 }

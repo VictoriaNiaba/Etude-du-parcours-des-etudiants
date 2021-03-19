@@ -2,9 +2,6 @@ package fr.univamu.epu.dao;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
@@ -14,9 +11,11 @@ import fr.univamu.epu.model.user.User;
 
 @Repository
 @Transactional
-public class UserDao {
-	@PersistenceContext(type = PersistenceContextType.TRANSACTION)
-	EntityManager em;
+public class UserDao extends GenericDao<User, Long> implements IUserDao {
+
+	UserDao() {
+		setClazz(User.class);
+	}
 
 	public User findByEmail(String email) {
 
@@ -29,6 +28,5 @@ public class UserDao {
 		} else {
 			return result.get(0);
 		}
-
 	}
 }

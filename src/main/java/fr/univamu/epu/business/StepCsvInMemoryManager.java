@@ -14,16 +14,21 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import fr.univamu.epu.dao.Dao;
-import fr.univamu.epu.errorhandler.UploadException;
 import fr.univamu.epu.errorhandler.NotFoundException;
+import fr.univamu.epu.errorhandler.UploadException;
 import fr.univamu.epu.model.step.Step;
 import fr.univamu.epu.services.csvimport.CsvParser;
 
 @Service("stepManager")
 public class StepCsvInMemoryManager implements StepManager {
 
+	Dao<Step, String> dao;
+
 	@Autowired
-	Dao<Step> dao;
+	public void setDao(Dao<Step, String> dao) {
+		this.dao = dao;
+		dao.setClazz(Step.class);
+	}
 
 	@Autowired
 	CsvParser<Step> scp;
@@ -37,7 +42,7 @@ public class StepCsvInMemoryManager implements StepManager {
 
 	@Override
 	public Collection<Step> findAll() {
-		return dao.findAll(Step.class);
+		return dao.findAll();
 	}
 
 	@Override
@@ -47,8 +52,8 @@ public class StepCsvInMemoryManager implements StepManager {
 
 	@Override
 	public Step find(String code) {
-		Step step = dao.find(Step.class, code);
-		if(step == null) {
+		Step step = dao.find(code);
+		if (step == null) {
 			throw new NotFoundException("L'étape n'a pas été trouvée avec le code " + code);
 		}
 		return step;
@@ -66,7 +71,7 @@ public class StepCsvInMemoryManager implements StepManager {
 
 	@Override
 	public void remove(String code) {
-		dao.remove(Step.class, code);
+		dao.remove(code);
 	}
 
 	@Override
@@ -76,7 +81,7 @@ public class StepCsvInMemoryManager implements StepManager {
 			addAll(steps);
 		} catch (ConstraintViolationException | DataIntegrityViolationException e) {
 			throw new UploadException("Une partie des étapes fournies existent déjà en base de données");
-		}		
+		}
 	}
 
 }

@@ -2,18 +2,20 @@ package fr.univamu.epu.dao;
 
 import java.util.Collection;
 
-public interface Dao<T> {
-	
+public interface Dao<T, I> {
+
 	public T add(T entity);
-	
+
 	public void addAll(Collection<T> entities);
 
 	public T update(T entity);
 
-	public void remove(Class<T> clazz, Object id);
-	
-	public T find(Class<T> clazz, Object id);
+	public void remove(I id);
 
-	public Collection<T> findAll(Class<T> clazz);
-	
+	public T find(I id);
+
+	public Collection<T> findAll();
+
+	public void setClazz(Class<T> clazz);
+
 }

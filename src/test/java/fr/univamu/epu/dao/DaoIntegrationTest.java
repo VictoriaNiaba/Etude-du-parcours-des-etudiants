@@ -23,8 +23,14 @@ import fr.univamu.epu.model.step.Step;
 class DaoIntegrationTest {
 	@Autowired
 	private TestEntityManager em;
+
+	private Dao<Step, String> dao;
+
 	@Autowired
-	private Dao<Step> dao;
+	public void setDao(Dao<Step, String> dao) {
+		this.dao = dao;
+		dao.setClazz(Step.class);
+	}
 
 	@Test
 	void whenAdd_thenPersistAndReturnEntity() {
@@ -64,7 +70,7 @@ class DaoIntegrationTest {
 		em.persistAndFlush(expected);
 
 		// when
-		dao.remove(Step.class, expected.getStep_code());
+		dao.remove(expected.getStep_code());
 
 		// then
 		Step actual = em.find(Step.class, expected.getStep_code());
@@ -93,7 +99,7 @@ class DaoIntegrationTest {
 		em.persistAndFlush(expected);
 
 		// when
-		Step actual = dao.find(Step.class, expected.getStep_code());
+		Step actual = dao.find(expected.getStep_code());
 
 		// then
 		assertThat(actual).isEqualTo(expected);
@@ -109,7 +115,7 @@ class DaoIntegrationTest {
 		em.flush();
 
 		// when
-		Collection<Step> actual = dao.findAll(Step.class);
+		Collection<Step> actual = dao.findAll();
 
 		// then
 		assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
