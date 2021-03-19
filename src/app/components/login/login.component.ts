@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/User';
-import { AuthentificationService } from '../../services/authentification.service'
+import { AuthentificationService } from '../../services/authentification.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   signInForm: FormGroup;
@@ -16,41 +16,51 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private AuthentificationService: AuthentificationService
+    private authentificationService: AuthentificationService
   ) {
-    if (this.AuthentificationService.currentUser) { 
-      console.debug("User already connected");
-      this.router.navigate(['admin']);
-    }
   }
 
   ngOnInit() {
+    if (this.authentificationService.currentUser) {
+      console.debug('User already connected');
+      this.router.navigate(['admin']);
+    }
+
     this.signInForm = this.formBuilder.group({
-      email: ['',[Validators.email,Validators.required]],
-      password: ['',Validators.required]
+      email: ['', [Validators.email, Validators.required]],
+      password: ['', Validators.required],
     });
   }
 
-  get formControl() { return this.signInForm.controls; }
+  get formControl() {
+    return this.signInForm.controls;
+  }
 
   onSubmit() {
     //formulaire
     this.submitted = true;
     if (this.signInForm.invalid) {
-        return;
+      return;
     }
-    const email = this.signInForm.value['email'];
-    const psw = this.signInForm.value['password'];
+    const credentials = {
+      username: this.signInForm.value['email'],
+      password: this.signInForm.value['password'],
+    };
 
-    //login hhtpclient
-    this.AuthentificationService.login(email, psw);
+    //login httpclient
+    this.authentificationService.authenticate(credentials, () => {
+      this.router.navigate(['admin']);
+    });
+    return false;
   }
 
   autoLogin() {
     this.signInForm = this.formBuilder.group({
-      email: ['admin.email@email.email',[Validators.email,Validators.required]],
-      password: ['psw',Validators.required]
+      email: [
+        'admin.email@email.email',
+        [Validators.email, Validators.required],
+      ],
+      password: ['psw', Validators.required],
     });
   }
-
 }

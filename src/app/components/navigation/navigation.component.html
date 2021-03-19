@@ -40,9 +40,9 @@
           </span>
         </a>
         <div class="dropdown-menu">
-          <a *ngIf="!currentUser" class="dropdown-item bg-success" style="color: white;" href="sign-in">Connexion</a>
-          <a *ngIf="currentUser" class="dropdown-item bg-info" style="color: white;" href="admin">Administration</a>
-          <a *ngIf="currentUser" class="dropdown-item bg-danger" style="color: white;" href="" (click)="disconnect()">Déconnexion</a>
+          <a class="dropdown-item bg-success" style="color: white;" routerLink="sign-in">Connexion</a>
+          <a *ngIf="currentUser" class="dropdown-item bg-info" style="color: white;" routerLink="admin">Administration</a>
+          <a class="dropdown-item bg-danger" style="color: white;" (click)="disconnect()">Déconnexion</a>
         </div>
       </li>
     </ul>
