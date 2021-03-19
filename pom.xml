@@ -111,6 +111,13 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- END test dependencies -->
+		<!-- BEGIN spring security dependencies -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<!-- END spring security dependencies -->
 	</dependencies>
 
 	<build>

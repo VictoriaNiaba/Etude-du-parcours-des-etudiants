@@ -13,46 +13,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import fr.univamu.epu.dao.Dao;
+import fr.univamu.epu.dao.FormationDao;
 import fr.univamu.epu.errorhandler.NotFoundException;
 import fr.univamu.epu.errorhandler.UploadException;
 import fr.univamu.epu.model.formation.Formation;
-import fr.univamu.epu.model.path.Path;
 import fr.univamu.epu.services.csvimport.CsvParser;
 import fr.univamu.epu.services.formation.FormationCleaner;
 
 @Service("formationManager")
 public class FormationCsvInMemoryManager implements FormationManager {
+	@Autowired
+	private FormationDao formationDao;
 
 	@Autowired
-	Dao<Formation> dao;
+	private CsvParser<Formation> fcp;
 
 	@Autowired
-	CsvParser<Formation> fcp;
-
-	@Autowired
-	FormationCleaner fc;
+	private FormationCleaner fc;
 
 	@PostConstruct
 	public void init() throws FileNotFoundException {
-		if (dao.findAll(Formation.class).isEmpty()) {
+		if (formationDao.findAll().isEmpty()) {
 			upload(new FileInputStream("files/formations.csv"));
 		}
 	}
 
 	@Override
 	public Collection<Formation> findAll() {
-		return dao.findAll(Formation.class);
+		return formationDao.findAll();
 	}
 
 	@Override
 	public Formation update(Formation formation) {
-		return dao.update(formation);
+		return formationDao.update(formation);
 	}
 
 	@Override
 	public Formation find(String code) {
-		Formation formation = dao.find(Formation.class, code);
+		Formation formation = formationDao.find(code);
 		if (formation == null) {
 			throw new NotFoundException("La formation n'a pas été trouvée avec le code " + code);
 		}
@@ -61,17 +59,17 @@ public class FormationCsvInMemoryManager implements FormationManager {
 
 	@Override
 	public Formation add(Formation formation) {
-		return dao.add(formation);
+		return formationDao.add(formation);
 	}
 
 	@Override
 	public void addAll(Collection<Formation> formations) {
-		dao.addAll(formations);
+		formationDao.addAll(formations);
 	}
 
 	@Override
 	public void remove(String code) {
-		dao.remove(Formation.class, code);
+		formationDao.remove(code);
 	}
 
 	@Override
@@ -79,13 +77,13 @@ public class FormationCsvInMemoryManager implements FormationManager {
 		Set<Formation> formations = fcp.parse(inputStream);
 		formations = fc.clean(formations);
 		System.out.println("uploading " + formations.size() + " formations");
-		
+
 		try {
 			for (Formation f : formations) {
-				if (dao.find(Formation.class, f.getFormation_code()) != null) {
-					dao.update(f);
+				if (formationDao.find(f.getFormation_code()) != null) {
+					formationDao.update(f);
 				} else {
-					dao.add(f);
+					formationDao.add(f);
 				}
 			}
 		} catch (ConstraintViolationException | DataIntegrityViolationException e) {

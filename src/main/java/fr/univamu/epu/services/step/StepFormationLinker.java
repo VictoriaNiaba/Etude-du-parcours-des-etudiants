@@ -7,12 +7,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.univamu.epu.dao.Dao;
+import fr.univamu.epu.dao.FormationDao;
+import fr.univamu.epu.dao.StepDao;
 import fr.univamu.epu.model.formation.Formation;
 import fr.univamu.epu.model.step.Step;
 
@@ -20,9 +19,9 @@ import fr.univamu.epu.model.step.Step;
 public class StepFormationLinker {
 
 	@Autowired
-	Dao<Formation> formationDao;
+	FormationDao formationDao;
 	@Autowired
-	Dao<Step> stepDao;
+	StepDao stepDao;
 
 	private List<String> badSteps = new ArrayList<String>();
 
@@ -33,7 +32,7 @@ public class StepFormationLinker {
 				return o1.getStep_code().compareTo(o2.getStep_code());
 			}
 		});
-		List<Formation> formationList = new ArrayList<Formation>(formationDao.findAll(Formation.class));
+		List<Formation> formationList = new ArrayList<Formation>(formationDao.findAll());
 		Collections.sort(formationList, new Comparator<Formation>() {
 			public int compare(Formation o1, Formation o2) {
 				return o1.getFormation_code().compareTo(o2.getFormation_code());
@@ -67,18 +66,17 @@ public class StepFormationLinker {
 			if (badStep)
 				badSteps.add(s.getStep_code());
 		}
-		
+
 		for (Step s : resultSteps) {
-			if (stepDao.find(Step.class, s.getStep_code()) != null) {
+			if (stepDao.find(s.getStep_code()) != null) {
 				stepDao.update(s);
 			} else {
 				stepDao.add(s);
 			}
 		}
-		for(Formation f : formationList) {
+		for (Formation f : formationList) {
 			formationDao.update(f);
 		}
-		
 
 	}
 

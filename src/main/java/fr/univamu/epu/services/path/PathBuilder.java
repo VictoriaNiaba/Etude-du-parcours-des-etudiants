@@ -12,7 +12,10 @@ import java.util.Map.Entry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.univamu.epu.dao.Dao;
+import fr.univamu.epu.dao.PathDao;
+import fr.univamu.epu.dao.RegistrationDao;
+import fr.univamu.epu.dao.StepDao;
+import fr.univamu.epu.dao.StepStatDao;
 import fr.univamu.epu.model.path.Path;
 import fr.univamu.epu.model.registration.Registration;
 import fr.univamu.epu.model.step.Step;
@@ -21,24 +24,23 @@ import fr.univamu.epu.services.step.StepFormationLinker;
 
 @Service("pathBuilder")
 public class PathBuilder {
-
 	@Autowired
-	Dao<Registration> registrationDao;
+	private RegistrationDao registrationDao;
 	@Autowired
-	Dao<Path> pathDao;
+	private PathDao pathDao;
 	@Autowired
-	Dao<Step> stepDao;
+	private StepDao stepDao;
 	@Autowired
-	Dao<StepStat> stepStatDao;
+	private StepStatDao stepStatDao;
 	@Autowired
-	StepFormationLinker sfl;
+	private StepFormationLinker sfl;
 
 	public void buildPaths() {
 		// delete old paths
 		deleteOldPaths();
 
 		// getAllRegs & sort by student Code
-		List<Registration> regs = new ArrayList<Registration>(registrationDao.findAll(Registration.class));
+		List<Registration> regs = new ArrayList<Registration>(registrationDao.findAll());
 		Collections.sort(regs, new Comparator<Registration>() {
 			public int compare(Registration o1, Registration o2) {
 				return o1.getStudentCode().compareTo(o2.getStudentCode());
@@ -52,12 +54,12 @@ public class PathBuilder {
 		// gen des students paths
 		List<List<Registration>> studentPaths = generateStudentPaths(regs, badSteps);
 
-		//delete old stepstats
-		if(!stepStatDao.findAll(StepStat.class).isEmpty()) {
-			for(StepStat s : stepStatDao.findAll(StepStat.class)) {
-				stepStatDao.remove(StepStat.class, s.getStepStatId());
+		// delete old stepstats
+		if (!stepStatDao.findAll().isEmpty()) {
+			for (StepStat s : stepStatDao.findAll()) {
+				stepStatDao.remove(s.getStepStatId());
 			}
-		}	
+		}
 		// generate Step Stats (depends on student paths)
 		generateStepStats(studentPaths, badSteps);
 
@@ -70,7 +72,7 @@ public class PathBuilder {
 		// ajout des paths dans le DAO
 		pathDao.addAll(paths);
 
-		System.out.println(pathDao.findAll(Path.class).size() + " paths built by the registration manager init");
+		System.out.println(pathDao.findAll().size() + " paths built by the registration manager init");
 	}
 
 	private List<Path> getPathsFromMap(Map<List<String>, List<Integer>> pathmap) {
@@ -83,10 +85,10 @@ public class PathBuilder {
 	}
 
 	private void deleteOldPaths() {
-		Collection<Path> oldPaths = pathDao.findAll(Path.class);
+		Collection<Path> oldPaths = pathDao.findAll();
 		if (!oldPaths.isEmpty()) {
 			for (Path p : oldPaths)
-				pathDao.remove(Path.class, p.pathId);
+				pathDao.remove(p.pathId);
 		}
 	}
 
@@ -116,7 +118,7 @@ public class PathBuilder {
 	}
 
 	public void generateStepStats(List<List<Registration>> studentPaths, List<String> badSteps) {
-		Collection<Step> steps = stepDao.findAll(Step.class);
+		Collection<Step> steps = stepDao.findAll();
 		for (Step s : steps) {
 			if (badSteps.contains(s.getStep_code()))
 				continue;

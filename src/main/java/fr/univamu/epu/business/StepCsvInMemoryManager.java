@@ -14,31 +14,24 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import fr.univamu.epu.dao.Dao;
-import fr.univamu.epu.errorhandler.UploadException;
+import fr.univamu.epu.dao.StepDao;
 import fr.univamu.epu.errorhandler.NotFoundException;
-import fr.univamu.epu.model.formation.Formation;
+import fr.univamu.epu.errorhandler.UploadException;
 import fr.univamu.epu.model.step.Step;
-import fr.univamu.epu.model.step.StepStat;
 import fr.univamu.epu.services.csvimport.CsvParser;
 import fr.univamu.epu.services.step.StepFormationLinker;
 
 @Service("stepManager")
 @DependsOn("formationManager")
 public class StepCsvInMemoryManager implements StepManager {
+	@Autowired
+	private StepDao stepDao;
 
 	@Autowired
-	Dao<Step> dao;
-	@Autowired
-	Dao<Formation> formationDao;
-	@Autowired
-	Dao<StepStat> stepStatDao;
+	private CsvParser<Step> scp;
 
 	@Autowired
-	CsvParser<Step> scp;
-
-	@Autowired
-	StepFormationLinker fsl;
+	private StepFormationLinker fsl;
 
 	@PostConstruct
 	public void init() throws FileNotFoundException {
@@ -49,17 +42,18 @@ public class StepCsvInMemoryManager implements StepManager {
 
 	@Override
 	public Collection<Step> findAll() {
-		return dao.findAll(Step.class);
+		return stepDao.findAll();
 	}
 
 	@Override
 	public Step update(Step step) {
-		return dao.update(step);
+		return stepDao.update(step);
 	}
 
 	@Override
 	public Step find(String code) {
-		Step step = dao.find(Step.class, code);
+		Step step = stepDao.find(code);
+
 		if (step == null) {
 			throw new NotFoundException("L'étape n'a pas été trouvée avec le code " + code);
 		}
@@ -68,17 +62,17 @@ public class StepCsvInMemoryManager implements StepManager {
 
 	@Override
 	public Step add(Step step) {
-		return dao.add(step);
+		return stepDao.add(step);
 	}
 
 	@Override
 	public void addAll(Collection<Step> steps) {
-		dao.addAll(steps);
+		stepDao.addAll(steps);
 	}
 
 	@Override
 	public void remove(String code) {
-		dao.remove(Step.class, code);
+		stepDao.remove(code);
 	}
 
 	@Override
@@ -92,6 +86,7 @@ public class StepCsvInMemoryManager implements StepManager {
 		} catch (ConstraintViolationException | DataIntegrityViolationException e) {
 			throw new UploadException("Une partie des étapes fournies existent déjà en base de données");
 		}
+
 		System.out.println("uploaded steps");
 	}
 

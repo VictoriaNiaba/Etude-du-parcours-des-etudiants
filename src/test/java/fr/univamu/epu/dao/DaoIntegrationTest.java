@@ -19,12 +19,18 @@ import fr.univamu.epu.model.step.Step;
 @ActiveProfiles("test")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-@Import(GenericDao.class)
+@Import(GenericJpaDao.class)
 class DaoIntegrationTest {
 	@Autowired
 	private TestEntityManager em;
+
+	private GenericDao<Step, String> dao;
+
 	@Autowired
-	private Dao<Step> dao;
+	public void setDao(GenericDao<Step, String> dao) {
+		this.dao = dao;
+		dao.setClazz(Step.class);
+	}
 
 	@Test
 	void whenAdd_thenPersistAndReturnEntity() {
@@ -64,7 +70,7 @@ class DaoIntegrationTest {
 		em.persistAndFlush(expected);
 
 		// when
-		dao.remove(Step.class, expected.getStep_code());
+		dao.remove(expected.getStep_code());
 
 		// then
 		Step actual = em.find(Step.class, expected.getStep_code());
@@ -93,7 +99,7 @@ class DaoIntegrationTest {
 		em.persistAndFlush(expected);
 
 		// when
-		Step actual = dao.find(Step.class, expected.getStep_code());
+		Step actual = dao.find(expected.getStep_code());
 
 		// then
 		assertThat(actual).isEqualTo(expected);
@@ -105,7 +111,7 @@ class DaoIntegrationTest {
 		String nonMatchingEntityId = "nonMatchingEntityId";
 
 		// when
-		Step actual = dao.find(Step.class, nonMatchingEntityId);
+		Step actual = dao.find(nonMatchingEntityId);
 
 		// then
 		assertThat(actual).isNull();
@@ -121,7 +127,7 @@ class DaoIntegrationTest {
 		em.flush();
 
 		// when
-		Collection<Step> actual = dao.findAll(Step.class);
+		Collection<Step> actual = dao.findAll();
 
 		// then
 		assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);

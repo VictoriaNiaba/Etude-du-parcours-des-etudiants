@@ -17,9 +17,9 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import fr.univamu.epu.dao.Dao;
+import fr.univamu.epu.dao.RegistrationDao;
+import fr.univamu.epu.dao.RegistrationYearInfoDao;
 import fr.univamu.epu.errorhandler.UploadException;
-import fr.univamu.epu.model.path.Path;
 import fr.univamu.epu.model.registration.Registration;
 import fr.univamu.epu.model.registration.RegistrationYearInfo;
 import fr.univamu.epu.services.csvimport.RegistrationCsvParser;
@@ -28,21 +28,20 @@ import fr.univamu.epu.services.path.PathBuilder;
 @Service("registrationManager")
 @DependsOn("stepManager")
 public class RegistrationCsvInMemoryManager implements RegistrationManager {
+	@Autowired
+	private RegistrationYearInfoDao regYearInfoDao;
+	@Autowired
+	private RegistrationDao registrationDao;
 
 	@Autowired
-	Dao<Registration> registrationDao;
-	@Autowired
-	Dao<RegistrationYearInfo> regYearInfoDao;
+	private RegistrationCsvParser rcp;
 
 	@Autowired
-	RegistrationCsvParser rcp;
-
-	@Autowired
-	PathBuilder pb;
+	private PathBuilder pb;
 
 	@PostConstruct
 	public void init() throws FileNotFoundException {
-		if (registrationDao.findAll(Registration.class).isEmpty()) {
+		if (registrationDao.findAll().isEmpty()) {
 			upload(new FileInputStream("files/IA.csv"));
 		}
 	}
@@ -54,7 +53,7 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 
 	@Override
 	public Collection<RegistrationYearInfo> getRegistrationYearInfos() {
-		return regYearInfoDao.findAll(RegistrationYearInfo.class);
+		return regYearInfoDao.findAll();
 	}
 
 	@Override
@@ -84,10 +83,10 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 		}
 
 		for (Integer i : yearsUploaded) {
-			if (!registrationDao.findAll(Registration.class).isEmpty())
+			if (!registrationDao.findAll().isEmpty())
 				registrationDao.executeQueryWithIntParam("DELETE FROM registration r WHERE r.id.year = :p", i);
 
-			if (!regYearInfoDao.findAll(RegistrationYearInfo.class).isEmpty())
+			if (!regYearInfoDao.findAll().isEmpty())
 				regYearInfoDao.executeQueryWithIntParam("DELETE FROM registrationYearInfo r WHERE r.year = :p", i);
 		}
 

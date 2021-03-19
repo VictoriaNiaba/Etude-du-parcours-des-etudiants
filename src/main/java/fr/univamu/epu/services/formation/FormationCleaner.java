@@ -1,7 +1,6 @@
 package fr.univamu.epu.services.formation;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -11,7 +10,6 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import fr.univamu.epu.model.formation.Formation;
-import fr.univamu.epu.model.registration.Registration;
 
 @Service("formationCleaner")
 public class FormationCleaner {
