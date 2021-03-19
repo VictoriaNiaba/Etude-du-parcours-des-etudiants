@@ -18,7 +18,6 @@
 		<java.version>15</java.version>
 		<springdoc.version>1.4.8</springdoc.version>
 		<jacoco.coveredratio>0.50</jacoco.coveredratio>
-		<jacoco.missedcount>5</jacoco.missedcount>
 	</properties>
 	<dependencies>
 		<!-- BEGIN web dependencies -->
@@ -184,11 +183,6 @@
 											<counter>LINE</counter>
 											<value>COVEREDRATIO</value>
 											<minimum>${jacoco.coveredratio}</minimum>
-										</limit>
-										<limit>
-											<counter>CLASS</counter>
-											<value>MISSEDCOUNT</value>
-											<maximum>${jacoco.missedcount}</maximum>
 										</limit>
 									</limits>
 								</rule>
