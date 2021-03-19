@@ -76,9 +76,9 @@ public class FormationCsvInMemoryManager implements FormationManager {
 
 	@Override
 	public void upload(InputStream inputStream) {
-		System.out.println("uploading formations");
 		Set<Formation> formations = fcp.parse(inputStream);
 		formations = fc.clean(formations);
+		System.out.println("uploading " + formations.size() + " formations");
 		
 		try {
 			for (Formation f : formations) {

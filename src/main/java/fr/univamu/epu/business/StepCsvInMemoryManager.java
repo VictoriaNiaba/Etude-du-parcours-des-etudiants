@@ -83,8 +83,9 @@ public class StepCsvInMemoryManager implements StepManager {
 
 	@Override
 	public void upload(InputStream inputStream) {
-		System.out.println("uploading steps");
 		Set<Step> steps = scp.parse(inputStream);
+
+		System.out.println("uploading " + steps.size() + " steps");
 
 		try {
 			fsl.linkAndAddAll(steps);
