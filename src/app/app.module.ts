@@ -12,7 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdministrationComponent } from './components/administration/administration.component';
 import { FormationsComponent } from './components/formations/formations-list/formations.component';
 import { RegistrationsComponent } from './components/registrations/registrations.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormationDetailsComponent } from './components/formations/formation-details/formation-details.component';
 import { FormationEditComponent } from './components/formations/formation-edit/formation-edit.component';
 import { NgbModule, NgbPaginationModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -24,9 +24,10 @@ import { EpuStatsComponent } from './components/epu/epu-stats/epu-stats.componen
 import { EpuPageComponent } from './components/epu/epu-page/epu-page.component';
 import { StepsService } from './services/steps.service';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import { XhrInterceptor } from './interceptors/xhr.interceptor';
 
 export function initializeApp1(stepsService: StepsService) {
-  return (): Promise<any> => { 
+  return (): Promise<any> => {
     return stepsService.init();
   }
 }
@@ -65,7 +66,8 @@ export function initializeApp1(stepsService: StepsService) {
   ],
   providers: [
     StepsService,
-    { provide: APP_INITIALIZER, useFactory: initializeApp1, deps: [StepsService], multi: true }
+    { provide: APP_INITIALIZER, useFactory: initializeApp1, deps: [StepsService], multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

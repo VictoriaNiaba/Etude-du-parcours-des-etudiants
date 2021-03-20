@@ -23,6 +23,7 @@ export class NavigationComponent implements OnInit {
 
   disconnect() {
     this.authenticationService.logout();
+    this.ngOnInit();
   }
 
 }

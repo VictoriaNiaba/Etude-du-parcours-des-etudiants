@@ -1,36 +1,52 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 import { User } from '../models/User';
 import { HttpClientService } from './http-client.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthentificationService {
   public currentUser: User;
+  authenticated: boolean = false;
 
-  constructor(private httpClientService: HttpClientService, private router: Router) {
+  constructor(
+    private httpClientService: HttpClientService,
+    private router: Router
+  ) {
+    this.authenticate(undefined, undefined);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if(this.currentUser) console.log(this.currentUser.email);
   }
 
-  login(email: string, password: string) {
-    this.httpClientService.login(email, password).subscribe(res => {
-      let user: User;
-      user = res;
-      if(user.email === null) return null;
-      console.log("Auth");
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      window.location.href = 'admin';
-      return user;
+  authenticate(credentials, callback) {
+    this.httpClientService.login(credentials).subscribe((response) => {
+      if (response['name']) {
+        console.log('user logged-in: ' + response['name']);
+        this.authenticated = true;
+        let user = new User(response['name']);
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      } else {
+        this.authenticated = false;
+        this.currentUser = null;
+        localStorage.removeItem('currentUser');
+      }
+      return callback && callback();
     });
   }
 
   logout() {
-    this.currentUser = null;
-    localStorage.removeItem('currentUser');
-    this.router.navigate(['']);
-    //todo: remove ??
-    window.location.reload();
+    this.httpClientService
+      .logout()
+      .pipe(
+        finalize(() => {
+          this.authenticated = false;
+          this.currentUser = null;
+          localStorage.removeItem('currentUser');
+          this.router.navigate(['sign-in']);
+        })
+      )
+      .subscribe();
   }
 }

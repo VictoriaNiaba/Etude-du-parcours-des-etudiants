@@ -286,12 +286,10 @@
       "average_repeat": 4
     }
   ],
-  "users": [
-    {
-      "email": "admin.email@email.email",
-      "password": "psw"
-    }
-  ],
+  "user": {
+    "name": "admin.email@email.email"
+  },
+  "logout": {},
   "salutations": {
     "message": "salutations le monde (mock)"
   },
