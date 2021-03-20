@@ -22,7 +22,7 @@ export class AuthentificationService {
   authenticate(credentials, callback) {
     this.httpClientService.login(credentials).subscribe((response) => {
       if (response['name']) {
-        console.log('user logged-in: ' + response['name']);
+        //console.log('user logged-in: ' + response['name']);
         this.authenticated = true;
         let user = new User(response['name']);
         localStorage.setItem('currentUser', JSON.stringify(user));

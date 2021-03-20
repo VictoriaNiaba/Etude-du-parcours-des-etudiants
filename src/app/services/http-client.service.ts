@@ -62,7 +62,7 @@ export class HttpClientService {
       if (firstStep && !lastStep) request += `firststep=${firstStep}`;
       if (!firstStep && lastStep) request += `laststep=${lastStep}`;
     }
-    console.warn(request);
+    //console.warn(request);
     return this.httpClient.get<any>(request);
   }
 
@@ -95,7 +95,7 @@ export class HttpClientService {
   }
 
   updateFormation(code, data: Formation) {
-    console.log(data);
+    //console.log(data);
     return this.httpClient.put<Formation>(
       `${environment.baseUrl}/formations/${code}`,
       JSON.stringify(data),
@@ -119,17 +119,17 @@ export class HttpClientService {
     const formData: FormData = new FormData();
     formData.append('csvfile', fileToUpload, fileToUpload.name);
     //#region debug
-    console.log(fileToUpload.name);
-    console.log(fileToUpload);
+    //console.log(fileToUpload.name);
+    //console.log(fileToUpload);
     /*
     const reader = new FileReader();
     reader.onload = (e) => {
         const text = reader.result.toString().trim();
-        console.log(text);
+        //console.log(text);
     }
     reader.readAsText(fileToUpload);
     */
-    console.log(formData);
+    //console.log(formData);
     //#endregion debug
     return this.httpClient
       .post(`${environment.baseUrl}/${endpoint}`, formData, { headers: h })

@@ -19,7 +19,7 @@ export class FormationsComponent implements OnInit {
   ngOnInit(): void {
     this.httpClientService.getFormations().subscribe(res => { 
       this.formations=res;
-      console.log(this.formations)
+      //console.log(this.formations)
       this.collectionSize = this.formations.length;
       this.page = this.collectionSize/this.collectionSize;
     });
@@ -34,7 +34,7 @@ export class FormationsComponent implements OnInit {
         this.ngOnInit();
       }, error => {
         this.ngOnInit();
-        console.log(error);
+        //console.log(error);
       });
   }
 

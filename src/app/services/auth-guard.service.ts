@@ -16,13 +16,13 @@ export class AuthGuardService implements CanActivate {
 
     //if logged
     if(currentUser) {
-      console.log("AuthGuard : OK");
+      //console.log("AuthGuard : OK");
       return true;
     }
 
     //if not logged => redirect to signIn page !
     this.router.navigate(['/']);
-    console.error("AuthGuard : 1K :: you have to be logged to show this page");
+    //console.error("Restricted page reached");
     return false;
   }
 }

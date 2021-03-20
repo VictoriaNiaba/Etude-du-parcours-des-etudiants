@@ -38,7 +38,7 @@ export class FormationEditComponent implements OnInit {
         formationTmp = res;
         formationTmp.forEach(f => {
           if (control.value === f.formation_code && control.value !== undefined && control.value != this.code) {
-            console.log(f.formation_code, control.value)
+            //console.log(f.formation_code, control.value)
             return { uniqueId: true };
           }
         });
@@ -136,7 +136,7 @@ export class FormationEditComponent implements OnInit {
       //On crée une nouvelle formation
       this.formation = new Formation(this.editForm.value.formation_code, this.editForm.value.formation_name, this.editForm.value.description, this.editForm.value.type, this.editForm.value.url, tmpList, new Date, new Date);
       this.create(this.formation);
-      console.log(this.formation);
+      //console.log(this.formation);
     } else {
       //On met à jour les valeurs en mode édition
       this.formation.formation_code = this.editForm.value.formation_code;

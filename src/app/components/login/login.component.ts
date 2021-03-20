@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     if (this.authentificationService.currentUser) {
-      console.debug('User already connected');
+      //console.debug('User already connected');
       this.router.navigate(['admin']);
     }
 

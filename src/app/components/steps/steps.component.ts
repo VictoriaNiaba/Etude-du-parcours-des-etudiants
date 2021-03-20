@@ -20,7 +20,7 @@ export class StepsComponent implements OnInit {
   ngOnInit(): void {
     this.httpClientService.getSteps().subscribe(res => { 
       this.steps=res;
-      console.log(this.steps)
+      //console.log(this.steps)
       this.collectionSize = this.steps.length;
       this.page = this.collectionSize/this.collectionSize;
     });
@@ -34,7 +34,7 @@ export class StepsComponent implements OnInit {
     this.httpClientService.postFile(this.fileToUpload, "/steps/_upload").subscribe(data => {
       this.ngOnInit();
       }, error => {
-        console.log(error);
+        //console.log(error);
         this.ngOnInit();
       });
   }
