@@ -2,17 +2,8 @@ package fr.univamu.epu.model.registration;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
-
-import fr.univamu.epu.model.step.Step;
 
 @Entity(name = "registration")
 public class Registration implements Serializable {
@@ -29,6 +20,11 @@ public class Registration implements Serializable {
 		this.id = id;
 	}
 
+	public Registration(String stepCode, String studentCode, Integer year) {
+		super();
+		this.id = new RegistrationId(stepCode, studentCode, year);
+	}
+
 	public String getStudentCode() {
 		return id.studentCode;
 	}
@@ -36,11 +32,11 @@ public class Registration implements Serializable {
 	public Integer getYear() {
 		return id.year;
 	}
-	
+
 	public String getStepCode() {
 		return id.stepCode;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Registration [studentCode=" + id.studentCode + ", year=" + id.year + ", stepcode=" + id.stepCode + "]";
