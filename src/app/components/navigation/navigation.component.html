@@ -34,15 +34,12 @@
           role="button"
           aria-haspopup="true"
           aria-expanded="false" >
-          <span (mouseover)="changeText=true" (mouseout)="changeText=false">
-            <span *ngIf="!changeText">Liens pour les devs<span class="h">🙂</span></span>
-            <span *ngIf="changeText">Liens pour les devs<span class="h">😝</span></span>
-          </span>
+          Liens pour les devs
         </a>
         <div class="dropdown-menu">
-          <a *ngIf="!currentUser" class="dropdown-item bg-success" style="color: white;" routerLink="sign-in">Connexion</a>
-          <a *ngIf="currentUser" class="dropdown-item bg-info" style="color: white;" routerLink="admin">Administration</a>
-          <a *ngIf="currentUser" class="dropdown-item bg-danger" style="color: white; cursor:pointer;" (click)="disconnect()">Déconnexion</a>
+          <a *ngIf="!authenticationService.currentUser" class="dropdown-item bg-success" style="color: white;" routerLink="sign-in">Connexion</a>
+          <a *ngIf="authenticationService.currentUser" class="dropdown-item bg-info" style="color: white;" routerLink="admin">Administration</a>
+          <a *ngIf="authenticationService.currentUser" class="dropdown-item bg-danger" style="color: white; cursor:pointer;" (click)="disconnect()">Déconnexion</a>
         </div>
       </li>
     </ul>

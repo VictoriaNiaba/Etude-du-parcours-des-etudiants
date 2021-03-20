@@ -10,13 +10,7 @@ import { AuthentificationService } from 'src/app/services/authentification.servi
 })
 export class NavigationComponent implements OnInit {
 
-  changeText = false;
-  currentUser: User;
-
-  constructor(public router: Router,
-    private authenticationService: AuthentificationService) {
-      this.currentUser = authenticationService.currentUser;
-    }
+  constructor(public router: Router, public authenticationService: AuthentificationService) { }
 
   ngOnInit(): void {
   }
