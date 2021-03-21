@@ -72,7 +72,7 @@ public class PathBuilder {
 		// ajout des paths dans le DAO
 		pathDao.addAll(paths);
 
-		System.out.println(pathDao.findAll().size() + " paths built by the registration manager init");
+//		System.out.println(pathDao.findAll().size() + " paths built by the registration manager init");
 	}
 
 	private List<Path> getPathsFromMap(Map<List<String>, List<Integer>> pathmap) {
