@@ -15,4 +15,10 @@ public class RegistrationJpaDao extends GenericJpaDao<Registration, Registration
 		setClazz(Registration.class);
 	}
 
+	@Override
+	public void deleteAllByYear(int year) {
+		em.createQuery("DELETE FROM registration r WHERE r.id.year = :year")
+		.setParameter("year", year)
+		.executeUpdate();
+	}
 }

@@ -82,12 +82,9 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 			}
 		}
 
-		for (Integer i : yearsUploaded) {
-			if (!registrationDao.findAll().isEmpty())
-				registrationDao.executeQueryWithIntParam("DELETE FROM registration r WHERE r.id.year = :p", i);
-
-			if (!regYearInfoDao.findAll().isEmpty())
-				regYearInfoDao.executeQueryWithIntParam("DELETE FROM registrationYearInfo r WHERE r.year = :p", i);
+		for (int year : yearsUploaded) {
+			registrationDao.deleteAllByYear(year);
+			regYearInfoDao.deleteAllByYear(year);
 		}
 
 		try {
