@@ -20,10 +20,13 @@ export class StepsComponent implements OnInit {
   ngOnInit(): void {
     this.httpClientService.getSteps().subscribe(res => { 
       this.steps=res;
-      //console.log(this.steps)
       this.collectionSize = this.steps.length;
       this.page = this.collectionSize/this.collectionSize;
-    });
+    },
+    (error) => {
+        console.warn("Handle (getSteps) :", error)
+      }
+    );
   }
 
   handleFileInput(files: FileList) {
@@ -33,10 +36,12 @@ export class StepsComponent implements OnInit {
   uploadFileToService() {
     this.httpClientService.postFile(this.fileToUpload, "/steps/_upload").subscribe(data => {
       this.ngOnInit();
-      }, error => {
-        //console.log(error);
-        this.ngOnInit();
-      });
+      },
+      (error) => {
+          console.warn("Handle (postFile) :", error);
+          this.ngOnInit();
+        }
+      );
   }
 
   search(){
@@ -44,7 +49,7 @@ export class StepsComponent implements OnInit {
       this.steps = this.steps.filter(res => {
         return res.step_code.toLocaleLowerCase().match(this.searchWord.toLocaleLowerCase());
       });
-    }else if(this.searchWord == ""){
+    } else if(this.searchWord == "") {
       this.ngOnInit();
     }
   }

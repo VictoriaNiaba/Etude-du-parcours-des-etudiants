@@ -16,7 +16,11 @@ export class AdministrationComponent implements OnInit {
   getHello() {
     this.httpClientService.getHello().subscribe(res => {
       this.salutation = res.message
-    });
+    },
+    (error) => {
+        console.warn("Handle :", error)
+      }
+    );
   }
 
 }

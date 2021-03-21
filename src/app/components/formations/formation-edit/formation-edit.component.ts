@@ -38,11 +38,14 @@ export class FormationEditComponent implements OnInit {
         formationTmp = res;
         formationTmp.forEach(f => {
           if (control.value === f.formation_code && control.value !== undefined && control.value != this.code) {
-            //console.log(f.formation_code, control.value)
             return { uniqueId: true };
           }
         });
-      });
+      },
+      (error) => {
+          console.warn("Handle (Validator) :", error)
+        }
+      );
       return null;
     }
 
@@ -64,7 +67,11 @@ export class FormationEditComponent implements OnInit {
           this.initStepsList();
         });
       }
-    });
+    },
+    (error) => {
+        console.warn("Handle (getSteps) :", error)
+      }
+    );
   }
 
   initStepsList() {
@@ -95,10 +102,18 @@ export class FormationEditComponent implements OnInit {
                 })
               })
             }
-          });
+          },
+          (error) => {
+              console.warn("Handle (getStepByCode) :", error)
+            }
+          );
         });
       }
-    });
+    },
+    (error) => {
+        console.warn("Handle (getSteps) :", error)
+      }
+    );
   }
 
   //Permet de remettre à jour la liste des étapes lorsque qu'on efface la recherche
@@ -116,7 +131,11 @@ export class FormationEditComponent implements OnInit {
           }
         })
       })
-    });
+    },
+    (error) => {
+        console.warn("Handle (getSteps) :", error)
+      }
+    );
   }
 
   get formControl() { return this.editForm.controls; }
@@ -136,7 +155,6 @@ export class FormationEditComponent implements OnInit {
       //On crée une nouvelle formation
       this.formation = new Formation(this.editForm.value.formation_code, this.editForm.value.formation_name, this.editForm.value.description, this.editForm.value.type, this.editForm.value.url, tmpList, new Date, new Date);
       this.create(this.formation);
-      //console.log(this.formation);
     } else {
       //On met à jour les valeurs en mode édition
       this.formation.formation_code = this.editForm.value.formation_code;
@@ -157,13 +175,21 @@ export class FormationEditComponent implements OnInit {
   create(data: Formation) {
     this.httpClientService.addFormation(data).subscribe((data: {}) => {
       this.router.navigate(['/formation', this.formation.formation_code]);
-    })
+    },
+    (error) => {
+        console.warn("Handle (addFormation) :", error)
+      }
+    );
   }
 
   update(data) {
     this.httpClientService.updateFormation(this.code, data).subscribe(res => {
       this.router.navigate(['/formation', this.formation.formation_code]);
-    })
+    },
+    (error) => {
+        console.warn("Handle (updateFormation) :", error)
+      }
+    );
   }
 
   //Pour le drag and drop des étapes

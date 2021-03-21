@@ -27,7 +27,6 @@ export class EpuGrapheComponent implements OnInit {
 
   onChartInit(e: any) {
     this.chartInstance = e;
-    //console.log('on chart init:', e);
     this.getPaths("", "");
   }
 
@@ -129,7 +128,6 @@ export class EpuGrapheComponent implements OnInit {
       res.forEach(path => {
         let pathTemp = new Path();
         for (let i = 0; i < path['steps'].length; i++) {
-          //console.warn("epu-graphe component",path['steps'][i]);
           let stepName = this.stepsService.getByCode(path['steps'][i])
           let step = new StepPath( //init
             path['steps'][i],
@@ -148,7 +146,11 @@ export class EpuGrapheComponent implements OnInit {
         for(let i=0; i<this.pathStats.length; i++)
           this.pathStats[i] = this.pathStats[i]*100/this.totalStudentPaths;
       this.initPaths();
-    });
+    },
+    (error) => {
+        console.warn("Handle (getPaths) :", error)
+      }
+    );
   }
 
   private initPaths() {
@@ -435,7 +437,11 @@ export class EpuGrapheComponent implements OnInit {
         }
         this.dataSearch.push(tmpData);
       }
-    });
+    },
+    (error) => {
+        console.warn("Handle (getFormations) :", error)
+      }
+    );
 
     this.httpClient.getSteps().subscribe(res => {
       for(let i=0; i<res.length; i++){
@@ -448,7 +454,11 @@ export class EpuGrapheComponent implements OnInit {
         }
         this.dataSearch.push(tmpData);
       }
-    })
+    },
+    (error) => {
+        console.warn("Handle (getStepts) :", error)
+      }
+    );
   }
 
   search() {
@@ -481,8 +491,6 @@ export class EpuGrapheComponent implements OnInit {
     //Pour enlever la dernière virgule
     stepsStart = stepsStart.slice(0, stepsStart.length-1);
     stepsEnd = stepsEnd.slice(0, stepsEnd.length-1);
-    console.log("Steps Start", stepsStart);
-    console.log("Steps End", stepsEnd);
 
     //On appelle la génération du graphe
     this.getPaths(stepsStart,stepsEnd);

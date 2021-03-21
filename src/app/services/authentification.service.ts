@@ -1,39 +1,40 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
-import { User } from '../models/User';
 import { HttpClientService } from './http-client.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthentificationService {
-  public currentUser: User;
-  authenticated: boolean = false;
+  public authentificated: boolean = false;
 
   constructor(
     private httpClientService: HttpClientService,
     private router: Router
   ) {
-    this.authenticate(undefined, undefined);
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.authentificate(undefined, undefined);
   }
 
-  authenticate(credentials, callback) {
-    this.httpClientService.login(credentials).subscribe((response) => {
-      if (response['name']) {
-        //console.log('user logged-in: ' + response['name']);
-        this.authenticated = true;
-        let user = new User(response['name']);
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      } else {
-        this.authenticated = false;
-        this.currentUser = null;
-        localStorage.removeItem('currentUser');
+  authentificate(credentials, callback) {
+    this.httpClientService.login(credentials).subscribe(
+      (response) => {
+        if (response['name']) {
+          this.authentificated = true;
+        }
+        else {
+          this.authentificated = false;
+        }
+        return callback && callback();
+      },
+      (error) => {
+        if(error.status == 401) {
+          //do nothing, on connait l'erreur et elle ne nous intéresse pas ici, l'utilisateur peut ne pas être connecté donc le service d'authentification ne doit pas être capable de le log dans son constructeur, donc on a un retour 401 (mais c'est admissible)
+        } else {
+          console.warn(error)
+        }
       }
-      return callback && callback();
-    });
+    );
   }
 
   logout() {
@@ -41,9 +42,7 @@ export class AuthentificationService {
       .logout()
       .pipe(
         finalize(() => {
-          this.authenticated = false;
-          this.currentUser = null;
-          localStorage.removeItem('currentUser');
+          this.authentificated = false;
           this.router.navigate(['sign-in']);
         })
       )

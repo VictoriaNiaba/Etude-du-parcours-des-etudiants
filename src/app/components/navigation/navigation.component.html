@@ -37,9 +37,9 @@
           Liens pour les devs
         </a>
         <div class="dropdown-menu">
-          <a *ngIf="!authenticationService.currentUser" class="dropdown-item bg-success" style="color: white;" routerLink="sign-in">Connexion</a>
-          <a *ngIf="authenticationService.currentUser" class="dropdown-item bg-info" style="color: white;" routerLink="admin">Administration</a>
-          <a *ngIf="authenticationService.currentUser" class="dropdown-item bg-danger" style="color: white; cursor:pointer;" (click)="disconnect()">Déconnexion</a>
+          <a *ngIf="!authenticationService.authentificated" class="dropdown-item bg-success" style="color: white;" routerLink="sign-in">Connexion</a>
+          <a *ngIf="authenticationService.authentificated" class="dropdown-item bg-info" style="color: white;" routerLink="admin">Administration</a>
+          <a *ngIf="authenticationService.authentificated" class="dropdown-item bg-danger" style="color: white; cursor:pointer;" (click)="disconnect()">Déconnexion</a>
         </div>
       </li>
     </ul>

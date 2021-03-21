@@ -21,8 +21,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.authentificationService.currentUser) {
-      //console.debug('User already connected');
+    if (this.authentificationService.authentificated) {
       this.router.navigate(['admin']);
     }
 
@@ -48,7 +47,7 @@ export class LoginComponent implements OnInit {
     };
 
     //login httpclient
-    this.authentificationService.authenticate(credentials, () => {
+    this.authentificationService.authentificate(credentials, () => {
       this.router.navigate(['admin']);
     });
     return false;

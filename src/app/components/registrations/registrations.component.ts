@@ -17,13 +17,16 @@ export class RegistrationsComponent implements OnInit {
 
   ngOnInit(): void {
     this.httpClientService.getRegistrations().subscribe(res => {
-      //console.info(res);
       this.registrations = res;
       this.totalRegistration = 0;
       this.registrations.forEach(registrations => {
         this.totalRegistration += registrations['registrationCount']
       });
-    });
+    },
+    (error) => {
+        console.warn("Handle (getRegistrations) :", error)
+      }
+    );
   }
 
   handleFileInput(files: FileList) {
@@ -33,10 +36,12 @@ export class RegistrationsComponent implements OnInit {
   uploadFileToService() {
     this.httpClientService.postFile(this.fileToUpload, "/registrations/_upload").subscribe(data => {
       this.ngOnInit();
-    }, error => {
-      //console.log(error);
-      this.ngOnInit();
-    });
+    },
+    (error) => {
+        console.warn("Handle (postFile) :", error);
+        this.ngOnInit();
+      }
+    );
 
     this.ngOnInit(); //reload
   }

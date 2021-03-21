@@ -31,7 +31,7 @@
         </div>
         <div class="card-footer text-muted">
             <div class="d-flex justify-content-between">
-                <a *ngIf="canEdit === true" (click)="delete(formation.formation_code)" class="btn btn-danger"
+                <a *ngIf="canEdit === true" (click)="delete()" class="btn btn-danger"
                     role="button">Supprimer</a>
                 <a *ngIf="canEdit === true" routerLink="/formation/{{formation.formation_code}}/edit"
                     class="btn btn-info" role="button">Modifier</a>

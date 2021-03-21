@@ -19,10 +19,13 @@ export class FormationsComponent implements OnInit {
   ngOnInit(): void {
     this.httpClientService.getFormations().subscribe(res => { 
       this.formations=res;
-      //console.log(this.formations)
       this.collectionSize = this.formations.length;
       this.page = this.collectionSize/this.collectionSize;
-    });
+    },
+    (error) => {
+        console.warn("Handle (getFormations) :", error)
+      }
+    );
   }
 
   handleFileInput(files: FileList) {
@@ -32,10 +35,12 @@ export class FormationsComponent implements OnInit {
   uploadFileToService() {
     this.httpClientService.postFile(this.fileToUpload, "/formations/_upload").subscribe(data => {
         this.ngOnInit();
-      }, error => {
-        this.ngOnInit();
-        //console.log(error);
-      });
+      },
+      (error) => {
+          console.warn("Handle (postFile) :", error)
+          this.ngOnInit();
+        }
+      );
   }
 
   search(){
@@ -43,7 +48,7 @@ export class FormationsComponent implements OnInit {
       this.formations = this.formations.filter(res => {
         return res.formation_code.toLocaleLowerCase().match(this.searchWord.toLocaleLowerCase());
       });
-    }else if(this.searchWord == ""){
+    } else if(this.searchWord == "") {
       this.ngOnInit();
     }
   }

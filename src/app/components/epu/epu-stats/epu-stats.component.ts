@@ -59,7 +59,11 @@ export class EpuStatsComponent implements OnInit {
         })();
       }
       
-    });
+    },
+    (error) => {
+        console.warn("Handle (getStepByCode) :", error)
+      }
+    );
   }
 
   ngOnInit(): void {}
@@ -69,11 +73,9 @@ export class EpuStatsComponent implements OnInit {
   chartStats2: any;
   onChartInit1(e: any) {
     this.chartStats1 =  echarts.getInstanceByDom(document.getElementById('chartStats1'));
-    //console.log('on chart init 1:', e);
   }
   onChartInit2(e: any) {
     this.chartStats2 =  echarts.getInstanceByDom(document.getElementById('chartStats2'));
-    //console.log('on chart init 2:', e);
   }
 
   options1: any;
