@@ -94,4 +94,49 @@ class StepFormationLinkerUnitTest {
 		assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
 	}
 
+	@Test
+	void givenSteps_whenBuildPaths_thenLinkStepsToFormations() {
+		// given
+		List<Step> steps = Arrays.asList(
+				new Step("SCH3AA", "AMU.L3 Chimie : Chimie"),
+				new Step("SPO1P1", "AMU.1ere annee Portail 1"),
+				new Step("SBG5AA", "AMU.M2 BSG : Biologie struct"),
+				new Step("SMSPAA", "AMU.LP Maintenance syst indus"));
+
+		Collection<Formation> formations = Arrays.asList(
+				new Formation("ME3SCH-PRSCH3AA", "Parcours type : Chimie", "", "licence", "", new HashSet<>()),
+				new Formation("ME3SPO-PRSPO1P1", "Portail René Descartes", "", "portail", "", new HashSet<>()),
+				new Formation("ME5SBG-PRSBG5AA", "Parcours type : Biochimie structurale", "", "master", "",
+						new HashSet<>()),
+				new Formation("MEPSMS-PRSMSPAA", "Parcours type : Maintenance des équipements de production", "", "LP",
+						"", new HashSet<>()));
+		
+		List<String> formationCodes = formations.stream()
+				.map(Formation::getFormation_code)
+				.collect(Collectors.toList());
+
+		List<String> expected = Arrays.asList();
+
+		when(formationDao.findAll()).thenReturn(formations);
+
+		// when
+		stepFormationLinker.linkAndAddAll(new HashSet<>(steps));
+
+		// then
+		verify(formationDao, times(1)).findAll();
+		verify(formationDao, times(4)).update(formationCaptor.capture());
+		List<Formation> results = formationCaptor.getAllValues();
+		
+		assertThat(results).hasSize(4);
+		Collections.sort(results, Comparator.comparing(Formation::getFormation_code));
+		for (int i = 0; i < results.size(); i++) {
+			assertThat(results.get(i).getFormation_code()).isIn(formationCodes);
+			assertThat(results.get(i).getSteps()).extracting(Step::getStep_code)
+					.containsExactlyInAnyOrder(steps.get(i).getStep_code());
+		}
+
+		List<String> badSteps = stepFormationLinker.getBadSteps();
+		assertThat(badSteps).isEmpty();
+
+	}
 }
