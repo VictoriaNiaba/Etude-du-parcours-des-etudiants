@@ -87,13 +87,7 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 			regYearInfoDao.deleteAllByYear(year);
 		}
 
-		try {
-			addAll(registrations);
-		} catch (ConstraintViolationException | DataIntegrityViolationException e) {
-			throw new UploadException(
-					"Une partie des inscriptions administratives fournies existent déjà en base de données");
-		}
-
+		addAll(registrations);
 		regYearInfoDao.addAll(infos);
 		System.out.println("uploaded regs");
 

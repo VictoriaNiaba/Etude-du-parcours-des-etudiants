@@ -25,7 +25,7 @@ public class StepFormationLinker {
 
 	private List<String> badSteps = new ArrayList<String>();
 
-	public void linkAndAddAll(Set<Step> steps) {
+	public void linkAndSaveAll(Set<Step> steps) {
 		List<Step> stepList = new ArrayList<Step>(steps);
 		Collections.sort(stepList, new Comparator<Step>() {
 			public int compare(Step o1, Step o2) {
@@ -67,13 +67,7 @@ public class StepFormationLinker {
 				badSteps.add(s.getStep_code());
 		}
 
-		for (Step s : resultSteps) {
-			if (stepDao.find(s.getStep_code()) != null) {
-				stepDao.update(s);
-			} else {
-				stepDao.add(s);
-			}
-		}
+		stepDao.saveAll(resultSteps);
 		for (Formation f : formationList) {
 			formationDao.update(f);
 		}

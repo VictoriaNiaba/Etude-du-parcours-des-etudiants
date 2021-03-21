@@ -61,7 +61,7 @@ class StepFormationLinkerUnitTest {
 		when(formationDao.findAll()).thenReturn(formations);
 
 		// when
-		stepFormationLinker.linkAndAddAll(steps);
+		stepFormationLinker.linkAndSaveAll(steps);
 
 		// then
 		verify(formationDao, times(1)).findAll();
@@ -85,7 +85,7 @@ class StepFormationLinkerUnitTest {
 		when(formationDao.findAll()).thenReturn(formations);
 
 		// when
-		stepFormationLinker.linkAndAddAll(steps);
+		stepFormationLinker.linkAndSaveAll(steps);
 
 		// then
 		verify(formationDao, times(1)).findAll();
@@ -120,7 +120,7 @@ class StepFormationLinkerUnitTest {
 		when(formationDao.findAll()).thenReturn(formations);
 
 		// when
-		stepFormationLinker.linkAndAddAll(new HashSet<>(steps));
+		stepFormationLinker.linkAndSaveAll(new HashSet<>(steps));
 
 		// then
 		verify(formationDao, times(1)).findAll();

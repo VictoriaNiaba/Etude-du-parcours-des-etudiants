@@ -7,6 +7,8 @@ public interface GenericDao<T, I> {
 	public T add(T entity);
 
 	public void addAll(Collection<T> entities);
+	
+	public void saveAll(Collection<T> entities);
 
 	public T update(T entity);
 

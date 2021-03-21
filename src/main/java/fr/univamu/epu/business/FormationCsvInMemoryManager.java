@@ -7,15 +7,12 @@ import java.util.Collection;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
-import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import fr.univamu.epu.dao.FormationDao;
 import fr.univamu.epu.errorhandler.NotFoundException;
-import fr.univamu.epu.errorhandler.UploadException;
 import fr.univamu.epu.model.formation.Formation;
 import fr.univamu.epu.services.csvimport.CsvParser;
 import fr.univamu.epu.services.formation.FormationCleaner;
@@ -77,18 +74,7 @@ public class FormationCsvInMemoryManager implements FormationManager {
 		Set<Formation> formations = fcp.parse(inputStream);
 		formations = fc.clean(formations);
 		System.out.println("uploading " + formations.size() + " formations");
-
-		try {
-			for (Formation f : formations) {
-				if (formationDao.find(f.getFormation_code()) != null) {
-					formationDao.update(f);
-				} else {
-					formationDao.add(f);
-				}
-			}
-		} catch (ConstraintViolationException | DataIntegrityViolationException e) {
-			throw new UploadException("Une partie des formations fournies existent déjà en base de données");
-		}
+		formationDao.saveAll(formations);
 		System.out.println("uploaded formations");
 	}
 

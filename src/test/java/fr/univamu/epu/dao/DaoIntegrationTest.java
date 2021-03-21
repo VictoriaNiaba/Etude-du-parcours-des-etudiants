@@ -64,6 +64,27 @@ class DaoIntegrationTest {
 	}
 
 	@Test
+	void whenSaveAll_thenAddOrUpdateEntities() {
+		// given
+		em.persistAndFlush(new Step("SIN2AA", "Licence 2 Informatique"));
+		
+		Collection<Step> expected = Arrays.asList(
+				new Step("SIN2AA", "Licence 2 Mathématiques"),
+				new Step("SIN3AA", "Licence 3 Informatique"));
+
+		// when
+		dao.saveAll(expected);
+
+		// then
+		Collection<Step> actual = Arrays.asList(
+				em.find(Step.class, "SIN2AA"),
+				em.find(Step.class, "SIN3AA"));
+		assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
+		assertThat(actual).extracting(Step::getStep_name)
+				.containsExactlyInAnyOrder("Licence 2 Mathématiques", "Licence 3 Informatique");
+	}
+
+	@Test
 	void whenRemove_thenRemoveEntity() {
 		// given
 		Step expected = new Step("SIN3AA", "Licence 3 Informatique");

@@ -80,13 +80,7 @@ public class StepCsvInMemoryManager implements StepManager {
 		Set<Step> steps = scp.parse(inputStream);
 
 		System.out.println("uploading " + steps.size() + " steps");
-
-		try {
-			fsl.linkAndAddAll(steps);
-		} catch (ConstraintViolationException | DataIntegrityViolationException e) {
-			throw new UploadException("Une partie des étapes fournies existent déjà en base de données");
-		}
-
+		fsl.linkAndSaveAll(steps);
 		System.out.println("uploaded steps");
 	}
 

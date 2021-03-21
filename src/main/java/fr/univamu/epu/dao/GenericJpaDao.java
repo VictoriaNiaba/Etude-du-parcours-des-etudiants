@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.univamu.epu.model.formation.Formation;
+
 @Repository
 @Transactional
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -43,6 +45,13 @@ public class GenericJpaDao<T, I> implements GenericDao<T, I> {
 			}
 			em.persist(entity);
 			++count;
+		}
+	}
+	
+	@Override
+	public void saveAll(Collection<T> entities) {
+		for (T entity : entities) {
+			em.merge(entity);
 		}
 	}
 
