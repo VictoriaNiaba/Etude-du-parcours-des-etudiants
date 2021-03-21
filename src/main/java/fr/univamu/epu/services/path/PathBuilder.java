@@ -72,7 +72,7 @@ public class PathBuilder {
 		// ajout des paths dans le DAO
 		pathDao.addAll(paths);
 
-		System.out.println(pathDao.findAll().size() + " paths built by the registration manager init");
+//		System.out.println(pathDao.findAll().size() + " paths built by the registration manager init");
 	}
 
 	private List<Path> getPathsFromMap(Map<List<String>, List<Integer>> pathmap) {
@@ -114,10 +114,13 @@ public class PathBuilder {
 			}
 			currentStudentRegs.add(reg);
 		}
+
+		studentPaths.add(currentStudentRegs);
+
 		return studentPaths;
 	}
 
-	public void generateStepStats(List<List<Registration>> studentPaths, List<String> badSteps) {
+	private void generateStepStats(List<List<Registration>> studentPaths, List<String> badSteps) {
 		Collection<Step> steps = stepDao.findAll();
 		for (Step s : steps) {
 			if (badSteps.contains(s.getStep_code()))
