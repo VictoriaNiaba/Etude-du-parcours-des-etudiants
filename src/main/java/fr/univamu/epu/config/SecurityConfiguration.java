@@ -54,7 +54,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				new AntPathRequestMatcher("/steps", "GET"),
 				new AntPathRequestMatcher("/steps/*", "GET"),
 				new AntPathRequestMatcher("/paths", "GET"),
-				new AntPathRequestMatcher("/formations", "GET"));
+				new AntPathRequestMatcher("/formations", "GET"),
+				new AntPathRequestMatcher("/formations/*", "GET"));
 
 		http.cors().and()
 				.httpBasic().and()
