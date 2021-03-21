@@ -14,4 +14,10 @@ public class RegistrationYearInfoJpaDao extends GenericJpaDao<RegistrationYearIn
 		setClazz(RegistrationYearInfo.class);
 	}
 
+	@Override
+	public void deleteAllByYear(int year) {
+		em.createQuery("DELETE FROM registrationYearInfo r WHERE r.year = :year")
+		.setParameter("year", year)
+		.executeUpdate();
+	}
 }

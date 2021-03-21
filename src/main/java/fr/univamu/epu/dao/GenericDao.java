@@ -18,8 +18,4 @@ public interface GenericDao<T, I> {
 
 	public void setClazz(Class<T> clazz);
 
-	public void executeQuery(String query);
-
-	public void executeQueryWithIntParam(String query, Object param);
-
 }

@@ -74,14 +74,4 @@ public class GenericJpaDao<T, I> implements GenericDao<T, I> {
 		return typedQuery.getResultList();
 	}
 
-	@Override
-	public void executeQuery(String query) {
-		em.createQuery(query).executeUpdate();
-	}
-
-	@Override
-	public void executeQueryWithIntParam(String query, Object param) {
-		em.createQuery(query).setParameter("p", param).executeUpdate();
-	}
-
 }
