@@ -12,6 +12,13 @@
   </div>
   <div class="card-body">
     <div *ngIf="step" class="stats">
+      <h5>Liste des formations</h5>
+      <ul class="list-group">
+        <div  *ngFor="let formation of formationsList">
+          <li class="list-group-item"><a class="btn btn-primary" routerLink="/formation/{{ formation.formation_code }}">{{ formation.formation_code }} | {{ formation.formation_name }}</a></li>
+        </div>
+      </ul>
+
       <div *ngIf="dataInExist">
       <h3 class="card-title">Entrants</h3>
       <div class="responsiveLine">

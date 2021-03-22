@@ -3,6 +3,8 @@ import { HttpClientService } from 'src/app/services/http-client.service';
 import * as echarts from 'echarts';
 import { Step } from 'src/app/models/Step';
 import { StepsService } from 'src/app/services/steps.service';
+import { resolveSanitizationFn } from '@angular/compiler/src/render3/view/template';
+import { Formation } from 'src/app/models/Formation';
 
 @Component({
   selector: 'app-epu-stats',
@@ -20,8 +22,10 @@ export class EpuStatsComponent implements OnInit {
   setFormation(stepCode: string) {
     if(stepCode == "") {
       this.step = null;
+      this.formationsList = [];
       return;
     }
+    this.setFormationsList(stepCode);
     this.httpClient.getStepByCode(stepCode).subscribe(res => {
       let steps_in_sorted = res.steps_in.sort((a,b) => {
         if (a.number > b.number)
@@ -64,6 +68,18 @@ export class EpuStatsComponent implements OnInit {
         console.warn("Handle (getStepByCode) :", error)
       }
     );
+  }
+
+  formationsList: Array<Formation> = new Array<Formation>();
+  setFormationsList(stepCode: string){
+    this.formationsList = [];
+    this.httpClient.getFormations().subscribe( res => {
+      res.forEach(formation => {
+        formation.steps.forEach(step => {
+          if(step.step_code == stepCode) this.formationsList.push(formation);
+        });
+      });
+    });
   }
 
   ngOnInit(): void {}
