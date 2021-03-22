@@ -1,24 +1,47 @@
-$chartSize: 600px;
+$chartSize: 65vh;
 .graphBox {
     display: flex;
+    overflow: hidden;
 }
 .path-list {
     padding: 1%;
     position: absolute;
-    left: 75%;
-    min-width: 25%;
-    max-width: 25%;
-    overflow: hidden;
+    left: 0%;
+    width: 100%;
+    overflow:visible;
     overflow-y: scroll;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
     max-height: $chartSize;
+    text-align: right;
+    pointer-events: none;
 }
 .path-list::-webkit-scrollbar {
     display: none;
 }
 .path-list > * {
     cursor: pointer;
+}
+.path-list .path-item {
+    flex-direction: row-reverse;
+    flex-wrap: nowrap;
+    display: inline-flex;
+}
+.path-list .path-item > * {
+    align-self: baseline;
+    pointer-events: all;
+    cursor: pointer;
+}
+.path-item > *:last-child {
+    width: 100%;
+    font-size: 8pt;
+    padding-right: 5px;
+}
+.path-item:not(.text-primary) > *:hover {
+    padding-right: 10px;
+}
+.path-item > *:first-child {
+    width: fit-content;
 }
 .f-width {
     width: 100%;
@@ -50,11 +73,11 @@ $chartSize: 600px;
 .chart .help a {
     pointer-events: all;
     cursor: pointer;
-    //color: rgb(151, 0, 0);
     font-weight: bold;
 }
 .echart, .chart {
-    background-color: rgb(223, 249, 255);
+    background-color: rgb(239, 252, 255);
+    //background-color: rgb(223, 249, 255);
     width: 100%;
     padding: 0px;
     margin: 0px;
