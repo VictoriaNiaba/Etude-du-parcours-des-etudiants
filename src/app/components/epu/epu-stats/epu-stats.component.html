@@ -12,12 +12,12 @@
   </div>
   <div class="card-body">
     <div *ngIf="step" class="stats">
-      <h5>Liste des formations</h5>
-      <ul class="list-group">
-        <div  *ngFor="let formation of formationsList">
-          <li class="list-group-item"><a class="btn btn-primary" routerLink="/formation/{{ formation.formation_code }}">{{ formation.formation_code }} | {{ formation.formation_name }}</a></li>
-        </div>
-      </ul>
+
+      <h5>Formation<span *ngIf="formationsList.length > 1">s</span></h5>
+      <p>Les formations affiliés à {{ step.step_name }}</p>
+      <div class="formationList">
+        <a *ngFor="let formation of formationsList" class="btn btn-outline-info" [ngClass]="{alt: formationsList.length == 1}" routerLink="/formation/{{ formation.formation_code }}">{{ formation.formation_code }} | {{ formation.formation_name }}</a>
+      </div>
 
       <div *ngIf="dataInExist">
       <h3 class="card-title">Entrants</h3>

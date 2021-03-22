@@ -13,6 +13,28 @@
 .list-group-item .list-group-item {
     border-color: rgba($color: #0f7864, $alpha: 0.2);
 }
+.formationList > * {
+    width: 100%;
+}
+.formationList {
+    display: grid;
+    grid-gap: 5px 5px;
+    grid-template-columns: repeat(1, 1fr);
+}
+.formationList > .alt {
+    grid-column-end: span 2;
+	grid-row-end: span 2;
+}
+@media screen and (min-width: 400px) {
+    .formationList {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media screen and (min-width: 1024px) {
+    .formationList {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
 
 @media (max-width: 600px) {
     .customflex {
