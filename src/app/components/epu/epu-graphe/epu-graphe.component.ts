@@ -162,14 +162,15 @@ export class EpuGrapheComponent implements OnInit {
     this.uniquePaths = new Array<Path>();
     this.displayUniquePaths();
     
-    this.changeOptions();
     this.pathSelectedIndex = 0;
     this.slideValue =  Math.min(5, this.uniquePaths.length); //max de 5 par défaut
+    this.changeOptions();
   }
 
   //Récupère la valeure du slider
   valueChanged(e){
     this.slideValue = e;
+    this.changeOptions();
   }
 
   //Permet d'éviter les cheminements avec des redoublements et ceux qui ont la même suite d'étapes
@@ -220,8 +221,8 @@ export class EpuGrapheComponent implements OnInit {
     }
 
     let incrementCat = 0;
-    this.paths.forEach(path => {
-      let pathSteps = path.path_steps;
+    for(let i = 0; i < this.slideValue-1; i++){
+      let pathSteps = this.paths[i].path_steps;
       //On crée nos noeuds sans duplication
       for (let index = 0; index < pathSteps.length; index++) {
         if (data.length == 0 || data.filter(element => element.name == pathSteps[index].step_code).length == 0) {
@@ -277,7 +278,7 @@ export class EpuGrapheComponent implements OnInit {
 
       //incrementCat++;
       incrementCat = 1;
-    });
+    }
 
     
 
