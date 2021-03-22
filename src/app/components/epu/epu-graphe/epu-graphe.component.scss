@@ -1,4 +1,4 @@
-$chartSize: 600px;
+$chartSize: 65vh;
 .graphBox {
     display: flex;
 }
@@ -54,7 +54,7 @@ $chartSize: 600px;
     font-weight: bold;
 }
 .echart, .chart {
-    background-color: rgb(223, 249, 255);
+    //background-color: rgb(223, 249, 255);
     width: 100%;
     padding: 0px;
     margin: 0px;

@@ -3,7 +3,6 @@ import { HttpClientService } from 'src/app/services/http-client.service';
 import * as echarts from 'echarts';
 import { Step } from 'src/app/models/Step';
 import { StepsService } from 'src/app/services/steps.service';
-import { resolveSanitizationFn } from '@angular/compiler/src/render3/view/template';
 import { Formation } from 'src/app/models/Formation';
 
 @Component({
@@ -13,12 +12,14 @@ import { Formation } from 'src/app/models/Formation';
 })
 export class EpuStatsComponent implements OnInit {
 
+  step: Step;
+
+
   constructor(private httpClient: HttpClientService, private stepsService: StepsService) {
     //this.setFormation("SSV2AT") //temporairePourTest
   }
 
   /**/
-  step: Step;
   setFormation(stepCode: string) {
     if(stepCode == "") {
       this.step = null;
