@@ -22,7 +22,7 @@ export class EpuGrapheComponent implements OnInit {
   ngOnInit(): void {
     //init déplacé dans le onChartInit
     this.searchInit();
-    this.changeOptions();
+    this.getPaths("", "");
   }
 
   onChartInit(e: any) {
@@ -154,14 +154,12 @@ export class EpuGrapheComponent implements OnInit {
   }
 
   private initPaths() {
-
     //permet de reset l'affichage
-    //this.slideValue = 1;
     this.stepClick(null);
-
+    
     this.uniquePaths = new Array<Path>();
     this.displayUniquePaths();
-    
+
     this.pathSelectedIndex = 0;
     this.slideValue =  Math.min(5, this.uniquePaths.length); //max de 5 par défaut
     this.changeOptions();
@@ -221,8 +219,8 @@ export class EpuGrapheComponent implements OnInit {
     }
 
     let incrementCat = 0;
-    for(let i = 0; i < this.slideValue-1; i++){
-      let pathSteps = this.paths[i].path_steps;
+    for(let i = 0; i < this.slideValue; i++){
+      let pathSteps = this.uniquePaths[i].path_steps;
       //On crée nos noeuds sans duplication
       for (let index = 0; index < pathSteps.length; index++) {
         if (data.length == 0 || data.filter(element => element.name == pathSteps[index].step_code).length == 0) {
