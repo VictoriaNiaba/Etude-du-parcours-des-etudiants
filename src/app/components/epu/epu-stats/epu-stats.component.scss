@@ -22,8 +22,8 @@
     grid-template-columns: repeat(1, 1fr);
 }
 .formationList > .alt {
-    grid-column-end: span 2;
-	grid-row-end: span 2;
+    grid-column-end: span 3;
+	grid-row-end: span 3;
 }
 @media screen and (min-width: 400px) {
     .formationList {
