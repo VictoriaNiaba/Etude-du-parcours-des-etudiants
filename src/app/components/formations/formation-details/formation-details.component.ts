@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Formation } from 'src/app/models/Formation';
 import { AuthentificationService } from 'src/app/services/authentification.service';
 import { HttpClientService } from 'src/app/services/http-client.service';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-formation-details',
@@ -13,7 +14,9 @@ export class FormationDetailsComponent implements OnInit {
   formation: Formation;
   canEdit: boolean;
 
-  constructor(private route: ActivatedRoute,private authenticationService: AuthentificationService, private httpClientService: HttpClientService, private router: Router) { }
+  constructor(private route: ActivatedRoute,private authenticationService: AuthentificationService, private httpClientService: HttpClientService, private router: Router, private location: Location) { 
+    this.location = location;
+  }
 
   ngOnInit(): void {
     this.httpClientService.getFormationByCode(this.route.snapshot.paramMap.get('code')).subscribe(res => {
@@ -26,6 +29,10 @@ export class FormationDetailsComponent implements OnInit {
         this.canEdit = false;
       }
     );
+  }
+
+  back(){
+    this.location.back();
   }
 
   delete() {
