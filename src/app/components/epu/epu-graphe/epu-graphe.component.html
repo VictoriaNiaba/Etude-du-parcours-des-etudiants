@@ -122,11 +122,10 @@
       <div id="_pathlist" class="path-list highlight" *ngIf="uniquePaths != []">
         <div class="d-flex flex-wrap f-width">
           <div class="f-width" *ngFor="let path of uniquePaths | slice:0:slideValue; let index = index;">
-            <a [ngClass]="index==pathSelectedIndex? 'badge-primary' : 'badge-secondary'"
-            container="body" popoverClass="popoverClass"
-            class="badge f-width" style="margin: 1px;" (click)="switchPath(index)">
-              {{pathStats[index] | number:'1.0-1'}}% :: {{ pop(index + 1) }}
-            </a>
+            <div class="path-item" [ngClass]="index==pathSelectedIndex? 'text-danger' : 'text-muted'" (click)="switchPath(index)">
+              <div>{{pathStats[index] | number:'1.0-1'}}%</div>
+              <div>{{ pathInfo(index + 1) }}</div>
+            </div>
           </div>
         </div>
       </div>
