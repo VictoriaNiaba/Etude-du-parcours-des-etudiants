@@ -10,16 +10,13 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
-import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import fr.univamu.epu.dao.RegistrationDao;
 import fr.univamu.epu.dao.RegistrationYearInfoDao;
-import fr.univamu.epu.errorhandler.UploadException;
 import fr.univamu.epu.model.registration.Registration;
 import fr.univamu.epu.model.registration.RegistrationYearInfo;
 import fr.univamu.epu.services.csvimport.RegistrationCsvParser;
@@ -82,10 +79,7 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 			}
 		}
 
-		for (int year : yearsUploaded) {
-			registrationDao.deleteAllByYear(year);
-			regYearInfoDao.deleteAllByYear(year);
-		}
+		deleteOldRegistrations(yearsUploaded);
 
 		addAll(registrations);
 		regYearInfoDao.addAll(infos);
@@ -93,5 +87,14 @@ public class RegistrationCsvInMemoryManager implements RegistrationManager {
 
 		// gen paths
 		pb.buildPaths();// depends on step
+	}
+
+	private void deleteOldRegistrations(List<Integer> yearsUploaded) {
+		for (int year : yearsUploaded) {
+			if(registrationDao.countByYear(year) > 0) {
+				registrationDao.deleteAllByYear(year);	
+			}
+			regYearInfoDao.remove(year);
+		}
 	}
 }

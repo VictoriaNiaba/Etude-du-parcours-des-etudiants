@@ -7,4 +7,6 @@ public interface RegistrationDao extends GenericDao<Registration, RegistrationId
 
 	void deleteAllByYear(int year);
 
+	long countByYear(int year);
+
 }
