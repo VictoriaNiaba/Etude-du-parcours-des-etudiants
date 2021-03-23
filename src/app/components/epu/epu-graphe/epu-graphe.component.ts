@@ -220,7 +220,7 @@ export class EpuGrapheComponent implements OnInit {
 
     let incrementCat = 0;
     for(let i = 0; i < this.slideValue; i++){
-      let pathSteps = this.uniquePaths[i].path_steps;
+      let pathSteps = this.paths[i].path_steps;
       //On crée nos noeuds sans duplication
       for (let index = 0; index < pathSteps.length; index++) {
         if (data.length == 0 || data.filter(element => element.name == pathSteps[index].step_code).length == 0) {
