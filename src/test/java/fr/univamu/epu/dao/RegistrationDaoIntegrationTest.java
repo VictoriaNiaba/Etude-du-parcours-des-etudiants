@@ -51,4 +51,24 @@ class RegistrationDaoIntegrationTest {
 			assertThat(found).isEqualTo(registration);
 		});
 	}
+	
+	@Test
+	void givenOldRegistrations_whenCountByYear_thenReturnRegistrationCount() {
+		// given
+		Collection<Registration> oldRegistrations = Arrays.asList(
+				new Registration("SIN1AA", "fjrij", 2018),
+				new Registration("SIN3AA", "egzaef", 2018),
+				new Registration("SIG3AA", "fzassz", 2019),
+				new Registration("SIG2AA", "omioli", 2020));
+		long expectedCount = 2;
+		
+		oldRegistrations.forEach(em::persist);
+		em.flush();
+
+		// when
+		long actualCount = dao.countByYear(2018);
+
+		// then
+		assertThat(actualCount).isEqualTo(expectedCount);
+	}
 }

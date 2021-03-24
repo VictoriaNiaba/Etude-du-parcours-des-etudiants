@@ -73,6 +73,8 @@ class RegistrationCsvInMemoryManagerUnitTest {
 				new Registration("SIC2AA", "zereh", 2018),
 				new Registration("SIC3AA", "vrzef", 2019));
 		when(registrationCsvParser.parse(inputStream)).thenReturn(expected);
+		when(registrationDao.countByYear(2018)).thenReturn(1L);
+		when(registrationDao.countByYear(2019)).thenReturn(1L);
 
 		// when
 		registrationManager.upload(inputStream);
@@ -136,7 +138,7 @@ class RegistrationCsvInMemoryManagerUnitTest {
 
 		// then
 		verify(registrationCsvParser, times(1)).parse(inputStream);
-		verify(regYearInfoDao, times(1)).deleteAllByYear(2018);
-		verify(regYearInfoDao, times(1)).deleteAllByYear(2019);
+		verify(regYearInfoDao, times(1)).remove(2018);
+		verify(regYearInfoDao, times(1)).remove(2019);
 	}
 }

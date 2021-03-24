@@ -13,8 +13,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.univamu.epu.model.formation.Formation;
-
 @Repository
 @Transactional
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -82,5 +80,4 @@ public class GenericJpaDao<T, I> implements GenericDao<T, I> {
 
 		return typedQuery.getResultList();
 	}
-
 }
