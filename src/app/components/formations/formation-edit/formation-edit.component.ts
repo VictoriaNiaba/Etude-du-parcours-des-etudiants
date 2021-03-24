@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Formation } from 'src/app/models/Formation';
 import { Step } from 'src/app/models/Step';
 import { HttpClientService } from 'src/app/services/http-client.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { FormationValidatorService } from 'src/app/services/formationValidator.service';
 
 @Component({
   selector: 'app-formation-edit',
@@ -23,7 +24,7 @@ export class FormationEditComponent implements OnInit {
   code: string = null;
   searchWord: string;
 
-  constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private httpClientService: HttpClientService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private httpClientService: HttpClientService, private formationValidatorService: FormationValidatorService) { }
 
   ngOnInit(): void {
     //-------------Initialisation----------------
@@ -31,26 +32,8 @@ export class FormationEditComponent implements OnInit {
     if (this.code === null) { this.isAddMode = true; }
     else { this.isAddMode = false; }
 
-    //Custom Validator pour savoir si le code utilisé n'est pas déjà pris
-    const uniqueIdValidator = (control: AbstractControl): { [key: string]: boolean } | null => {
-      let formationTmp: Formation[] = [];
-      this.httpClientService.getFormations().subscribe(res => {
-        formationTmp = res;
-        formationTmp.forEach(f => {
-          if (control.value === f.formation_code && control.value !== undefined && control.value != this.code) {
-            return { uniqueId: true };
-          }
-        });
-      },
-      (error) => {
-          console.warn("Handle (Validator) :", error)
-        }
-      );
-      return null;
-    }
-
     this.editForm = this.formBuilder.group({
-      formation_code: ['', [Validators.required, uniqueIdValidator]],
+      formation_code: ['', [Validators.required], [this.formationValidatorService.codeValidator(this.code)]],
       formation_name: ['', [Validators.required]],
       description: ['', Validators.required],
       type: ['', [Validators.required]],

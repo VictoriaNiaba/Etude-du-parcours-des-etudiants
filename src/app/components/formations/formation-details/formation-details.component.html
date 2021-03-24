@@ -35,7 +35,9 @@
                     role="button">Supprimer</a>
                 <a *ngIf="canEdit === true" routerLink="/formation/{{formation.formation_code}}/edit"
                     class="btn btn-info" role="button">Modifier</a>
-                <a (click)="back()" class="btn btn-secondary">Retour</a>
+                <a *ngIf="canEdit === true" routerLink="/admin"
+                    class="btn btn-secondary" role="button">Retour</a>
+                <a *ngIf="canEdit === false" (click)="back()" class="btn btn-secondary">Retour</a>
             </div>
         </div>
     </div>
