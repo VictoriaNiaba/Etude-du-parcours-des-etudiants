@@ -25,5 +25,22 @@
         </a>
       </li>
     </ul>
+    <ul class="navbar-nav" *ngIf="authenticationService.authentificated">
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          data-toggle="dropdown"
+          href="#"
+          role="button"
+          aria-haspopup="true"
+          aria-expanded="false" >
+          Liens administration
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item bg-info" style="color: white;" routerLink="admin">Administration</a>
+          <a class="dropdown-item bg-danger" style="color: white; cursor:pointer;" (click)="disconnect()">Déconnexion</a>
+        </div>
+      </li>
+    </ul>
   </div>
 </nav>

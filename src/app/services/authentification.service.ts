@@ -43,7 +43,7 @@ export class AuthentificationService {
       .pipe(
         finalize(() => {
           this.authentificated = false;
-          this.router.navigate(['sign-in']);
+          this.router.navigate(['/']);
         })
       )
       .subscribe();
