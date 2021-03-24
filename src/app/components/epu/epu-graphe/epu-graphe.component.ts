@@ -136,11 +136,11 @@ export class EpuGrapheComponent implements OnInit {
           pathTemp.addStep(step);
         }
         this.paths.push(pathTemp);
-        this.pathStats.push(pathTemp.getSteps(pathTemp.path_steps.length -1).step_number) ;
+        this.pathStats.push(pathTemp.getStep(pathTemp.path_steps.length -1).step_number) ;
       });
       this.totalStudentPaths = 0;
       this.paths.forEach(path => {
-        this.totalStudentPaths += path.getSteps(path.path_steps.length -1).step_number;
+        this.totalStudentPaths += path.getStep(path.path_steps.length -1).step_number;
       });
       if(this.totalStudentPaths > 0)
         for(let i=0; i<this.pathStats.length; i++)

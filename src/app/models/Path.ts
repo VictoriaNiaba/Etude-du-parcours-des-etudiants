@@ -27,7 +27,7 @@ export class Path {
     setStep(path_steps: StepPath[]) {
         this.path_steps = path_steps;
     }
-    getSteps(index:number) {
+    getStep(index:number) {
         return this.path_steps[index];
     }
 }

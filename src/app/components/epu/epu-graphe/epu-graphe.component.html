@@ -143,10 +143,10 @@
         <div *ngFor="let step of path.path_steps; let index = index"> 
           <div class="text-primary" style="margin: 0px 10px; font-size: 10px;">
             <i class="fas fa-minus" style="align-self: center;"></i>
-            <div style="align-self: center;">{{path.getSteps(index).step_number}}</div>
+            <div style="align-self: center;">{{path.getStep(index).step_number}}</div>
             <i class="fas fa-arrow-right" style="align-self: center;"></i>
           </div>
-          <a class="badge badge-info" style="align-self: center;" (click)="stepClick(path.getSteps(index).step_code)">{{path.getSteps(index).step_code}}</a>
+          <a class="badge badge-info" style="align-self: center;" (click)="stepClick(path.getStep(index).step_code)">{{path.getStep(index).step_code}}</a>
         </div>
 
       </div>
