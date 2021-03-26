@@ -14,6 +14,7 @@ export class RegistrationsComponent implements OnInit {
   registrations: any;
 
   fileToUpload: File = null;
+  isLoading = false;
 
   ngOnInit(): void {
     this.httpClientService.getRegistrations().subscribe(res => {
@@ -34,12 +35,17 @@ export class RegistrationsComponent implements OnInit {
   }
 
   uploadFileToService() {
+    this.isLoading = true;
     this.httpClientService.postFile(this.fileToUpload, "/registrations/_upload").subscribe(data => {
       this.ngOnInit();
+      this.isLoading = false;
+      window.location.reload();
     },
     (error) => {
         console.warn("Handle (postFile) :", error);
         this.ngOnInit();
+        this.isLoading = false;
+        window.location.reload();
       }
     );
 

@@ -83,6 +83,7 @@
               style="display: none;"
               onchange="$('#upload-file-info-Formation').text(this.files[0].name)"
             />
+            <div *ngIf="isLoading" class="loading">Loading</div>
             <i class="fas fa-upload"></i>
           </label>
           <span

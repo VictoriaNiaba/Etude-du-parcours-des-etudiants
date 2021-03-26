@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Step } from 'src/app/models/Step';
 import { HttpClientService } from 'src/app/services/http-client.service';
 
@@ -14,8 +15,9 @@ export class StepsComponent implements OnInit {
   page: number;
   collectionSize: number;
   searchWord: String;
+  isLoading = false;
 
-  constructor(private httpClientService: HttpClientService) { }
+  constructor(private httpClientService: HttpClientService, private router:Router) { }
 
   ngOnInit(): void {
     this.httpClientService.getSteps().subscribe(res => { 
@@ -34,12 +36,17 @@ export class StepsComponent implements OnInit {
   }
 
   uploadFileToService() {
+    this.isLoading = true;
     this.httpClientService.postFile(this.fileToUpload, "/steps/_upload").subscribe(data => {
       this.ngOnInit();
-      },
+      this.isLoading = false;
+      window.location.reload();
+    },
       (error) => {
           console.warn("Handle (postFile) :", error);
           this.ngOnInit();
+          this.isLoading = false;
+          window.location.reload();
         }
       );
   }

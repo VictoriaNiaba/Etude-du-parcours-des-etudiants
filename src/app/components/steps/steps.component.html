@@ -52,6 +52,7 @@
             <br />
             <input type="file" accept=".csv, text/csv" id="file" (change)="handleFileInput($event.target.files)"
               style="display: none;" onchange="$('#upload_file_info_Step').text(this.files[0].name)" />
+            <div *ngIf="isLoading" class="loading">Loading</div>
             <i class="fas fa-upload"></i>
           </label>
           <span class="label label-info text-muted text-medium" id="upload_file_info_Step">

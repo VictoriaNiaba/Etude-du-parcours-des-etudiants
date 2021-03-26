@@ -13,6 +13,7 @@ export class FormationsComponent implements OnInit {
   collectionSize: number;
   fileToUpload: File = null;
   searchWord: String;
+  isLoading = false;
 
   constructor(private httpClientService: HttpClientService) { }
 
@@ -33,12 +34,17 @@ export class FormationsComponent implements OnInit {
   }
 
   uploadFileToService() {
+    this.isLoading = true;
     this.httpClientService.postFile(this.fileToUpload, "/formations/_upload").subscribe(data => {
         this.ngOnInit();
+        this.isLoading = false;
+        window.location.reload();
       },
       (error) => {
           console.warn("Handle (postFile) :", error)
           this.ngOnInit();
+          this.isLoading = false;
+          window.location.reload();
         }
       );
   }

@@ -43,6 +43,7 @@
           <label class="btn btn-info">
             Charger un CSV d'inscriptions.<br/>
             <input type="file" accept=".csv, text/csv" id="file" (change)="handleFileInput($event.target.files)" style="display:none" onchange="$('#upload-file-info').text(this.files[0].name)">
+            <div *ngIf="isLoading" class="loading">Loading</div>
             <i class="fas fa-upload"></i>
           </label>
           <span class="label label-info text-muted text-medium" id="upload-file-info"> --- </span>
