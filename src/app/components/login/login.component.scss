@@ -1,0 +1,30 @@
+.background {
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/a/a5/Calanque_de_Sormiou.jpg");
+    background-position: center;
+    height: 100%; 
+    height: 70vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.centerItem {
+    display: flex;
+    justify-content: center;
+    padding: 2em;
+}
+
+.card {
+    width: 18rem;
+    height: fit-content;
+    padding: 1em;
+}
+
+.card button {
+    width: 100%;
+}
+
+.card h1 {
+    font-size: 2em;
+    text-align: center;
+}

@@ -1,0 +1,68 @@
+<div class="card text-center">
+  <div class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <div class="nav-link active" href="#">
+          <h2>Etapes</h2>
+        </div>
+      </li>
+      <li class="nav-item ml-auto searchInput">
+        <div class="col-auto">
+          <div class="input-group">
+            <input type="text" class="form-control" id="inlineFormInputGroupStep" placeholder="Rechercher" #myInputSteps [(ngModel)]="searchWord" (input)="search()">
+            <div class="input-group-prepend">
+              <div class="input-group-text"><i class="fas fa-search"></i></div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body d-flex justify-content-between">
+    <!-- ---------------------------------- -->
+    <div class="left col col-lg-9">
+      <div style="width: 100%;">
+        <div class="box">
+          <div class="box-item"
+            *ngFor="let step of steps | slice: (page - 1) * pageSize:(page - 1) * pageSize + pageSize">
+            <a class="btn btn-primary disabled">
+              <div class="formation-code">
+                {{ step.step_code }}
+              </div>
+              <div class="formation-name">
+                {{ step.step_name }}
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="pagination-numbers">
+          <ngb-pagination [pageSize]="pageSize" [collectionSize]="collectionSize" [(page)]="page" [rotate]="true" [maxSize]="5"></ngb-pagination>
+        </div>
+      </div>
+    </div>
+    <!-- ---------------------------------- -->
+    <div class="col col-lg-3">
+      <div class="card btn-upload">
+        <div class="card-header">
+          Importer des étapes
+        </div>
+        <div class="card-body" style="display: flex; flex-direction: column;">
+          <label class="btn btn-info">
+            Charger un CSV d'étapes.
+            <br />
+            <input type="file" accept=".csv, text/csv" id="file" (change)="handleFileInput($event.target.files)"
+              style="display: none;" onchange="$('#upload_file_info_Step').text(this.files[0].name)" />
+            <div *ngIf="isLoading" class="loading">Loading</div>
+            <i class="fas fa-upload"></i>
+          </label>
+          <span class="label label-info text-muted text-medium" id="upload_file_info_Step">
+            ---
+          </span>
+          <a class="btn btn-success" (click)="uploadFileToService()">
+            Valider
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

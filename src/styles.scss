@@ -1,0 +1,130 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+.h {
+    /*display: none;*/
+}
+.left .btn {
+    width: 100%;
+}
+.left {
+    width: 100%;
+}
+.card-header h2 {
+    font-size: 18px;
+}
+.popoverClass {
+    font-size: 8pt;
+    padding: 2px;
+    margin: 2px;
+}
+
+/*Responsive*/
+@media (max-width: 992px) {
+    .card-body {
+        flex-direction: column;
+    }
+    .card-header .nav-item > .active,
+    .card-header .nav-item {
+        background: none;
+        border: none;
+        align-self: baseline;
+        font-size: small;
+    }
+}
+@media (max-width: 769px) {
+    .searchInput {
+        width: 100%;
+    }
+}
+
+.card-body {
+    flex-wrap: wrap;
+}
+.btn-upload {
+    height: fit-content;
+    width: 100%;
+}
+.btn-upload i {
+    font-size: 30px;
+    margin: 5px;
+}
+.btn-upload a {
+    padding: 10px 20px;
+}
+.text-muted {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+.text-medium {
+    font-size: medium;
+}
+.nav-link {
+    height: 100%;
+}
+table {
+    margin-bottom: 10px;
+}
+
+/**/
+.box {
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 100%;
+}
+.box-item {
+    padding: 1px;
+    flex: 50%;
+}
+.box .btn-primary {
+    padding: 10px;
+    height: 100%;
+}
+.box .formation-code {
+    font-weight: lighter;
+    opacity: 80%;
+    text-decoration: underline;
+}
+.box .formation-name {
+    font-weight: bold;
+    font-size: smaller;
+}
+.pagination-numbers {
+    padding: 5px;
+    margin: 2px 0px;
+    display: flex;
+    justify-content: center;
+}
+.container {
+    padding-left: 1%;
+    padding-right: 1%;
+    max-width: 90%;
+}
+
+.loading::after {
+    content: "";
+    animation: infinite loadingAnimation 2s;
+}
+
+@keyframes loadingAnimation {
+    0% {
+        content: "";
+    }
+    25% {
+        content: ".";
+    }
+    50% {
+        content: "..";
+    }
+
+    75% {
+        content: "...";
+    }
+    100% {
+        content: "";
+    }
+}

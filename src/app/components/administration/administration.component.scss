@@ -1,0 +1,27 @@
+.success-message {
+    color: white;
+    /*animation-name: dance;*/
+    animation-duration: 4s;
+    animation-iteration-count: 1;
+  }
+  
+  @keyframes dance {
+    5%   { transform: rotate(0deg); }
+    10%   { transform: rotate(5deg); }
+    15%   { transform: rotate(0deg); }
+    20%   { transform: rotate(-5deg); }
+    25%   { transform: rotate(0deg); }
+    35%   { transform: rotate(0deg); transform: translateY(10px); }
+    40%   { transform: translateY(-15px); }
+    45%   { transform: rotate(0deg); transform: translateY(5px); }
+    50%   { transform: rotate(0deg); }
+    55%   { transform: rotateX(180deg); }
+    60%   { transform: rotate(0deg); }
+    84%   { transform: scaleX(50%); }
+    90%   { transform: scaleX(110%); }
+    92%   { transform: scaleX(100%); }
+    94%   { transform: scaleX(103%); }
+    96%   { transform: scaleX(100%); }
+    98%   { transform: scaleX(101%); }
+    100%   { transform: scaleX(100%); }
+  }

@@ -1,0 +1,57 @@
+<div class="card text-center">
+  <div class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <div class="nav-link active" href="#">
+          <h2>Inscriptions</h2>
+        </div>
+      </li>
+      <li class="nav-item ml-auto px-4">
+        <div class="nav-link active" href="#">
+          <p>Total : {{totalRegistration}}</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body d-flex justify-content-between">
+    <!-- ---------------------------------- -->
+    <div class="left col col-lg-9">
+      <table style="width: 100%;">
+        <thead>
+          <tr>
+            <th class="bg-warning">Année</th>
+            <th class="bg-warning">Date de chargement</th>
+            <th class="bg-warning">Nombre d'inscriptions</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of registrations">
+              <td>{{item['year']}}</td>
+              <td>{{ item['timeStamp'] | date:'dd/MM/yyyy à HH:mm'  }}</td>
+              <td>{{ item['registrationCount'] }}</td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- ---------------------------------- -->
+    <div class="col col-lg-3">
+      <div class="card btn-upload">
+        <div class="card-header">
+          Importer une année d'inscriptions
+        </div>
+        <div class="card-body" style="display: flex; flex-direction: column;">
+          <label class="btn btn-info">
+            Charger un CSV d'inscriptions.<br/>
+            <input type="file" accept=".csv, text/csv" id="file" (change)="handleFileInput($event.target.files)" style="display:none" onchange="$('#upload-file-info').text(this.files[0].name)">
+            <div *ngIf="isLoading" class="loading">Loading</div>
+            <i class="fas fa-upload"></i>
+          </label>
+          <span class="label label-info text-muted text-medium" id="upload-file-info"> --- </span>
+          <a class="btn btn-success" (click)="uploadFileToService()">
+            Valider
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

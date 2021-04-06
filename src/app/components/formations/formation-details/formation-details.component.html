@@ -1,0 +1,44 @@
+<div class="container">
+    <div *ngIf="formation" class="card mb-3">
+        <h3 class="card-header">{{ formation.formation_code }}</h3>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <span class="emphasis">Code</span> : {{ formation.formation_code }}
+                </li>
+                <li class="list-group-item">
+                    <span class="emphasis">Intitulé</span> : {{ formation.formation_name }}
+                </li>
+                <li class="list-group-item">
+                    <span class="emphasis">Type</span> : {{ formation.type }}
+                </li>
+                <li style="text-align: justify;" *ngIf='formation.description != ""' class="list-group-item">
+                    <span class="emphasis">Description</span>&nbsp;:&nbsp;{{ formation.description}}
+                </li>
+                <li class="list-group-item">URL : <a [attr.href]="formation.url" target="_blank">{{ formation.url }}</a></li>
+                <li *ngIf="formation.add_date != null" class="list-group-item">Date d'Ajout : {{ formation.add_date | date:'dd-MM-yyyy à HH:mm:ss' }}</li>
+                <li *ngIf="formation.last_modification != null" class="list-group-item">Date de dernière Modification : {{ formation.last_modification | date:'dd-MM-yyyy à HH:mm:ss' }}</li>
+            </ul>
+            <br>
+            <div *ngIf="formation.steps != []">
+                <h5>Liste des Etapes</h5>
+                <div class="d-flex flex-wrap">
+                    <a *ngFor="let step of formation.steps" class="btn btn-outline-primary" style="margin: 1px;">
+                        {{step.step_code}} - {{step.step_name}}
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            <div class="d-flex justify-content-between">
+                <a *ngIf="canEdit === true" (click)="delete()" class="btn btn-danger"
+                    role="button">Supprimer</a>
+                <a *ngIf="canEdit === true" routerLink="/formation/{{formation.formation_code}}/edit"
+                    class="btn btn-info" role="button">Modifier</a>
+                <a *ngIf="canEdit === true" routerLink="/admin"
+                    class="btn btn-secondary" role="button">Retour</a>
+                <a *ngIf="canEdit === false" (click)="back()" class="btn btn-secondary">Retour</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="centerItem background">
+    <div class="card">
+        <h1>Administration</h1>
+        <hr/>
+        <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+            <fieldset>
+                <div class="form-group">
+                    <label for="email1">E-mail</label>
+                    <input type="email" formControlName="email" class="form-control" id="InputEmail1" placeholder="E-mail"
+                    [ngClass]="{ 'is-invalid': submitted && formControl.email.errors }" />
+                    <div *ngIf="submitted && formControl.email.errors" class="invalid-feedback">
+                        <div *ngIf="formControl.email.errors.email">Pas une adresse email</div>
+                        <div *ngIf="formControl.email.errors.required">Email vide</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" formControlName="password" class="form-control" id="InputPassword" placeholder="Mot de passe"
+                    [ngClass]="{ 'is-invalid': submitted && formControl.password.errors }" />
+                    <div *ngIf="submitted && formControl.email.errors" class="invalid-feedback">
+                        <div *ngIf="formControl.email.errors.required">Mot de passe vide</div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Se connecter</button>
+                <button type="button" class="btn btn-info badge" (click)="autoLogin()">Auto-login (test)</button>
+            </fieldset>
+        </form>
+    </div>
+</div>

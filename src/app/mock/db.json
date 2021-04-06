@@ -1,0 +1,340 @@
+{
+  "formations": [
+    {
+      "formation_code": "MESSIN-PRSIN5A",
+      "formation_name": "MASTER INFORMATIQUE A",
+      "description": "AAAAAAAZ La formation permet d’acquérir les principes et techniques AAAAAAAA.",
+      "type": "MASTER",
+      "url": "www.google.com",
+      "steps": [
+        "SIN4T1",
+        "SIN4T2",
+        "SIN4T5",
+        "SIN4T0"
+      ],
+      "add_date": "01/01/2000",
+      "last_modification": "2021-03-09T13:50:25.339Z"
+    },
+    {
+      "formation_code": "MESSIN-PRSIN5AB",
+      "formation_name": "MASTER INFORMATIQUE B",
+      "description": "BBBBBBB La formation permet d’acquérir les principes et techniques BBBBBBB.",
+      "type": "MASTER",
+      "url": "www.google.com",
+      "steps": [
+        "SIN4T1",
+        "SIN4T2",
+        "SIN4T0"
+      ],
+      "add_date": "01/01/2000",
+      "last_modification": "2021-03-08T15:59:52.815Z"
+    },
+    {
+      "formation_code": "MESSIN-PRSIN5AC",
+      "formation_name": "MASTER INFORMATIQUE C",
+      "description": "CCCCCCC La formation permet d’acquérir les principes et techniques CCCCCCC.",
+      "type": "MASTER",
+      "url": "www.google.com",
+      "steps": [
+        "SIN4T1",
+        "SIN4T2",
+        "SIN4T3"
+      ],
+      "add_date": "01/01/2000",
+      "last_modification": "2021-03-08T16:16:40.030Z"
+    },
+    {
+      "formation_code": "MESSIN-PRSIN5AD",
+      "formation_name": "MASTER INFORMATIQUE D",
+      "description": "DDDDDDD La formation permet d’acquérir les principes et techniques DDDDDDD.",
+      "type": "MASTER",
+      "url": "www.google.com",
+      "steps": [
+        "SIN4T1",
+        "SIN4T2",
+        "SIN4T5"
+      ],
+      "add_date": "01/01/2000",
+      "last_modification": "01/01/2001"
+    },
+    {
+      "formation_code": "MESSIN-PRSIN5AE",
+      "formation_name": "MASTER INFORMATIQUE E",
+      "description": "EEEEEEE La formation permet d’acquérir les principes et techniques EEEEEEE.",
+      "type": "MASTER",
+      "url": "www.google.com",
+      "steps": [
+        "SIN4T1",
+        "SIN4T5",
+        "SIN4T6"
+      ],
+      "add_date": "01/01/2000",
+      "last_modification": "01/01/2001"
+    },
+    {
+      "formation_code": "MESSIN-PRSIN5AF",
+      "formation_name": "MASTER INFORMATIQUE F",
+      "description": "FFFFFFF La formation permet d’acquérir les principes et techniques FFFFFFF.",
+      "type": "MASTER",
+      "url": "www.google.com",
+      "steps": [
+        "SIN4T2",
+        "SIN4T4"
+      ],
+      "add_date": "01/01/2000",
+      "last_modification": "01/01/2001"
+    },
+    {
+      "formation_code": "MESSIN-PRSIN5AG",
+      "formation_name": "MASTER INFORMATIQUE G",
+      "description": "GGGGGGG La formation permet d’acquérir les principes et techniques GGGGGGG.",
+      "type": "MASTER",
+      "url": "www.google.com",
+      "steps": [
+        "SIN4T2"
+      ],
+      "add_date": "01/01/2000",
+      "last_modification": "01/01/2001"
+    },
+    {
+      "formation_code": "MESSIN-PRSIN5AH",
+      "formation_name": "MASTER INFORMATIQUE H",
+      "description": "HHHHHHH La formation permet d’acquérir les principes et techniques HHHHHHH.",
+      "type": "MASTER",
+      "url": "www.google.com",
+      "steps": [
+        "SIN4T3",
+        "SIN4T5"
+      ],
+      "add_date": "01/01/2000",
+      "last_modification": "01/01/2001"
+    },
+    {
+      "formation_code": "MESSIN-PRSIN5AI",
+      "formation_name": "MASTER INFORMATIQUE I",
+      "description": "IIIIIII La formation permet d’acquérir les principes et techniques IIIIIII.",
+      "type": "MASTER",
+      "url": "www.google.com",
+      "steps": [
+        "SIN4T4",
+        "SIN4T6"
+      ],
+      "add_date": "01/01/2000",
+      "last_modification": "01/01/2001"
+    },
+    {
+      "formation_code": "MESSIN-PRSIN5AJ",
+      "formation_name": "MASTER INFORMATIQUE J",
+      "description": "JJJJJJJ La formation permet d’acquérir les principes et techniques JJJJJJJ.",
+      "type": "MASTER",
+      "url": "www.google.com",
+      "steps": [
+        "SIN4T5",
+        "SIN4T6"
+      ],
+      "add_date": "01/01/2000",
+      "last_modification": "01/01/2001"
+    },
+    {
+      "formation_code": "ME3SIN",
+      "formation_name": "LICENCE INFORMATIQUE",
+      "description": "AZZZZZZZZZZZZZ",
+      "type": "LICENCE",
+      "url": "www.google.com",
+      "steps": [
+        "SIN4T0"
+      ],
+      "add_date": "2021-02-18T09:31:58.516Z",
+      "last_modification": "2021-03-03T14:58:03.456Z"
+    }
+  ],
+  "registrations": [
+    {
+      "year": 2000,
+      "nb_registrations": 8001,
+      "timeStamp": "01/01/2000"
+    },
+    {
+      "year": 2001,
+      "nb_registrations": 7514,
+      "timeStamp": "01/01/2001"
+    },
+    {
+      "year": 2002,
+      "nb_registrations": 9547,
+      "timeStamp": "01/01/2002"
+    },
+    {
+      "year": 2003,
+      "nb_registrations": 8544,
+      "timeStamp": "01/01/2003"
+    },
+    {
+      "year": 2004,
+      "nb_registrations": 8526,
+      "timeStamp": "01/01/2004"
+    },
+    {
+      "year": 2005,
+      "nb_registrations": 8847,
+      "timeStamp": "01/01/2005"
+    },
+    {
+      "year": 2006,
+      "nb_registrations": 7887,
+      "timeStamp": "01/01/2006"
+    },
+    {
+      "year": 2007,
+      "nb_registrations": 5998,
+      "timeStamp": "01/01/2007"
+    },
+    {
+      "year": 2008,
+      "nb_registrations": 6591,
+      "timeStamp": "01/01/2008"
+    },
+    {
+      "year": 2009,
+      "nb_registrations": 7856,
+      "timeStamp": "01/01/2009"
+    }
+  ],
+  "steps": [
+    {
+      "step_code": "MESSIN-PRSIN5AA",
+      "step_name": "AMU.M1 Informatique",
+      "steps_in": [
+        {}
+      ],
+      "steps_out": [
+        {
+          "step_code": "SIN4T1",
+          "number": 10
+        }
+      ],
+      "average_repeat": 10.5
+    },
+    {
+      "step_code": "MESSIN-PRSIN5AB",
+      "step_name": "AMU.M1 Informatique FSI",
+      "steps_in": [
+        {
+          "step_code": "MESSIN-PRSIN5AA",
+          "number": 20
+        }
+      ],
+      "average_repeat": 10.5
+    },
+    {
+      "step_code": "MESSIN-PRSIN5AC",
+      "step_name": "AMU.M1 Informatique ILD",
+      "steps_in": [
+        {
+          "step_code": "MESSIN-PRSIN5AA",
+          "number": 30
+        }
+      ],
+      "average_repeat": 5.5
+    },
+    {
+      "step_code": "MESSIN-PRSIN5AD",
+      "step_name": "AMU.M1 Informatique IAAA",
+      "steps_in": [
+        {
+          "step_code": "MESSIN-PRSIN5AA",
+          "number": 40
+        }
+      ],
+      "average_repeat": 25
+    },
+    {
+      "step_code": "MESSIN-PRSIN5AE",
+      "step_name": "AMU.M1 Informatique IMD",
+      "steps_in": [
+        {
+          "step_code": "MESSIN-PRSIN5AA",
+          "number": 2
+        }
+      ],
+      "average_repeat": 0
+    },
+    {
+      "step_code": "MESSIN-PRSIN5AF",
+      "step_name": "AMU.M1 Informatique CMB",
+      "steps_in": [
+        {
+          "step_code": "MESSIN-PRSIN5AA",
+          "number": 1
+        }
+      ],
+      "average_repeat": 5.5
+    },
+    {
+      "step_code": "MESSIN-PRSIN5AG",
+      "step_name": "AMU.M1 Informatique YAA",
+      "steps_in": [
+        {
+          "step_code": "MESSIN-PRSIN5AB",
+          "number": 10
+        },
+        {
+          "step_code": "MESSIN-PRSIN5AC",
+          "number": 5
+        }
+      ],
+      "average_repeat": 4
+    }
+  ],
+  "user": {
+    "name": "admin.email@email.email"
+  },
+  "logout": {},
+  "salutations": {
+    "message": "salutations le monde (mock)"
+  },
+  "paths": [
+    {
+      "steps": [
+        "MESSIN-PRSIN5AA",
+        "MESSIN-PRSIN5AB",
+        "MESSIN-PRSIN5AC",
+        "MESSIN-PRSIN5AI"
+      ],
+      "registered": [
+        300,
+        333,
+        330,
+        2000
+      ]
+    },
+    {
+      "steps": [
+        "MESSIN-PRSIN5AE",
+        "MESSIN-PRSIN5AD",
+        "MESSIN-PRSIN5AC",
+        "MESSIN-PRSIN5AI"
+      ],
+      "registered": [
+        200,
+        222,
+        202,
+        1000
+      ]
+    },
+    {
+      "steps": [
+        "MESSIN-PRSIN5AD",
+        "MESSIN-PRSIN5AC",
+        "MESSIN-PRSIN5AG",
+        "MESSIN-PRSIN5AI"
+      ],
+      "registered": [
+        11,
+        10,
+        11,
+        10
+      ]
+    }
+  ]
+}
