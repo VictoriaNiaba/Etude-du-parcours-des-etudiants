@@ -2,7 +2,7 @@
 
 > Attention : ce projet est récupéré à partir de repositories Gitlab privées. Le code source peut être partagé mais les informations sensibles ayant été filtrées, le projet n'est donc pas directement exécutable sans ajustements au préalable (pipeline CI/CD, fichiers de données, etc.).
 
-![Screenshot du graphe des parcours](screenshots/graphe.png")
+![Screenshot du graphe des parcours](screenshots/graphe.png?raw=true "Graphe des parcours")
 
 D'autres captures d'écran du prototype sont disponibles dans le dossier `/screenshots`.
 
